@@ -2,7 +2,8 @@ import { cpSync, existsSync, readdirSync, rmSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 
 const dist = "dist";
-const worktree = ".deploy-gh-pages";
+const publishBranch = "main";
+const worktree = ".deploy-pages";
 
 if (!existsSync(dist)) {
   throw new Error("dist does not exist. Run npm run build first.");
@@ -13,7 +14,7 @@ rmSync(worktree, { recursive: true, force: true });
 execFileSync("git", ["worktree", "add", "--detach", worktree], {
   stdio: "inherit"
 });
-execFileSync("git", ["-C", worktree, "switch", "--orphan", "gh-pages"], {
+execFileSync("git", ["-C", worktree, "switch", "--orphan", publishBranch], {
   stdio: "inherit"
 });
 
@@ -31,7 +32,7 @@ execFileSync("git", ["-C", worktree, "add", "."], { stdio: "inherit" });
 execFileSync("git", ["-C", worktree, "commit", "-m", "Deploy static site"], {
   stdio: "inherit"
 });
-execFileSync("git", ["-C", worktree, "push", "origin", "gh-pages", "--force"], {
+execFileSync("git", ["-C", worktree, "push", "origin", publishBranch, "--force"], {
   stdio: "inherit"
 });
 

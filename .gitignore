@@ -3,4 +3,4 @@ dist
 .astro
 .vercel
 .env
-.deploy-gh-pages
+.deploy-pages

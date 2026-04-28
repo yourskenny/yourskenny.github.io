@@ -18,8 +18,9 @@ const requiredPaths = [
   "src/pages/about.astro",
   "src/content/projects/vision-quality-inspection.md",
   "src/content/blog/project-retrospective-template.md",
-  "scripts/deploy-gh-pages.mjs",
+  "scripts/deploy-pages.mjs",
   "public/favicon.svg",
+  "public/.nojekyll",
   "public/og-image.svg",
   "public/robots.txt",
   "public/resume-placeholder.pdf"
@@ -57,6 +58,6 @@ assert.match(contentConfig, /glob\(\{ pattern: "\*\*\/\*\.\{md,mdx\}"/);
 const robots = readFileSync("public/robots.txt", "utf8");
 assert.match(robots, /Sitemap:/);
 
-const deployScript = readFileSync("scripts/deploy-gh-pages.mjs", "utf8");
+const deployScript = readFileSync("scripts/deploy-pages.mjs", "utf8");
 assert.match(deployScript, /worktree/);
-assert.match(deployScript, /gh-pages/);
+assert.match(deployScript, /main/);
