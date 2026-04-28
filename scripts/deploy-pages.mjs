@@ -9,6 +9,16 @@ if (!existsSync(dist)) {
   throw new Error("dist does not exist. Run npm run build first.");
 }
 
+try {
+  execFileSync("git", ["worktree", "remove", worktree, "--force"], {
+    stdio: "ignore"
+  });
+} catch {
+  // The worktree may not exist on a clean checkout.
+}
+execFileSync("git", ["worktree", "prune"], {
+  stdio: "inherit"
+});
 rmSync(worktree, { recursive: true, force: true });
 
 execFileSync("git", ["fetch", "origin", publishBranch], {
