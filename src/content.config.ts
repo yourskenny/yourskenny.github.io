@@ -10,6 +10,8 @@ const projects = defineCollection({
     date: z.date(),
     tags: z.array(z.string()),
     role: z.string(),
+    category: z.enum(["独立项目", "竞赛项目", "实习项目", "研究原型", "课程归档"]),
+    sourcePath: z.string().optional(),
     highlight: z.boolean().default(false),
     links: z
       .array(

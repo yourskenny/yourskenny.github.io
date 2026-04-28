@@ -10,13 +10,16 @@ const requiredPaths = [
   "src/components/Seo.astro",
   "src/pages/index.astro",
   "src/pages/404.astro",
+  "src/pages/courses/index.astro",
   "src/pages/rss.xml.js",
   "src/pages/sitemap.xml.js",
   "src/pages/projects/index.astro",
   "src/pages/blog/index.astro",
   "src/pages/research/index.astro",
   "src/pages/about.astro",
-  "src/content/projects/vision-quality-inspection.md",
+  "src/content/projects/industrial-feo-prediction.md",
+  "src/content/projects/lumina-visual-assistant.md",
+  "src/content/projects/course-archive-digital-logic.md",
   "src/content/blog/project-retrospective-template.md",
   "scripts/deploy-pages.mjs",
   "public/favicon.svg",
@@ -46,14 +49,17 @@ assert.match(home, /class="hero-shell"/);
 assert.match(home, /class="proof-grid"/);
 assert.match(home, /ProjectCard/);
 assert.match(home, /PostRow/);
+assert.match(home, /课程归档/);
 
 const css = readFileSync("src/styles/global.css", "utf8");
 assert.match(css, /\.hero-shell/);
 assert.match(css, /\.bento-grid/);
+assert.match(css, /\.detail-meta/);
 assert.match(css, /@media \(max-width: 760px\)/);
 
 const contentConfig = readFileSync("src/content.config.ts", "utf8");
 assert.match(contentConfig, /glob\(\{ pattern: "\*\*\/\*\.\{md,mdx\}"/);
+assert.match(contentConfig, /课程归档/);
 
 const robots = readFileSync("public/robots.txt", "utf8");
 assert.match(robots, /Sitemap:/);

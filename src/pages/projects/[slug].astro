@@ -20,6 +20,10 @@ const { Content } = await render(project);
     <p class="eyebrow">{project.data.role}</p>
     <h1>{project.data.title}</h1>
     <p class="lead">{project.data.summary}</p>
+    <div class="detail-meta">
+      <span>{project.data.category}</span>
+      {project.data.sourcePath && <span>{project.data.sourcePath}</span>}
+    </div>
     <div class="tags">
       {project.data.tags.map((tag) => <span>{tag}</span>)}
     </div>

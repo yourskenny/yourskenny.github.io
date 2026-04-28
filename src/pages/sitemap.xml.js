@@ -8,6 +8,7 @@ export async function GET({ site }) {
   const paths = [
     "/",
     "/projects/",
+    "/courses/",
     "/blog/",
     "/research/",
     "/about/",

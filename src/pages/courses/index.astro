@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+
+const courses = (await getCollection("projects"))
+  .filter((project) => project.data.category === "课程归档")
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="课程归档 | AI Portfolio">
+  <section class="page-hero compact">
+    <p class="eyebrow">Course Archive</p>
+    <h1>课程项目归档</h1>
+    <p>这些内容主要用于展示基础训练、课程实验和学习轨迹。能够独立成系统或研究原型的内容，已经被抽象到项目作品集中。</p>
+  </section>
+
+  <section class="content-band">
+    <div class="project-grid compact-grid">
+      {courses.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </section>
+</BaseLayout>
