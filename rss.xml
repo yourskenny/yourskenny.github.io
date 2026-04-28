@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <rss version="2.0">
+      <channel>
+        <title>AI Portfolio Blog</title>
+        <description>AI 项目复盘、论文笔记和工程实践</description>
+        <link>https://yourskenny.github.io/</link>
+        <item>
+        <title><![CDATA[项目复盘模板：如何把一个 AI 项目写成作品集]]></title>
+        <description><![CDATA[把背景、贡献、方法、结果、难点和反思整理成一篇能被导师和面试官快速理解的文章。]]></description>
+        <link>https://yourskenny.github.io/blog/project-retrospective-template/</link>
+        <guid>https://yourskenny.github.io/blog/project-retrospective-template/</guid>
+        <pubDate>Tue, 21 Apr 2026 00:00:00 GMT</pubDate>
+      </item><item>
+        <title><![CDATA[论文笔记模板：从摘要到可复现实验]]></title>
+        <description><![CDATA[一篇论文笔记不只摘抄结论，还应该写清楚问题、方法、实验和自己的判断。]]></description>
+        <link>https://yourskenny.github.io/blog/paper-note-template/</link>
+        <guid>https://yourskenny.github.io/blog/paper-note-template/</guid>
+        <pubDate>Sat, 18 Apr 2026 00:00:00 GMT</pubDate>
+      </item>
+      </channel>
+    </rss>
