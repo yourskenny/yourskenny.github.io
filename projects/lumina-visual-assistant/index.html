@@ -1,0 +1,18 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Lumina 视障辅助与避障导航智能体 | 项目</title><link rel="canonical" href="https://yourskenny.github.io/projects/lumina-visual-assistant/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta name="description" content="AI 学生的研究潜力与工程能力证明站"><meta property="og:type" content="website"><meta property="og:title" content="Lumina 视障辅助与避障导航智能体 | 项目"><meta property="og:description" content="AI 学生的研究潜力与工程能力证明站"><meta property="og:url" content="https://yourskenny.github.io/projects/lumina-visual-assistant/"><meta property="og:image" content="https://yourskenny.github.io/og-image.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Lumina 视障辅助与避障导航智能体 | 项目"><meta name="twitter:description" content="AI 学生的研究潜力与工程能力证明站"><meta name="twitter:image" content="https://yourskenny.github.io/og-image.svg"><link rel="stylesheet" href="/_astro/BaseLayout.D7-g5Wbp.css"></head> <body> <header class="site-header"> <a class="brand" href="/" aria-label="返回首页"> <span class="brand-mark">AI</span> <span class="brand-text">你的名字</span> </a> <nav aria-label="主导航"> <a href="/">首页</a><a href="/projects/">项目</a><a href="/courses/">课程</a><a href="/blog/">博客</a><a href="/research/">研究</a><a href="/about/">关于</a> </nav> </header> <main>  <article class="prose"> <a class="back-link" href="/projects/">返回项目列表</a> <p class="eyebrow">多模态智能体与端侧感知设计</p> <h1>Lumina 视障辅助与避障导航智能体</h1> <p class="lead">面向视障人群的端云协同多模态智能体，结合 YOLOv8、Qwen-VL、语音交互、位置服务和安全反馈仲裁。</p> <div class="detail-meta"> <span>竞赛项目</span> <span>D:/coding/Software_Innovation_Contest/Lumina_n</span> </div> <div class="tags"> <span>Android</span><span>YOLOv8</span><span>Qwen-VL</span><span>Agent</span><span>ONNX Runtime</span><span>Kotlin</span> </div> <h2 id="项目简介">项目简介</h2>
+<p>Lumina 是一个面向视障人群的视觉辅助与避障导航智能体。它不是单纯的目标检测应用，而是把端侧实时感知、云端视觉语言模型、语音意图分发、位置服务和反馈仲裁组合成一个完整系统。</p>
+<h2 id="技术栈">技术栈</h2>
+<ul>
+<li>Kotlin / Android / Jetpack Compose</li>
+<li>YOLOv8s + ONNX Runtime</li>
+<li>Qwen-Plus / Qwen-VL-Plus</li>
+<li>AMap Location SDK / Web API</li>
+<li>LangChain4j、Clean Architecture、MVVM</li>
+</ul>
+<h2 id="我的工作">我的工作</h2>
+<p>项目 README 显示系统已设计端云协同感知、意图分发、上下文记忆和安全优先反馈架构。这个项目适合作为竞赛/产品型 AI 项目展示，重点突出“AI 能力如何进入真实交互场景”。</p>
+<h2 id="方法与实现">方法与实现</h2>
+<p>系统采用 Fast/Slow 双系统：端侧 YOLO 提供低延迟障碍物检测，云侧 VLM 负责复杂场景理解。端侧检测结果会注入 VLM prompt，降低幻觉并提升场景描述的可靠性。</p>
+<h2 id="难点与解决">难点与解决</h2>
+<p>视觉辅助应用的核心不是模型精度本身，而是安全反馈时序。项目通过反馈仲裁器管理 TTS 和震动优先级，让危险提醒打断普通对话或状态播报。</p>
+<h2 id="复盘">复盘</h2>
+<p>后续可以补充实际设备截图、检测效果、语音交互流程和竞赛材料。它非常适合独立抽象成“多模态智能体 + 移动端 AI”作品。</p> </article>  </main> <footer class="site-footer"> <span>© 2026 你的名字</span> <span>GitHub · Email · Resume</span> </footer> </body></html>
