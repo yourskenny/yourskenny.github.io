@@ -11,10 +11,10 @@ if (!existsSync(dist)) {
 
 rmSync(worktree, { recursive: true, force: true });
 
-execFileSync("git", ["worktree", "add", "--detach", worktree], {
+execFileSync("git", ["fetch", "origin", publishBranch], {
   stdio: "inherit"
 });
-execFileSync("git", ["-C", worktree, "switch", "--orphan", publishBranch], {
+execFileSync("git", ["worktree", "add", "-B", publishBranch, worktree, `origin/${publishBranch}`], {
   stdio: "inherit"
 });
 
@@ -29,9 +29,13 @@ for (const entry of readdirSync(dist)) {
 }
 
 execFileSync("git", ["-C", worktree, "add", "."], { stdio: "inherit" });
-execFileSync("git", ["-C", worktree, "commit", "-m", "Deploy static site"], {
-  stdio: "inherit"
-});
+try {
+  execFileSync("git", ["-C", worktree, "commit", "-m", "Deploy static site"], {
+    stdio: "inherit"
+  });
+} catch {
+  console.log("No static site changes to deploy.");
+}
 execFileSync("git", ["-C", worktree, "push", "origin", publishBranch, "--force"], {
   stdio: "inherit"
 });
