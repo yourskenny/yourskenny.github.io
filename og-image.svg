@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f5f3ee"/>
+  <rect x="72" y="72" width="1056" height="486" rx="32" fill="#fffdf8" stroke="#ddd7cb"/>
+  <text x="120" y="176" fill="#b45a35" font-family="Arial, sans-serif" font-size="34" font-weight="800">AI Undergraduate · Research + Engineering</text>
+  <text x="120" y="294" fill="#171a1f" font-family="Arial, sans-serif" font-size="76" font-weight="900">AI Portfolio</text>
+  <text x="120" y="384" fill="#24272d" font-family="Arial, sans-serif" font-size="48" font-weight="800">研究潜力 + 工程能力证明站</text>
+  <text x="120" y="472" fill="#68707c" font-family="Arial, sans-serif" font-size="32">Projects · Notes · Research · Resume</text>
+  <rect x="936" y="398" width="116" height="116" rx="24" fill="#146c5c"/>
+  <text x="994" y="470" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="44" font-weight="900">AI</text>
+</svg>
