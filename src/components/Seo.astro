@@ -1,0 +1,25 @@
+---
+const {
+  title = "AI Student Portfolio",
+  description = "AI 学生的研究潜力与工程能力证明站",
+  image = "/og-image.svg",
+  type = "website"
+} = Astro.props;
+
+const site = Astro.site ?? new URL("https://yourskenny.github.io");
+const canonical = new URL(Astro.url.pathname, site).toString();
+const imageUrl = new URL(image, site).toString();
+---
+
+<link rel="canonical" href={canonical} />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<meta name="description" content={description} />
+<meta property="og:type" content={type} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={imageUrl} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />

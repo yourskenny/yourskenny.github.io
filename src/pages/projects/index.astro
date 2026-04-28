@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<BaseLayout title="项目 | AI Portfolio">
+  <section class="page-hero compact">
+    <p class="eyebrow">Projects</p>
+    <h1>项目作品集</h1>
+    <p>每个项目都按背景、方法、结果、难点和复盘整理，重点展示真实贡献，而不是只放仓库链接。</p>
+  </section>
+
+  <section class="content-band">
+    <div class="project-grid">
+      {projects.map((project, index) => <ProjectCard project={project} featured={index === 0} />)}
+    </div>
+  </section>
+</BaseLayout>

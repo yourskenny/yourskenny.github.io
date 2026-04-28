@@ -1,0 +1,15 @@
+---
+const { project, featured = false } = Astro.props;
+---
+
+<a class:list={["project-card", { featured }]} href={`/projects/${project.id}/`}>
+  <div class="card-topline">
+    <span>{project.data.role}</span>
+    <span>{project.data.date.toLocaleDateString("zh-CN", { year: "numeric", month: "2-digit" })}</span>
+  </div>
+  <h3>{project.data.title}</h3>
+  <p>{project.data.summary}</p>
+  <div class="tags" aria-label="技术标签">
+    {project.data.tags.map((tag) => <span>{tag}</span>)}
+  </div>
+</a>

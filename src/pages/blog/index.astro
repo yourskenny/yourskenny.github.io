@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostRow from "../../components/PostRow.astro";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const categories = ["项目复盘", "论文笔记", "AI 工程实践", "考研基础"];
+---
+
+<BaseLayout title="博客 | AI Portfolio">
+  <section class="page-hero compact">
+    <p class="eyebrow">Blog</p>
+    <h1>技术博客</h1>
+    <p>把项目复盘、论文笔记、工程踩坑和基础知识整理成长期可积累的公开笔记。</p>
+  </section>
+
+  <section class="content-band split-band">
+    <div>
+      <p class="section-label">Categories</p>
+      <h2>写作栏目</h2>
+    </div>
+    <div class="category-grid">
+      {categories.map((category) => <span>{category}</span>)}
+    </div>
+  </section>
+
+  <section class="content-band">
+    <div class="post-list">
+      {posts.map((post) => <PostRow post={post} />)}
+    </div>
+  </section>
+</BaseLayout>

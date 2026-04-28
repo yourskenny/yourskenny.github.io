@@ -1,0 +1,14 @@
+---
+const { post } = Astro.props;
+---
+
+<a class="post-row" href={`/blog/${post.id}/`}>
+  <div>
+    <span class="row-kicker">{post.data.category}</span>
+    <h3>{post.data.title}</h3>
+    <p>{post.data.description}</p>
+  </div>
+  <time datetime={post.data.date.toISOString()}>
+    {post.data.date.toLocaleDateString("zh-CN", { month: "2-digit", day: "2-digit" })}
+  </time>
+</a>
