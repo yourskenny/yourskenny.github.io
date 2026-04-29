@@ -21,6 +21,7 @@ const requiredPaths = [
   "src/content/projects/lumina-visual-assistant.md",
   "src/content/projects/course-archive-digital-logic.md",
   "src/content/blog/project-retrospective-template.md",
+  "src/content/blog/codex-autoresearch-windows-skill.md",
   "scripts/deploy-pages.mjs",
   "public/favicon.svg",
   "public/.nojekyll",
@@ -67,3 +68,7 @@ assert.match(robots, /Sitemap:/);
 const deployScript = readFileSync("scripts/deploy-pages.mjs", "utf8");
 assert.match(deployScript, /worktree/);
 assert.match(deployScript, /main/);
+
+const autoresearchPost = readFileSync("src/content/blog/codex-autoresearch-windows-skill.md", "utf8");
+assert.match(autoresearchPost, /codex-autoresearch-windows-skill/);
+assert.match(autoresearchPost, /Windows-friendly/);
