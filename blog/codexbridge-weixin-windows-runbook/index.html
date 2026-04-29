@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>CodexBridge 本地微信接入：把 Codex Agent 放进 ChatOps 链路 | 博客</title><link rel="canonical" href="https://yourskenny.github.io/blog/codexbridge-weixin-windows-runbook/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta name="description" content="AI 学生的研究潜力与工程能力证明站"><meta property="og:type" content="website"><meta property="og:title" content="CodexBridge 本地微信接入：把 Codex Agent 放进 ChatOps 链路 | 博客"><meta property="og:description" content="AI 学生的研究潜力与工程能力证明站"><meta property="og:url" content="https://yourskenny.github.io/blog/codexbridge-weixin-windows-runbook/"><meta property="og:image" content="https://yourskenny.github.io/og-image.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="CodexBridge 本地微信接入：把 Codex Agent 放进 ChatOps 链路 | 博客"><meta name="twitter:description" content="AI 学生的研究潜力与工程能力证明站"><meta name="twitter:image" content="https://yourskenny.github.io/og-image.svg"><link rel="stylesheet" href="/_astro/BaseLayout.D7-g5Wbp.css"></head> <body> <header class="site-header"> <a class="brand" href="/" aria-label="返回首页"> <span class="brand-mark">AI</span> <span class="brand-text">你的名字</span> </a> <nav aria-label="主导航"> <a href="/">首页</a><a href="/projects/">项目</a><a href="/courses/">课程</a><a href="/blog/">博客</a><a href="/research/">研究</a><a href="/about/">关于</a> </nav> </header> <main>  <article class="prose"> <a class="back-link" href="/blog/">返回博客列表</a> <p class="eyebrow">AI 工程实践</p> <h1>CodexBridge 本地微信接入：把 Codex Agent 放进 ChatOps 链路</h1> <p class="lead">一次 Windows 本地微信接入实践：修复依赖、二维码登录、iLink 长轮询、Codex CLI 路由和运行手册，让微信 ClawBot 能触发本地 Agent 工作流。</p> <h2 id="背景">背景</h2>
+<p>CodexBridge 的目标是把 Codex 接入不同聊天平台，让本地 Agent 不只停留在终端里。此次实践聚焦 Windows 本地微信链路：从仓库启动 WeChat + Codex 桥接服务，并在微信 ClawBot 中让 <code>/status</code> 和 <code>/helps</code> 成功回复。</p>
+<p>这类项目的关键不在于单次模型调用，而在于把登录、消息接收、命令路由、出站回复和本地运行状态串成稳定链路。</p>
+<h2 id="端到端结果">端到端结果</h2>
+<p>本机已经完成一次完整接入：</p>
+<ul>
+<li>ClawBot iLink 登录成功，账号状态保存到用户级状态目录。</li>
+<li><code>weixin:serve</code> 能连接 iLink <code>getupdates</code> 并持续长轮询。</li>
+<li>微信侧发送 <code>/status</code> 和 <code>/helps</code> 已确认成功回复。</li>
+<li>默认工作目录使用 <code>C:/Users/yourskenny/Documents/Codex</code>，便于从微信进入本地 Codex 工作流。</li>
+</ul>
+<p>用户级状态目录不随仓库迁移，token 和账号状态保存在 <code>C:/Users/yourskenny/.codexbridge</code>，不提交到 Git。</p>
+<h2 id="本地化改造">本地化改造</h2>
+<p>克隆后不能直接跑通，原因是多个 Windows 和 iLink 现实问题叠加：</p>
+<ul>
+<li>lockfile 与 <code>package.json</code> 不同步，导致 <code>npm ci</code> 缺依赖。</li>
+<li><code>ffmpeg-static</code> 安装脚本在本机 Node 默认 CA 下证书校验失败。</li>
+<li>iLink 返回的 <code>qrcode_img_content</code> 实际是登录 URL，旧逻辑会把 HTML 页面保存成 <code>.png</code>。</li>
+<li><code>silk-wasm</code> 是可选动态依赖，缺少类型声明会让 JS 类型检查失败。</li>
+<li>Windows 非管理员环境创建 symlink 会 <code>EPERM</code>，测试需要条件化。</li>
+<li>插件分类数量相同时依赖 locale 排序，导致测试顺序不稳定。</li>
+<li>本地运行日志和二维码文件需要隔离到 <code>.codexbridge-run/</code>。</li>
+</ul>
+<p>这些改造把项目从“能在某个环境临时跑起来”推进到“可以在这台 Windows 机器上复现、验证和交接”。</p>
+<h2 id="验收链路">验收链路</h2>
+<p>我把验证拆成几层：</p>
+<ol>
+<li>安装与静态检查：<code>npm ci</code>、<code>npm run typecheck</code>、<code>npm run typecheck:js</code>、<code>npm test</code>。</li>
+<li>登录：<code>npm run weixin:login -- --state-dir C:/Users/yourskenny/.codexbridge</code>。</li>
+<li>服务：设置 Codex CLI 路径和微信策略后运行 <code>npm run weixin:serve</code>。</li>
+<li>微信侧验收：向 ClawBot 发送 <code>/status</code> 和 <code>/helps</code>。</li>
+<li>排障：观察 <code>.codexbridge-run/weixin-serve.out.log</code> 中的 <code>getupdates</code>、<code>messageCount</code> 和出站发送记录。</li>
+</ol>
+<p>这样可以判断失败发生在登录、收消息、命令路由、Codex 执行还是出站回复，而不是在一个黑盒里猜。</p>
+<h2 id="工程收获">工程收获</h2>
+<p>这个项目体现了 Agent 工程中很实际的一面：模型能力之外，真实可用性依赖运行环境、状态管理、权限、日志、测试稳定性和操作文档。</p>
+<p>把 Codex 接入微信后，微信不只是聊天入口，而可以成为本地 Agent 工作流的控制面。后续可以继续把它接入 GSD、AstrBot 或其他本地工具链，形成一个更统一的 ChatOps Agent 系统。</p> </article>  </main> <footer class="site-footer"> <span>© 2026 你的名字</span> <span>GitHub · Email · Resume</span> </footer> </body></html>
