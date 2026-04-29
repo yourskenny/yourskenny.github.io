@@ -8,6 +8,7 @@ const requiredPaths = [
   "src/components/ProjectCard.astro",
   "src/components/PostRow.astro",
   "src/components/Seo.astro",
+  "src/components/README.md",
   "src/pages/index.astro",
   "src/pages/404.astro",
   "src/pages/courses/index.astro",
@@ -22,6 +23,7 @@ const requiredPaths = [
   "src/content/projects/course-archive-digital-logic.md",
   "src/content/blog/project-retrospective-template.md",
   "src/content/blog/codex-autoresearch-windows-skill.md",
+  "docs/usage-manual.md",
   "scripts/deploy-pages.mjs",
   "public/favicon.svg",
   "public/.nojekyll",
@@ -72,3 +74,8 @@ assert.match(deployScript, /main/);
 const autoresearchPost = readFileSync("src/content/blog/codex-autoresearch-windows-skill.md", "utf8");
 assert.match(autoresearchPost, /codex-autoresearch-windows-skill/);
 assert.match(autoresearchPost, /Windows-friendly/);
+
+const usageManual = readFileSync("docs/usage-manual.md", "utf8");
+assert.match(usageManual, /C:\\coding\\ai-portfolio/);
+assert.match(usageManual, /src\/components/);
+assert.match(usageManual, /npm run deploy/);
