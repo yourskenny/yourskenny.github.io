@@ -5,6 +5,12 @@
         <description>AI 项目复盘、论文笔记和工程实践</description>
         <link>https://yourskenny.github.io/</link>
         <item>
+        <title><![CDATA[把 Codex Autoresearch 改造成 Windows 可安装 Skill]]></title>
+        <description><![CDATA[一次围绕 Codex Windows 桌面端的工程化移植：把自动改进循环封装成可安装、可验证、可恢复上下文的 skill 分发包。]]></description>
+        <link>https://yourskenny.github.io/blog/codex-autoresearch-windows-skill/</link>
+        <guid>https://yourskenny.github.io/blog/codex-autoresearch-windows-skill/</guid>
+        <pubDate>Wed, 29 Apr 2026 00:00:00 GMT</pubDate>
+      </item><item>
         <title><![CDATA[项目复盘模板：如何把一个 AI 项目写成作品集]]></title>
         <description><![CDATA[把背景、贡献、方法、结果、难点和反思整理成一篇能被导师和面试官快速理解的文章。]]></description>
         <link>https://yourskenny.github.io/blog/project-retrospective-template/</link>
