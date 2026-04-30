@@ -5,6 +5,12 @@
         <description>AI 项目复盘、论文笔记和工程实践</description>
         <link>https://yourskenny.github.io/</link>
         <item>
+        <title><![CDATA[本地 GSD 三 Agent 系统复盘：从能跑到可编排、可观测、可交接]]></title>
+        <description><![CDATA[一次 Windows 本地多 Agent 工程改造复盘：把 GSD、Codex、Claude Code、AstrBot 和 Phoenix 串成统一工作流，并通过 MCP、ChatOps、trace 和大型仓库试点验证可行性。]]></description>
+        <link>https://yourskenny.github.io/blog/local-gsd-three-agent-engineering-retrospective/</link>
+        <guid>https://yourskenny.github.io/blog/local-gsd-three-agent-engineering-retrospective/</guid>
+        <pubDate>Thu, 30 Apr 2026 00:00:00 GMT</pubDate>
+      </item><item>
         <title><![CDATA[把 Codex Autoresearch 改造成 Windows 可安装 Skill]]></title>
         <description><![CDATA[一次围绕 Codex Windows 桌面端的工程化移植：把自动改进循环封装成可安装、可验证、可恢复上下文的 skill 分发包。]]></description>
         <link>https://yourskenny.github.io/blog/codex-autoresearch-windows-skill/</link>
