@@ -3,30 +3,30 @@
       <channel>
         <title>AI Portfolio Blog</title>
         <description>AI 项目复盘、论文笔记和工程实践</description>
-        <link>https://yourskenny.github.io/</link>
+        <link>https://yourskenny.top/</link>
         <item>
         <title><![CDATA[本地 GSD 三 Agent 系统复盘：从能跑到可编排、可观测、可交接]]></title>
         <description><![CDATA[一次 Windows 本地多 Agent 工程改造复盘：把 GSD、Codex、Claude Code、AstrBot 和 Phoenix 串成统一工作流，并通过 MCP、ChatOps、trace 和大型仓库试点验证可行性。]]></description>
-        <link>https://yourskenny.github.io/blog/local-gsd-three-agent-engineering-retrospective/</link>
-        <guid>https://yourskenny.github.io/blog/local-gsd-three-agent-engineering-retrospective/</guid>
+        <link>https://yourskenny.top/blog/local-gsd-three-agent-engineering-retrospective/</link>
+        <guid>https://yourskenny.top/blog/local-gsd-three-agent-engineering-retrospective/</guid>
         <pubDate>Thu, 30 Apr 2026 00:00:00 GMT</pubDate>
       </item><item>
         <title><![CDATA[把 Codex Autoresearch 改造成 Windows 可安装 Skill]]></title>
         <description><![CDATA[一次围绕 Codex Windows 桌面端的工程化移植：把自动改进循环封装成可安装、可验证、可恢复上下文的 skill 分发包。]]></description>
-        <link>https://yourskenny.github.io/blog/codex-autoresearch-windows-skill/</link>
-        <guid>https://yourskenny.github.io/blog/codex-autoresearch-windows-skill/</guid>
+        <link>https://yourskenny.top/blog/codex-autoresearch-windows-skill/</link>
+        <guid>https://yourskenny.top/blog/codex-autoresearch-windows-skill/</guid>
         <pubDate>Wed, 29 Apr 2026 00:00:00 GMT</pubDate>
       </item><item>
         <title><![CDATA[项目复盘模板：如何把一个 AI 项目写成作品集]]></title>
         <description><![CDATA[把背景、贡献、方法、结果、难点和反思整理成一篇能被导师和面试官快速理解的文章。]]></description>
-        <link>https://yourskenny.github.io/blog/project-retrospective-template/</link>
-        <guid>https://yourskenny.github.io/blog/project-retrospective-template/</guid>
+        <link>https://yourskenny.top/blog/project-retrospective-template/</link>
+        <guid>https://yourskenny.top/blog/project-retrospective-template/</guid>
         <pubDate>Tue, 21 Apr 2026 00:00:00 GMT</pubDate>
       </item><item>
         <title><![CDATA[论文笔记模板：从摘要到可复现实验]]></title>
         <description><![CDATA[一篇论文笔记不只摘抄结论，还应该写清楚问题、方法、实验和自己的判断。]]></description>
-        <link>https://yourskenny.github.io/blog/paper-note-template/</link>
-        <guid>https://yourskenny.github.io/blog/paper-note-template/</guid>
+        <link>https://yourskenny.top/blog/paper-note-template/</link>
+        <guid>https://yourskenny.top/blog/paper-note-template/</guid>
         <pubDate>Sat, 18 Apr 2026 00:00:00 GMT</pubDate>
       </item>
       </channel>
