@@ -15,19 +15,22 @@ const posts = (await getCollection("blog")).sort(
 );
 ---
 
-<BaseLayout title="你的名字 | AI Portfolio">
+<BaseLayout
+  title="yourskenny | AI Portfolio"
+  description="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"
+>
   <section class="hero-shell">
     <div class="hero-copy-block">
-      <p class="eyebrow">AI Undergraduate · Research + Engineering</p>
+      <p class="eyebrow">Wuhan University · Artificial Intelligence · 2023</p>
       <h1>把 AI 项目沉淀成可信的研究与工程证据。</h1>
       <p class="hero-copy">
-        我关注工业 AI、多模态智能体、RAG Agent、计算机视觉和深度学习工程化。这里整理我的独立项目、
-        竞赛/实习经历、课程归档和技术笔记。
+        我是 yourskenny，武汉大学 2023 级人工智能专业学生。这里整理我在 Agent、计算机视觉、
+        深度学习、强化学习、具身智能和自然语言处理方向的项目、课程归档与技术笔记。
       </p>
       <div class="hero-actions">
         <a class="button primary" href="/projects/">查看项目</a>
         <a class="button" href="/courses/">课程归档</a>
-        <a class="button ghost" href="/resume-placeholder.pdf">简历</a>
+        <a class="button ghost" href="mailto:2023302111391@whu.edu.cn">联系我</a>
       </div>
     </div>
 
@@ -46,8 +49,8 @@ const posts = (await getCollection("blog")).sort(
           <span>课程归档</span>
         </div>
         <div>
-          <strong>AI</strong>
-          <span>专业背景</span>
+          <strong>WHU</strong>
+          <span>人工智能专业</span>
         </div>
         <div>
           <strong>{posts.length}</strong>
@@ -56,9 +59,13 @@ const posts = (await getCollection("blog")).sort(
       </div>
       <div class="stack-list">
         <span>PyTorch</span>
-        <span>YOLO</span>
+        <span>Transformers</span>
+        <span>OpenCV</span>
         <span>RAG</span>
+        <span>MCP</span>
         <span>Agent</span>
+        <span>YOLO</span>
+        <span>DQN</span>
         <span>Robotics</span>
       </div>
     </aside>
@@ -67,8 +74,8 @@ const posts = (await getCollection("blog")).sort(
   <section class="bento-grid" aria-label="核心能力">
     <a class="bento-card large" href="/projects/">
       <span class="section-label">Projects</span>
-      <h2>主线项目来自真实目录，而不是临时占位。</h2>
-      <p>已从 C:/coding 和 D:/coding 中去重整理出工业预测、视障辅助、SCP Agent、GTD、机器人控制等项目。</p>
+      <h2>从真实项目中抽象研究问题和工程闭环。</h2>
+      <p>作品集覆盖多 Agent 编排、工业预测、视障辅助、SCP Agent、GTD、机器人控制和安全代码修复等方向。</p>
     </a>
     <a class="bento-card" href="/courses/">
       <span class="section-label">Courses</span>
@@ -78,7 +85,7 @@ const posts = (await getCollection("blog")).sort(
     <a class="bento-card" href="/research/">
       <span class="section-label">Research</span>
       <h2>研究原型</h2>
-      <p>强化学习、Mini-Transformer、R 语言计算社会科学原型，可继续扩写成论文/博客笔记。</p>
+      <p>强化学习、Mini-Transformer、计算社会科学和具身智能原型，会继续沉淀为实验记录与技术文章。</p>
     </a>
   </section>
 

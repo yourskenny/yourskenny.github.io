@@ -1,7 +1,7 @@
 import { getCollection } from "astro:content";
 
 export async function GET({ site }) {
-  const base = site ?? new URL("https://yourskenny.github.io");
+  const base = site ?? new URL("https://yourskenny.top");
   const posts = (await getCollection("blog")).sort(
     (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
   );

@@ -1,12 +1,12 @@
 ---
 const {
-  title = "AI Student Portfolio",
-  description = "AI 学生的研究潜力与工程能力证明站",
+  title = "yourskenny | AI Portfolio",
+  description = "武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集",
   image = "/og-image.svg",
   type = "website"
 } = Astro.props;
 
-const site = Astro.site ?? new URL("https://yourskenny.github.io");
+const site = Astro.site ?? new URL("https://yourskenny.top");
 const canonical = new URL(Astro.url.pathname, site).toString();
 const imageUrl = new URL(image, site).toString();
 ---

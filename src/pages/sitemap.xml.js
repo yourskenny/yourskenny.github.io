@@ -1,7 +1,7 @@
 import { getCollection } from "astro:content";
 
 export async function GET({ site }) {
-  const base = site ?? new URL("https://yourskenny.github.io");
+  const base = site ?? new URL("https://yourskenny.top");
   const projects = await getCollection("projects");
   const posts = await getCollection("blog");
 

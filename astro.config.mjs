@@ -3,6 +3,6 @@ import mdx from "@astrojs/mdx";
 
 export default defineConfig({
   integrations: [mdx()],
-  site: "https://yourskenny.github.io",
+  site: "https://yourskenny.top",
   output: "static"
 });

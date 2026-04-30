@@ -3,8 +3,8 @@ import "../styles/global.css";
 import Seo from "../components/Seo.astro";
 
 const {
-  title = "AI Student Portfolio",
-  description = "AI 学生的研究潜力与工程能力证明站",
+  title = "yourskenny | AI Portfolio",
+  description = "武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集",
   image = "/og-image.svg",
   type = "website"
 } = Astro.props;
@@ -30,8 +30,8 @@ const navItems = [
   <body>
     <header class="site-header">
       <a class="brand" href="/" aria-label="返回首页">
-        <span class="brand-mark">AI</span>
-        <span class="brand-text">你的名字</span>
+        <span class="brand-mark">YK</span>
+        <span class="brand-text">yourskenny</span>
       </a>
       <nav aria-label="主导航">
         {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
@@ -41,8 +41,11 @@ const navItems = [
       <slot />
     </main>
     <footer class="site-footer">
-      <span>© 2026 你的名字</span>
-      <span>GitHub · Email · Resume</span>
+      <span>© 2026 yourskenny</span>
+      <span>
+        <a href="https://github.com/yourskenny">GitHub</a> ·
+        <a href="mailto:2023302111391@whu.edu.cn">Email</a>
+      </span>
     </footer>
   </body>
 </html>
