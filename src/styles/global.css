@@ -404,6 +404,19 @@ nav a:hover {
   font-weight: 800;
 }
 
+.detail-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 24px 0 8px;
+}
+
+.detail-links .button {
+  min-height: 40px;
+  padding-inline: 14px;
+  font-size: 14px;
+}
+
 .split-band {
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
