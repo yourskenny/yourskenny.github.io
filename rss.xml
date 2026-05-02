@@ -5,6 +5,12 @@
         <description>AI 项目复盘、论文笔记和工程实践</description>
         <link>https://yourskenny.top/</link>
         <item>
+        <title><![CDATA[从课程智能体到标准化 Agent 工作流：一次模板化复盘]]></title>
+        <description><![CDATA[把一次课程智能体实践抽象成可复用模板的复盘：为什么知识库边界、行为协议、发布清单、回归测试和维护记录，比单次 prompt 调优更重要。]]></description>
+        <link>https://yourskenny.top/blog/from-course-agent-to-standardized-agent-workflow/</link>
+        <guid>https://yourskenny.top/blog/from-course-agent-to-standardized-agent-workflow/</guid>
+        <pubDate>Sat, 02 May 2026 00:00:00 GMT</pubDate>
+      </item><item>
         <title><![CDATA[本地 GSD 三 Agent 系统复盘：从能跑到可编排、可观测、可交接]]></title>
         <description><![CDATA[一次 Windows 本地多 Agent 工程改造复盘：把 GSD、Codex、Claude Code、AstrBot 和 Phoenix 串成统一工作流，并通过 MCP、ChatOps、trace 和大型仓库试点验证可行性。]]></description>
         <link>https://yourskenny.top/blog/local-gsd-three-agent-engineering-retrospective/</link>

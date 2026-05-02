@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>标准化智能体工作流模板 | 项目</title><link rel="canonical" href="https://yourskenny.top/projects/standardized-agent-workflow/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta name="description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:type" content="website"><meta property="og:title" content="标准化智能体工作流模板 | 项目"><meta property="og:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:url" content="https://yourskenny.top/projects/standardized-agent-workflow/"><meta property="og:image" content="https://yourskenny.top/og-image.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="标准化智能体工作流模板 | 项目"><meta name="twitter:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta name="twitter:image" content="https://yourskenny.top/og-image.svg"><link rel="stylesheet" href="/_astro/BaseLayout.LVccJ-_z.css"></head> <body> <header class="site-header"> <a class="brand" href="/" aria-label="返回首页"> <span class="brand-mark">YK</span> <span class="brand-text">yourskenny</span> </a> <nav aria-label="主导航"> <a href="/">首页</a><a href="/projects/">项目</a><a href="/courses/">课程</a><a href="/blog/">博客</a><a href="/research/">研究</a><a href="/about/">关于</a> </nav> </header> <main>  <article class="prose"> <a class="back-link" href="/projects/">返回项目列表</a> <p class="eyebrow">智能体工作流抽象、知识库结构设计、行为协议与维护模板</p> <h1>标准化智能体工作流模板</h1> <p class="lead">从课程智能体实践中抽象出一套可复用的 Agent 项目模板，覆盖知识库治理、行为协议、发布清单、回归测试和持续维护流程，让 RAG/知识库型智能体从一次性搭建变成可交接、可迁移的工程资产。</p> <div class="detail-meta"> <span>独立项目</span> <span>C:/coding/标准化智能体</span> </div> <div class="tags"> <span>Agent</span><span>RAG</span><span>Knowledge Base</span><span>Workflow</span><span>Prompt Engineering</span><span>Testing</span><span>Documentation</span> </div> <div class="detail-links" aria-label="相关链接"> <a class="button ghost" href="https://github.com/yourskenny/standardized-agent-workflow"> GitHub </a><a class="button ghost" href="/blog/from-course-agent-to-standardized-agent-workflow/"> 项目复盘 </a> </div> <h2 id="项目简介">项目简介</h2>
+<p>这个项目是一套面向知识库型智能体的标准化工作流模板。它不是某个单一课程助手或单一业务 bot，而是把“如何从资料出发，做出可维护、可测试、可迁移的智能体”整理成可复制的目录结构、文档模板、检查清单和维护流程。</p>
+<p>模板来自课程智能体项目的实践经验，但并不限定于课程场景。它同样适合课程问答、内部制度助手、专业学习辅导、流程咨询助手，以及面向特定资料库的 RAG 应用。</p>
+<p>核心路径是：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>领域资料</span></span>
+<span class="line"><span>  -> 面向检索的知识库</span></span>
+<span class="line"><span>  -> 元信息与风险分级</span></span>
+<span class="line"><span>  -> 智能体行为协议</span></span>
+<span class="line"><span>  -> 发布清单</span></span>
+<span class="line"><span>  -> 回归测试集</span></span>
+<span class="line"><span>  -> 更新记录</span></span>
+<span class="line"><span>  -> 持续维护流程</span></span></code></pre>
+<h2 id="解决的问题">解决的问题</h2>
+<p>很多智能体项目一开始只关注 prompt 和模型效果，但真正进入长期使用后，问题通常出现在更工程化的位置：</p>
+<ul>
+<li>资料边界不清，导致不该进入知识库的内容被上传。</li>
+<li>系统提示词与知识库事实不同步，模型回答出现漂移。</li>
+<li>没有回归测试，改一次资料就不知道旧问题是否还可靠。</li>
+<li>没有发布清单，维护者很难确认哪些文件已经进入线上知识库。</li>
+<li>没有更新记录，项目后续交接时无法判断当前版本的可信状态。</li>
+</ul>
+<p>这个模板把这些风险拆成可执行步骤，让智能体项目从“能回答”推进到“能维护”。</p>
+<h2 id="模板结构">模板结构</h2>
+<p>仓库分为四类内容：</p>
+<ul>
+<li><code>docs/</code>：方法论文档，包括从零创建智能体的 SOP、核心原则、项目结构、知识库设计、行为协议、维护与回归测试，以及从课程智能体抽象到通用智能体的过程。</li>
+<li><code>templates/agent-project/</code>：可直接复制的新项目模板，包含项目简报、agent 配置、知识库目录、维护记录和测试问题。</li>
+<li><code>checklists/</code>：设计、知识库、发布与测试三个阶段的检查清单。</li>
+<li><code>examples/</code>：用于回归测试和场景迁移的示例问题。</li>
+</ul>
+<p>这些内容共同形成了一条从资料整理到发布维护的闭环，而不是只提供一个孤立的 prompt 文件。</p>
+<h2 id="核心设计">核心设计</h2>
+<h3 id="资料边界先于模型能力">资料边界先于模型能力</h3>
+<p>模板要求先区分三类资料：用户可见资料、维护者资料、不能进入知识库的资料。只有用户应该看到、且适合被检索引用的内容进入知识库。维护手册、测试记录、上传清单和内部说明留在维护区，敏感或无授权资料不进入任何用户知识库。</p>
+<p>这条边界让智能体回答建立在明确授权和明确来源上，而不是让模型自行判断什么可以说。</p>
+<h3 id="知识库面向检索组织">知识库面向检索组织</h3>
+<p>知识库不是简单堆文件，而是按核心事实、FAQ、领域资料、边界说明和上传清单组织。模板提供 <code>core-facts-template.md</code>、<code>faq-table-template.md</code> 和 <code>knowledge-file-template.md</code>，帮助维护者把高频事实、高风险事实和常见问题拆成稳定结构。</p>
+<p>这样做的目标是让用户的口语问题可以映射到正式资料，同时让高风险事实有明确依据。</p>
+<h3 id="行为协议独立成层">行为协议独立成层</h3>
+<p>模板把智能体行为放在 <code>agent/</code> 目录中，包括系统提示词、回答策略和意图映射。这个层负责规定身份边界、回答优先级、高风险问题处理、拒答方式和表达风格。</p>
+<p>把行为协议从知识资料中拆出来，可以避免“资料更新”和“agent 行为更新”混在一起，也便于后续迁移到 Dify、OpenAI Assistants、ChatGPT Apps 或其他平台。</p>
+<h3 id="回归测试是发布的一部分">回归测试是发布的一部分</h3>
+<p>模板要求维护者准备核心回归问题，覆盖高频事实、高风险事实、同义词问法、没有资料的问题、拒答边界和领域专业问题。每次发布前都要运行测试并记录结果。</p>
+<p>这让智能体维护不再只靠主观感觉，而是能通过一组稳定问题判断版本是否退化。</p>
+<h2 id="我的工作">我的工作</h2>
+<p>我完成了从实践经验到通用模板的抽象：</p>
+<ul>
+<li>梳理课程智能体建设中的共性流程，把具体项目经验拆成通用 SOP。</li>
+<li>设计 <code>templates/agent-project/</code> 目录，让新智能体项目可以直接复制起步。</li>
+<li>编写知识库结构规范，区分用户可见资料、维护者资料和禁止入库资料。</li>
+<li>抽象系统提示词、回答策略和意图映射的职责边界。</li>
+<li>编写发布前检查清单，覆盖资料权限、事实来源、提示词一致性和测试记录。</li>
+<li>设计核心回归问题集，保证后续更新可以被验证。</li>
+<li>将课程场景推广到知识库问答、内部流程助手和专业学习辅导等通用场景。</li>
+</ul>
+<h2 id="适用场景">适用场景</h2>
+<p>这套模板尤其适合以下项目：</p>
+<ul>
+<li>课程、专业或资料库问答智能体。</li>
+<li>企业内部制度、流程或知识库助手。</li>
+<li>需要明确事实来源和边界的 RAG 应用。</li>
+<li>会持续更新资料、需要多人维护的智能体。</li>
+<li>想从单个 demo 迁移为长期项目的 agent 原型。</li>
+</ul>
+<p>如果一个智能体只需要临时演示，完整模板可能偏重；但只要它需要更新、测试、交接或面向真实用户，这套结构就能降低后续维护成本。</p>
+<h2 id="相关阅读">相关阅读</h2>
+<ul>
+<li><a href="/blog/from-course-agent-to-standardized-agent-workflow/">从课程智能体到标准化 Agent 工作流：一次模板化复盘</a></li>
+</ul>
+<h2 id="复盘">复盘</h2>
+<p>这个项目让我更明确地看到，智能体工程的关键不是让模型“看起来什么都会”，而是让它在有依据的范围内稳定回答，在没有依据时明确不知道，并且让维护者能持续更新、测试和迁移。</p>
+<p>标准化工作流的价值不在于限制智能体，而是在真实项目里给它建立边界、来源、清单和回归测试。只有这些基础设施存在，智能体才有机会从一次性 prompt 变成可以长期使用的工程资产。</p> </article>  </main> <footer class="site-footer"> <span>© 2026 yourskenny</span> <span> <a href="https://github.com/yourskenny">GitHub</a> ·
+<a href="mailto:2023302111391@whu.edu.cn">Email</a> </span> </footer> </body></html>

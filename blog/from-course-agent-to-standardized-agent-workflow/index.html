@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>从课程智能体到标准化 Agent 工作流：一次模板化复盘 | 博客</title><link rel="canonical" href="https://yourskenny.top/blog/from-course-agent-to-standardized-agent-workflow/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta name="description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:type" content="website"><meta property="og:title" content="从课程智能体到标准化 Agent 工作流：一次模板化复盘 | 博客"><meta property="og:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:url" content="https://yourskenny.top/blog/from-course-agent-to-standardized-agent-workflow/"><meta property="og:image" content="https://yourskenny.top/og-image.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="从课程智能体到标准化 Agent 工作流：一次模板化复盘 | 博客"><meta name="twitter:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta name="twitter:image" content="https://yourskenny.top/og-image.svg"><link rel="stylesheet" href="/_astro/BaseLayout.LVccJ-_z.css"></head> <body> <header class="site-header"> <a class="brand" href="/" aria-label="返回首页"> <span class="brand-mark">YK</span> <span class="brand-text">yourskenny</span> </a> <nav aria-label="主导航"> <a href="/">首页</a><a href="/projects/">项目</a><a href="/courses/">课程</a><a href="/blog/">博客</a><a href="/research/">研究</a><a href="/about/">关于</a> </nav> </header> <main>  <article class="prose"> <a class="back-link" href="/blog/">返回博客列表</a> <p class="eyebrow">AI 工程实践</p> <h1>从课程智能体到标准化 Agent 工作流：一次模板化复盘</h1> <p class="lead">把一次课程智能体实践抽象成可复用模板的复盘：为什么知识库边界、行为协议、发布清单、回归测试和维护记录，比单次 prompt 调优更重要。</p> <h2 id="背景">背景</h2>
+<p>最开始的问题很具体：如何为一门课程或一组资料做一个可靠的智能体，让它能回答学生的常见问题，同时不要越界、不要编造、不要把没有依据的信息说得像事实。</p>
+<p>如果只看第一版实现，这似乎是一个 prompt 和知识库上传问题。但真正做下去后，核心问题很快变成了工程问题：资料怎么整理，哪些文件能进知识库，哪些只能给维护者看，系统提示词如何和资料保持一致，发布前怎么验证，资料更新后如何确认旧问题没有退化。</p>
+<p>所以我把这次实践抽象成了一个独立仓库：<a href="https://github.com/yourskenny/standardized-agent-workflow">Standardized Agent Workflow</a>。它的目标不是提供某个单一智能体，而是提供一套可以复用的建设流程。</p>
+<h2 id="为什么不是只写一个-prompt">为什么不是只写一个 Prompt</h2>
+<p>智能体项目很容易从一个漂亮 prompt 开始，也很容易被漂亮 prompt 限制住。Prompt 能定义角色和风格，但它不能单独解决这些问题：</p>
+<ul>
+<li>哪些资料用户可以看到，哪些资料只能维护者看到。</li>
+<li>哪些事实是高风险事实，必须有明确来源。</li>
+<li>用户口语化提问如何映射到正式资料字段。</li>
+<li>模型没有依据时应该怎么拒答或转向。</li>
+<li>每次更新后如何确认旧问题仍然回答正确。</li>
+</ul>
+<p>这些问题更像软件工程里的接口、测试、发布和维护，而不是单次生成效果。因此我选择把项目拆成知识库、行为协议、检查清单、测试问题和维护记录几层。</p>
+<h2 id="三层抽象">三层抽象</h2>
+<p>这套工作流来自一个具体智能体，但最终抽象成三层：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>特定智能体</span></span>
+<span class="line"><span>  解决一个明确场景，例如某门课程、某个团队流程、某类业务资料。</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>通用领域智能体</span></span>
+<span class="line"><span>  抽出领域内通用结构，例如所有课程都需要课程事实、资料边界、学术诚信、测试问题。</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>通用智能体工作流</span></span>
+<span class="line"><span>  抽出所有 RAG/知识库智能体共有的工程流程：资料治理、行为边界、发布同步、测试和维护。</span></span></code></pre>
+<p>这个抽象让我不再只问“这个智能体怎么答得更好”，而是问“下一个智能体能不能更快、更稳、更可交接地搭起来”。</p>
+<h2 id="资料边界是第一步">资料边界是第一步</h2>
+<p>很多知识库型智能体的问题，根源不是模型不够聪明，而是资料边界不清。模板要求一开始就把资料分成三类：</p>
+<ul>
+<li>用户可见资料。</li>
+<li>维护者资料。</li>
+<li>不能进入知识库的资料。</li>
+</ul>
+<p>用户可见资料进入 <code>knowledge_base/</code>；维护者资料留在 <code>maintenance/</code>、<code>examples/</code>、<code>_templates/</code> 和 <code>_manifests/</code>；隐私、个人作品、内部敏感资料不进入任何用户知识库。</p>
+<p>这个步骤看起来朴素，但它决定了智能体的可信边界。一个 agent 应该知道什么，不该知道什么，应该从资料治理阶段就被确定下来。</p>
+<h2 id="知识库要面向检索而不是面向存档">知识库要面向检索，而不是面向存档</h2>
+<p>把文件上传进知识库不等于知识库设计完成。真正可用的知识库需要让检索更容易命中，让高风险事实更容易核验，让维护者更容易更新。</p>
+<p>所以模板提供了几类结构：</p>
+<ul>
+<li><code>core-facts-template.md</code>：记录最高频、最高风险、最容易被模型编错的信息。</li>
+<li><code>faq-table-template.md</code>：把常见问题拆成问题、答案、依据和边界。</li>
+<li><code>knowledge-file-template.md</code>：给普通知识文件保留元信息和维护说明。</li>
+<li><code>current-upload-manifest.md</code>：记录本次发布究竟上传了哪些文件。</li>
+</ul>
+<p>这套结构的意义是让资料从“能被存放”变成“能被检索、能被引用、能被维护”。</p>
+<h2 id="行为协议不能散落在脑子里">行为协议不能散落在脑子里</h2>
+<p>另一个容易被低估的部分是 agent 行为协议。维护者通常会在心里知道“这个问题不能答”“这个场景要保守”“没有资料时要说不知道”，但如果这些规则没有写进系统提示词、回答策略和意图映射，就很难稳定复现。</p>
+<p>模板把这些内容放在 <code>agent/</code> 目录中：</p>
+<ul>
+<li><code>system-prompt.md</code> 定义身份、范围、优先级和边界。</li>
+<li><code>answer-policies.md</code> 定义回答策略和风险处理。</li>
+<li><code>intent-map.md</code> 把用户口语表达映射到正式资料字段。</li>
+</ul>
+<p>这样做还有一个好处：当知识库迁移到不同平台时，行为协议可以跟着走，而不是被锁在某个平台的配置界面里。</p>
+<h2 id="回归测试让更新可控">回归测试让更新可控</h2>
+<p>智能体项目一旦上线，最危险的不是第一次回答错，而是更新后没人知道它哪里退化了。模板要求维护者准备核心回归问题，覆盖：</p>
+<ul>
+<li>高频事实。</li>
+<li>高风险事实。</li>
+<li>同义词问法。</li>
+<li>没有资料的问题。</li>
+<li>拒答边界。</li>
+<li>领域专业问题。</li>
+</ul>
+<p>每次发布或资料更新后，都要运行这些问题，并把结果写入测试记录。这个动作把“感觉它还不错”变成“这个版本通过了哪些验证”。</p>
+<h2 id="发布清单让线上状态可追踪">发布清单让线上状态可追踪</h2>
+<p>RAG 项目还有一个常见问题：本地文件改了，但线上知识库到底有没有更新，没人能说清楚。为了解决这个问题，模板要求维护者维护上传清单。</p>
+<p>上传清单要回答几个问题：</p>
+<ul>
+<li>本次哪些文件进入知识库。</li>
+<li>哪些文件明确不能上传。</li>
+<li>哪些资料是维护用，不对用户开放。</li>
+<li>当前版本是否完成索引和测试。</li>
+</ul>
+<p>这让发布从一次手工操作变成一个可以复查的流程。未来换维护者、换平台或回溯问题时，项目不会只剩一堆文件和模糊记忆。</p>
+<h2 id="模板化后的价值">模板化后的价值</h2>
+<p>把这套流程抽成模板后，它可以服务更多场景：</p>
+<ul>
+<li>课程智能体。</li>
+<li>知识库问答智能体。</li>
+<li>内部制度或流程助手。</li>
+<li>专业学习辅导助手。</li>
+<li>面向特定资料库的 RAG 应用。</li>
+</ul>
+<p>这些场景表面不同，但底层都需要资料边界、事实来源、行为协议、发布同步、回归测试和维护记录。模板的价值就在于把这些共性提前铺好。</p>
+<h2 id="复盘">复盘</h2>
+<p>这次抽象让我对智能体项目有了一个更稳定的判断：智能体不是越会编越好，而是越有依据、越有边界、越可验证越好。</p>
+<p>真正能长期运行的 agent，不只需要一个好 prompt，还需要一套让维护者能看懂、能更新、能测试、能迁移的工程流程。</p>
+<p>项目页见：<a href="/projects/standardized-agent-workflow/">标准化智能体工作流模板</a>。</p> </article>  </main> <footer class="site-footer"> <span>© 2026 yourskenny</span> <span> <a href="https://github.com/yourskenny">GitHub</a> ·
+<a href="mailto:2023302111391@whu.edu.cn">Email</a> </span> </footer> </body></html>
