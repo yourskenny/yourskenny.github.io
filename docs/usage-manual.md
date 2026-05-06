@@ -76,6 +76,12 @@ npm run deploy
 
 部署脚本会先执行 `npm run build`，再把 `dist` 里的静态产物推送到 `main` 分支。
 
+如果出现“源码已经推送，但 `yourskenny.top` 看不到新文章”的情况，优先查看：
+
+```text
+docs/publishing-workflow.md
+```
+
 ## 4. 目录说明
 
 ```text
