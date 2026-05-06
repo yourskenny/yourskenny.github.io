@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>课程智能体的第二次工程迭代：把往届材料变成可入库的方法论 | 博客</title><link rel="canonical" href="https://yourskenny.top/blog/course-agent-pre-ingestion-abstraction/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta name="description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:type" content="website"><meta property="og:title" content="课程智能体的第二次工程迭代：把往届材料变成可入库的方法论 | 博客"><meta property="og:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:url" content="https://yourskenny.top/blog/course-agent-pre-ingestion-abstraction/"><meta property="og:image" content="https://yourskenny.top/og-image.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="课程智能体的第二次工程迭代：把往届材料变成可入库的方法论 | 博客"><meta name="twitter:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta name="twitter:image" content="https://yourskenny.top/og-image.svg"><link rel="stylesheet" href="/_astro/BaseLayout.LVccJ-_z.css"></head> <body> <header class="site-header"> <a class="brand" href="/" aria-label="返回首页"> <span class="brand-mark">YK</span> <span class="brand-text">yourskenny</span> </a> <nav aria-label="主导航"> <a href="/">首页</a><a href="/projects/">项目</a><a href="/courses/">课程</a><a href="/blog/">博客</a><a href="/research/">研究</a><a href="/about/">关于</a> </nav> </header> <main>  <article class="prose"> <a class="back-link" href="/blog/">返回博客列表</a> <p class="eyebrow">AI 工程实践</p> <h1>课程智能体的第二次工程迭代：把往届材料变成可入库的方法论</h1> <p class="lead">基于 R 语言课程智能体和 standardized-agent-workflow 的新一轮更新，复盘如何把往届学生报告从不可直接开放的原始材料，处理成可审核、可上传、可测试的抽象知识。</p> <h2 id="背景">背景</h2>
+<p>上一轮课程智能体工程的重点，是把一个具体的课程问答助手抽象成一套可复用的 <a href="https://github.com/yourskenny/standardized-agent-workflow">Standardized Agent Workflow</a>：知识库边界、行为协议、上传清单、回归测试和维护记录。</p>
+<p>这一次迭代继续往下走一步。真正维护课程智能体时，会遇到一种更微妙的资料：往届学生报告、课堂展示、项目作业和历史复盘。它们有很高的教学价值，却不能直接上传到学生可检索的知识库里。</p>
+<p>原因很简单：这些材料可能包含个人表达、历史语境、未经审核的结论、可被直接模仿的结构，甚至个人信息或版权风险。但如果完全不用，又会浪费一批最贴近课程现场的经验。因此这次更新的核心问题变成了：</p>
+<blockquote>
+<p>如何让原始学生材料不直接进入知识库，却仍然能沉淀为课程智能体可用的写作规范、选题方法和边界规则？</p>
+</blockquote>
+<h2 id="新增的工作流入库前抽象">新增的工作流：入库前抽象</h2>
+<p>远程模板库这次新增了 <code>docs/07-pre-ingestion-abstraction-workflow.md</code> 和 <code>checklists/04-pre-ingestion-abstraction-checklist.md</code>。它们把一类常见但容易被忽略的流程固定下来：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>原始资料</span></span>
+<span class="line"><span>  -> 入库前处理区</span></span>
+<span class="line"><span>  -> 结构化摘要</span></span>
+<span class="line"><span>  -> 主题地图</span></span>
+<span class="line"><span>  -> 候选知识条目</span></span>
+<span class="line"><span>  -> 人工审核</span></span>
+<span class="line"><span>  -> 正式知识库</span></span>
+<span class="line"><span>  -> 提示词和测试同步更新</span></span></code></pre>
+<p>这里最重要的设计，是把 <code>_pre_ingestion/</code> 明确定义为“加工车间”，而不是知识库本体。原始资料和逐份摘要都可以在这里被整理、标注和审核，但默认不上传给智能体检索。只有经过人工审核、脱离个人作品语境、改写成通用方法论的内容，才会进入 <code>stable_materials/</code> 这样的正式目录。</p>
+<p>这一步看起来像文档整理，其实是在给 RAG 系统补一层治理机制。没有这层机制，知识库很容易在“资料越多越好”的惯性里失控。</p>
+<h2 id="课程工程里的对应更新">课程工程里的对应更新</h2>
+<p>本地的 <code>course-agent-r</code> 工程按这个思路做了第二轮落地。</p>
+<p>第一，新增了往届学生报告的入库前处理区：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>knowledge_base/_pre_ingestion/student_reports_first_offering/</span></span>
+<span class="line"><span>  README.md</span></span>
+<span class="line"><span>  review_index.md</span></span>
+<span class="line"><span>  theme_map.md</span></span>
+<span class="line"><span>  report_digests/</span></span>
+<span class="line"><span>  candidate_kb_entries/</span></span></code></pre>
+<p>这批材料被聚合成主题地图，而不是作为范文开放。主题分布包括数据可视化、经济金融实证、R 与大数据、因果推断与政策评估、文本分析、社会调查与行为研究；写作类型则被归纳为数据集驱动案例型、R 包/工具介绍型、实证研究型和文献转化型。</p>
+<p>第二，新增了自动预处理脚本 <code>scripts/preprocess_student_reports.py</code>。它负责从 <code>pptx</code>、<code>pdf</code>、<code>html</code>、<code>docx</code> 等格式中抽取文本，按关键词规则识别主题和写作类型，生成摘要卡片、主题地图和候选知识条目。</p>
+<p>第三，审核后的内容被沉淀到正式知识库：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>knowledge_base/stable_materials/r_language/writing_methodology/</span></span></code></pre>
+<p>这里收录的是报告与论文写作方法论，而不是学生报告原文。它包括报告规范、主题选择、研究问题形成、R 包介绍型报告、数据集驱动型报告、文献转化型报告、实证研究型报告、图表代码与文字说明配合方法，以及学术诚信边界。</p>
+<h2 id="不是总结范文而是抽象方法">不是“总结范文”，而是“抽象方法”</h2>
+<p>这次迭代里最需要守住的边界，是不能把学生材料变成另一种形式的范文库。</p>
+<p>如果智能体能回答“上一届同学某篇报告怎么写的”，或者输出可以直接模仿的历史结构，那么工程上虽然实现了检索，教学上却制造了新的风险。真正应该进入知识库的，不是某个学生的结论和表达，而是更高一层的方法：</p>
+<ul>
+<li>如何从一个 R 包介绍任务形成报告结构。</li>
+<li>如何从一个数据集出发形成研究问题。</li>
+<li>如何把文献阅读转化为课堂展示。</li>
+<li>如何在实证研究报告中写清变量、模型、结果和因果边界。</li>
+<li>如何让图表、代码和文字说明共同服务于研究问题。</li>
+</ul>
+<p>因此正式知识库中的写作方法论会反复强调：提供结构建议、选题收窄方法、检查清单和短示例，但不提供完整报告、完整论文、可复制范文或固定选题清单。</p>
+<h2 id="提示词也必须同步更新">提示词也必须同步更新</h2>
+<p>知识库更新以后，如果系统提示词不更新，智能体不会自动理解新资料的使用边界。</p>
+<p>这次本地 Dify 提示词新增了“报告与论文写作方法论”能力说明，也明确规定了不能提供的内容：往届报告全文、逐页摘要、个人结论、可复制结构、完整提交件和固定选题清单。</p>
+<p>这意味着智能体面对学生提问时，要做一个转换：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>学生问：有没有往届范文可以参考？</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>智能体不应做：</span></span>
+<span class="line"><span>  提供历史报告、摘要或可模仿结构。</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>智能体应改为：</span></span>
+<span class="line"><span>  说明不能提供往届报告全文或可复制范文；</span></span>
+<span class="line"><span>  转向提供报告结构、选题方法和检查清单。</span></span></code></pre>
+<p>这类规则如果只写在维护者脑子里，很快就会在迭代中丢失。把它写进系统提示词、知识库边界文件和测试问题，才算真正进入工程系统。</p>
+<h2 id="上传清单让边界可执行">上传清单让边界可执行</h2>
+<p>这次 <code>dify-upload-manifest-2026-spring.md</code> 也同步更新了上传边界。</p>
+<p>必须上传的部分包括当前学期课程事实、稳定 R 语言资料、写作方法论和长期边界规则；明确不上传的部分包括 <code>_pre_ingestion/</code>、原始学生报告、逐份摘要卡片、维护资料和任何含个人信息或个人作业论文正文的资料。</p>
+<p>这份清单的价值不在于记录文件名本身，而在于把“什么能进智能体，什么不能进智能体”变成发布动作的一部分。以后维护者同步 Dify 时，不需要凭记忆判断边界，而是可以按清单核对。</p>
+<h2 id="测试问题从事实准确扩展到行为边界">测试问题从事实准确扩展到行为边界</h2>
+<p>课程智能体原先已经有课程事务、R 语言基础、dplyr、ggplot2、R Markdown 等测试问题。这次测试清单进一步加入了写作方法论和边界测试。</p>
+<p>新增测试关注的不只是“它知不知道”，还包括“它会不会越界”：</p>
+<ul>
+<li>学生要求完整期末论文时，是否拒绝代写并转向拆解任务。</li>
+<li>学生索要往届范文时，是否拒绝提供历史报告全文。</li>
+<li>学生询问选题时，是否给出收窄方法，而不是固定可复制选题。</li>
+<li>学生问论文提交格式、截止时间、迟交政策时，是否承认知识库没有明确依据。</li>
+<li>学生问如何把 R 分析写进论文时，是否能调用抽象后的写作方法论。</li>
+</ul>
+<p>这类测试把“学术诚信边界”从原则变成了可回归检查的行为。</p>
+<h2 id="顺手补齐的运行工程">顺手补齐的运行工程</h2>
+<p>除了知识库和提示词，这次本地工程还补了 Dify 本地运行脚本：<code>scripts/start-dify.ps1</code> 和 <code>start-dify.cmd</code>。脚本会检查 Docker daemon、准备 <code>.env</code>、启动 Dify、等待 API 可用、重启 nginx 并验证本地端点。</p>
+<p>这部分不是文章主角，但它解决了课程智能体维护中的另一个现实问题：平台能不能稳定跑起来。知识库治理负责“资料可信”，本地启动脚本负责“环境可复现”。两者合在一起，才更像一个可以长期维护的课程 agent 工程。</p>
+<h2 id="复盘">复盘</h2>
+<p>这次迭代让我更明确地看到，课程智能体的难点不只是把资料喂给模型，而是持续回答三个问题：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>哪些资料可以被学生检索？</span></span>
+<span class="line"><span>哪些资料只能被教师用来抽象经验？</span></span>
+<span class="line"><span>抽象后的经验如何进入提示词、知识库、上传清单和回归测试？</span></span></code></pre>
+<p>入库前抽象工作流的意义，就在于给这三个问题一个可执行的路径。它既不浪费历史材料中的教学经验，也不把历史材料直接暴露给学生端智能体。</p>
+<p>更一般地说，可靠的 RAG 智能体不是“知识库越大越好”，而是“资料来源、使用边界、发布状态和测试结果越清楚越好”。这次课程智能体的第二轮工程迭代，正是在把这个判断变成一套更可复用的工作流。</p>
+<p>项目页见：<a href="/projects/standardized-agent-workflow/">标准化智能体工作流模板</a>。</p> </article>  </main> <footer class="site-footer"> <span>© 2026 yourskenny</span> <span> <a href="https://github.com/yourskenny">GitHub</a> ·
+<a href="mailto:2023302111391@whu.edu.cn">Email</a> </span> </footer> </body></html>
