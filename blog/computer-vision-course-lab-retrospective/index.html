@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>计算机视觉课程总复盘：从分类、分割到检测与视频理解 | 博客</title><link rel="canonical" href="https://yourskenny.top/blog/computer-vision-course-lab-retrospective/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta name="description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:type" content="website"><meta property="og:title" content="计算机视觉课程总复盘：从分类、分割到检测与视频理解 | 博客"><meta property="og:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:url" content="https://yourskenny.top/blog/computer-vision-course-lab-retrospective/"><meta property="og:image" content="https://yourskenny.top/og-image.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="计算机视觉课程总复盘：从分类、分割到检测与视频理解 | 博客"><meta name="twitter:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta name="twitter:image" content="https://yourskenny.top/og-image.svg"><link rel="stylesheet" href="/_astro/BaseLayout.LVccJ-_z.css"></head> <body> <header class="site-header"> <a class="brand" href="/" aria-label="返回首页"> <span class="brand-mark">YK</span> <span class="brand-text">yourskenny</span> </a> <nav aria-label="主导航"> <a href="/">首页</a><a href="/projects/">项目</a><a href="/courses/">课程</a><a href="/blog/">博客</a><a href="/research/">研究</a><a href="/about/">关于</a> </nav> </header> <main>  <article class="prose"> <a class="back-link" href="/blog/">返回博客列表</a> <p class="eyebrow">项目复盘</p> <h1>计算机视觉课程总复盘：从分类、分割到检测与视频理解</h1> <p class="lead">把四个计算机视觉实验和一个 YOLO 结课报告实验抽象成一条能力路径：数据处理、模型结构、评估指标、GPU 训练、失败样本诊断和作品集叙事。</p> <h2 id="背景">背景</h2>
+<p>这次更新的原始材料来自 <code>C:/coding/计算机视觉</code>：四个课程实验和一个结课报告实验。它们原本是按课程提交组织的材料，包括分类、分割、姿态估计、动作识别和目标检测。</p>
+<p>如果直接把每份实验报告搬到网站上，信息会很完整，但作品集价值不高。课程报告回答的是“这次实验做了什么”，作品集更需要回答“这些实验共同证明了什么能力”。因此这篇复盘把五个实验压成一条计算机视觉训练路径。</p>
+<h2 id="第一层从数据读取到可训练分类器">第一层：从数据读取到可训练分类器</h2>
+<p>实验 1 的核心是 CIFAR-10 分类。它看起来是最基础的任务，但它实际上打通了后面所有深度视觉实验都会重复出现的工程骨架：</p>
+<ul>
+<li>自定义数据集读取本地图像；</li>
+<li>使用随机裁剪、水平翻转和归一化做预处理；</li>
+<li>调整 ResNet18 适配 32 x 32 输入和 10 分类输出；</li>
+<li>用 SGD、CrossEntropyLoss 和 CUDA 完成训练；</li>
+<li>保存 checkpoint，并在测试阶段加载模型做预测可视化。</li>
+</ul>
+<p>这一层的价值不是“训练了一个 ResNet”，而是建立了一个可复用的 PyTorch 训练闭环：数据、模型、优化器、损失函数、日志、权重和推理结果都能对应起来。</p>
+<h2 id="第二层从图像级分类到像素级分割">第二层：从图像级分类到像素级分割</h2>
+<p>实验 2 把任务从“整张图属于哪一类”推进到“每个像素属于哪一类”。医学图像分割比分类更强调边界、噪声和局部细节，所以实验先用 Otsu 阈值法做传统基线，再实现 U-Net。</p>
+<p>Otsu 的结果说明了一个很现实的问题：当医学图像前景和背景没有清晰双峰分布时，纯统计阈值很难稳定剥离目标区域。U-Net 的 skip connection 则提供了另一条路径：编码器提取语义，解码器恢复分辨率，同尺度特征拼接保留边界细节。</p>
+<p>这部分让我把“模型结构”与“评估指标”连起来理解。Dice loss 不是一个孤立公式，它直接服务于分割任务中预测区域与真实区域的重叠质量。</p>
+<h2 id="第三层从区域预测到关键点结构">第三层：从区域预测到关键点结构</h2>
+<p>实验 3 的人体姿态估计展示了两类思路：DeepPose 的坐标回归和 HRNet 的 heatmap 估计。</p>
+<p>DeepPose 把姿态估计看成关键点坐标回归，输入图像后直接输出 <code>[batch, keypoints, 2]</code>。这种方式结构直观，但会把空间定位压力集中到最后的回归层。HRNet 则保留高分辨率分支，为每个关键点预测 heatmap，再从 heatmap 中解码坐标。它更符合关键点任务对空间细节的要求。</p>
+<p>后处理也很关键。实验里通过 <code>get_max_preds</code> 和 <code>get_avg_preds</code> 把 heatmap 转成坐标，再把关键点绘制成骨架。到这一步，模型输出不再只是一个分数或 mask，而是能被人直接检查的结构化视觉结果。</p>
+<h2 id="第四层从单帧图像到视频时空特征">第四层：从单帧图像到视频时空特征</h2>
+<p>实验 4 把输入从图像扩展到视频。C3D 的输入张量是 <code>[batch, channel, frame, height, width]</code>，三维卷积同时在空间和时间维度提取特征。</p>
+<p>这次没有把重点放在完整 UCF101 长训练上，而是更务实地完成了三步验证：</p>
+<ul>
+<li>随机视频张量前向传播，确认 C3D 输出 101 类 logits；</li>
+<li>在 UCF101 上做 3 step GPU 冒烟训练，确认数据读取、视频解码、CUDA 前向和反向传播可用；</li>
+<li>用 128 个样本跑完小规模训练闭环，保存 checkpoint、评估结果和 loss 曲线。</li>
+</ul>
+<p>这个实验的价值在于确认“视频任务的工程链路能跑通”。对于课程归档来说，这比给出一个未经充分训练的高分结果更可靠。</p>
+<h2 id="第五层在约束下做轻量目标检测">第五层：在约束下做轻量目标检测</h2>
+<p>结课报告实验是这组材料里最接近项目复盘的一部分。它不是单纯训练一个检测器，而是在“模型大小小于 10 MB”的约束下选择模型、解释口径、训练、测试、分析瓶颈并继续改进。</p>
+<p>模型选择阶段对比了 YOLO26n、YOLO12n、YOLO11n 和 YOLOv10n。YOLO26n 的权重约 5.29 MB，参数量约 2.57M，在文件大小和参数量两个口径下都比较稳，因此成为主模型。</p>
+<p>第一轮训练已经让验证集 mAP50 达到很高水平，但测试集 mAP50 只有 0.968。进一步分析后，问题集中在 class 2 的长条小目标：测试集中该类实例很少，漏掉一个目标就会显著拉低 AP。第二轮提高分辨率和合并训练集没有根本解决问题，第三轮做 class 2 crop 增强后，验证集 class 2 recall 提升到 1.0，但测试集仍被一个极端样本限制。</p>
+<p>这部分最有价值的不是最后有没有冲过 0.98，而是形成了清楚的失败样本诊断：小测试集、长条小目标、整图缩放、置信度排序和数据分布都会影响最终指标。它让结课报告不只是“训练结果展示”，而是一次受约束目标检测实验的工程分析。</p>
+<h2 id="抽象后的能力路径">抽象后的能力路径</h2>
+<p>把五个实验合在一起看，计算机视觉课程训练覆盖了五种任务形态：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>图像分类 -> 像素分割 -> 人体关键点 -> 视频动作识别 -> 目标检测</span></span></code></pre>
+<p>对应的能力也从单点实现逐步扩展：</p>
+<ul>
+<li>能搭建 PyTorch 数据、训练、测试和可视化闭环；</li>
+<li>能解释 CNN、ResNet、U-Net、HRNet、C3D 和 YOLO 的任务适配方式；</li>
+<li>能根据任务选择 CrossEntropy、Dice、mAP、accuracy、loss curve 等评估口径；</li>
+<li>能在 CUDA 环境、数据规模和模型大小限制下做现实取舍；</li>
+<li>能对失败样本和指标瓶颈做归因，而不是只报告最终数字。</li>
+</ul>
+<h2 id="为什么放在课程和博客而不是项目">为什么放在课程和博客，而不是项目</h2>
+<p>这次没有把五个实验拆成新项目。原因是它们的主要价值是课程训练覆盖面，而不是独立产品、研究原型或完整应用系统。</p>
+<p>放在课程归档里，可以清楚说明“做过哪些实验、覆盖哪些主题、源材料在哪里”。放在博客里，则可以把原始实验报告抽象成一条学习路径和工程复盘。这样既保留课程材料的完整性，又不会让项目板块被课程作业稀释。</p>
+<p>后续如果要继续扩展，最适合单独项目化的是 YOLO 小目标检测或 HRNet 姿态估计。前者已经有模型选择、训练诊断和失败样本分析；后者可以继续接入真实数据和预训练权重，形成更完整的推理展示。</p>
+<h2 id="复盘">复盘</h2>
+<p>这次更新让我更明确地区分了三种材料形态：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>实验报告：证明课程任务完成。</span></span>
+<span class="line"><span>课程归档：证明训练覆盖完整。</span></span>
+<span class="line"><span>博客复盘：证明能把任务抽象成能力路径。</span></span></code></pre>
+<p>作品集不需要把所有过程细节都摊开，但需要让读者看出这些过程背后的能力结构。计算机视觉这组实验的价值正在于此：它横跨了分类、分割、关键点、视频和检测，也展示了从跑通模型到分析瓶颈的进阶过程。</p>
+<p>课程归档见：<a href="/projects/course-archive-computer-vision/">计算机视觉课程实验归档</a>。</p> </article>  </main> <footer class="site-footer"> <span>© 2026 yourskenny</span> <span> <a href="https://github.com/yourskenny">GitHub</a> ·
+<a href="mailto:2023302111391@whu.edu.cn">Email</a> </span> </footer> </body></html>

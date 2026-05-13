@@ -5,6 +5,12 @@
         <description>AI 项目复盘、论文笔记和工程实践</description>
         <link>https://yourskenny.top/</link>
         <item>
+        <title><![CDATA[计算机视觉课程总复盘：从分类、分割到检测与视频理解]]></title>
+        <description><![CDATA[把四个计算机视觉实验和一个 YOLO 结课报告实验抽象成一条能力路径：数据处理、模型结构、评估指标、GPU 训练、失败样本诊断和作品集叙事。]]></description>
+        <link>https://yourskenny.top/blog/computer-vision-course-lab-retrospective/</link>
+        <guid>https://yourskenny.top/blog/computer-vision-course-lab-retrospective/</guid>
+        <pubDate>Wed, 13 May 2026 00:00:00 GMT</pubDate>
+      </item><item>
         <title><![CDATA[课程智能体的第二次工程迭代：把往届材料变成可入库的方法论]]></title>
         <description><![CDATA[基于 R 语言课程智能体和 standardized-agent-workflow 的新一轮更新，复盘如何把往届学生报告从不可直接开放的原始材料，处理成可审核、可上传、可测试的抽象知识。]]></description>
         <link>https://yourskenny.top/blog/course-agent-pre-ingestion-abstraction/</link>
