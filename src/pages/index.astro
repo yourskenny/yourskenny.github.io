@@ -13,6 +13,42 @@ const courseProjects = allProjects.filter((project) => project.data.category ===
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
+
+const representativeProjectConfigs = [
+  {
+    id: "local-gsd-three-agent-orchestration",
+    label: "代表项目 01 · Agent 方向",
+    signal: "本地多 Agent 编排、MCP 桥接、可观测性与运行手册",
+    tools: ["Codex", "Claude Code", "LiteLLM", "MCP", "AstrBot", "Phoenix"]
+  },
+  {
+    id: "industrial-feo-prediction",
+    label: "代表项目 02 · 成熟落地",
+    signal: "工业多模态预测、模型封装、Web 演示与质量评估",
+    tools: ["PyTorch", "YOLO", "Swin Transformer", "TIMM", "Flask", "Chart.js"]
+  }
+];
+
+const representativeProjects = representativeProjectConfigs.flatMap((config) => {
+  const project = portfolioProjects.find((candidate) => candidate.id === config.id);
+
+  if (!project) {
+    return [];
+  }
+
+  return [
+    {
+      ...config,
+      project,
+      links:
+        project.data.links.length > 0
+          ? project.data.links
+          : [{ label: "项目详情", url: `/projects/${project.id}/` }]
+    }
+  ];
+});
+
+const commonAiTools = ["Codex", "Claude Code", "LiteLLM", "MCP", "Phoenix", "Dify", "Qwen-VL", "LangChain4j"];
 ---
 
 <BaseLayout
@@ -22,7 +58,8 @@ const posts = (await getCollection("blog")).sort(
   <section class="hero-shell">
     <div class="hero-copy-block">
       <p class="eyebrow">Wuhan University · Artificial Intelligence · 2023</p>
-      <h1>把 AI 项目沉淀成可信的研究与工程证据。</h1>
+      <h1>Hay, hermanos, muchísimo que hacer.</h1>
+      <p class="poem-credit">César Vallejo · Los nueve monstruos</p>
       <p class="hero-copy">
         我是 yourskenny，武汉大学 2023 级人工智能专业学生。这里整理我在 Agent、计算机视觉、
         深度学习、强化学习、具身智能和自然语言处理方向的项目、课程归档与技术笔记。
@@ -69,6 +106,65 @@ const posts = (await getCollection("blog")).sort(
         <span>Robotics</span>
       </div>
     </aside>
+  </section>
+
+  <section class="content-band representative-band" aria-label="代表项目与工具链">
+    <div class="section-heading">
+      <div>
+        <p class="section-label">Representative Work</p>
+        <h2>代表项目与工具链</h2>
+      </div>
+      <a class="text-link" href="/projects/">查看全部项目</a>
+    </div>
+
+    <div class="representative-grid">
+      {
+        representativeProjects.map((item) => (
+          <article class="representative-card">
+            <div class="representative-meta">
+              <span>{item.label}</span>
+              <strong>{item.signal}</strong>
+            </div>
+            <h3>{item.project.data.title}</h3>
+            <p>{item.project.data.summary}</p>
+            <div>
+              <span class="mini-label">主要技术栈</span>
+              <div class="stack-row" aria-label={`${item.project.data.title} 主要技术栈`}>
+                {item.project.data.tags.map((tag) => (
+                  <span>{tag}</span>
+                ))}
+              </div>
+            </div>
+            <div>
+              <span class="mini-label">项目使用的 AI 工具</span>
+              <div class="stack-row" aria-label={`${item.project.data.title} AI 工具`}>
+                {item.tools.map((tool) => (
+                  <span>{tool}</span>
+                ))}
+              </div>
+            </div>
+            <div class="link-row">
+              {item.links.map((link) => (
+                <a class="button" href={link.url}>
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="tool-rail">
+      <div>
+        <p class="section-label">AI Tools</p>
+        <h3>常用 AI 工具</h3>
+        <p>日常围绕 Agent 编排、代码生成、模型路由、视觉语言理解、工作流构建和 trace 复盘建立工具链。</p>
+      </div>
+      <div class="stack-row" aria-label="常用 AI 工具">
+        {commonAiTools.map((tool) => <span>{tool}</span>)}
+      </div>
+    </div>
   </section>
 
   <section class="bento-grid" aria-label="核心能力">

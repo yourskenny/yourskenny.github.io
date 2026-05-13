@@ -5,3 +5,5 @@ dist
 .env
 .deploy-pages
 .tmp-course-labs
+.tmp-dev-server/
+.superpowers/

@@ -55,13 +55,28 @@ assert.match(seo, /canonical/);
 const home = readFileSync("src/pages/index.astro", "utf8");
 assert.match(home, /class="hero-shell"/);
 assert.match(home, /class="proof-grid"/);
+assert.match(home, /Hay, hermanos, muchísimo que hacer\./);
+assert.match(home, /César Vallejo/);
+assert.doesNotMatch(home, /把 AI 项目沉淀成可信的研究与工程证据/);
 assert.match(home, /ProjectCard/);
 assert.match(home, /PostRow/);
 assert.match(home, /课程归档/);
+assert.match(home, /代表项目与工具链/);
+assert.match(home, /representativeProjects/);
+assert.match(home, /local-gsd-three-agent-orchestration/);
+assert.match(home, /industrial-feo-prediction/);
+assert.match(home, /常用 AI 工具/);
+assert.match(home, /Codex/);
+assert.match(home, /Claude Code/);
+assert.match(home, /项目详情/);
 
 const css = readFileSync("src/styles/global.css", "utf8");
 assert.match(css, /\.hero-shell/);
 assert.match(css, /\.bento-grid/);
+assert.match(css, /\.representative-band/);
+assert.match(css, /\.representative-grid/);
+assert.match(css, /\.representative-card/);
+assert.match(css, /\.tool-rail/);
 assert.match(css, /\.detail-meta/);
 assert.match(css, /@media \(max-width: 760px\)/);
 
