@@ -24,7 +24,12 @@ const requiredPaths = [
   "src/content/blog/project-retrospective-template.md",
   "src/content/blog/codex-autoresearch-windows-skill.md",
   "docs/usage-manual.md",
+  "docs/folder-to-article-workflow.md",
+  "scripts/content-from-folder-core.mjs",
+  "scripts/content-from-folder.mjs",
   "scripts/deploy-pages.mjs",
+  "tests/content-from-folder.test.mjs",
+  "AGENTS.md",
   "public/favicon.svg",
   "public/.nojekyll",
   "public/og-image.svg",
@@ -79,3 +84,12 @@ const usageManual = readFileSync("docs/usage-manual.md", "utf8");
 assert.match(usageManual, /C:\\coding\\ai-portfolio/);
 assert.match(usageManual, /src\/components/);
 assert.match(usageManual, /npm run deploy/);
+
+const folderWorkflow = readFileSync("docs/folder-to-article-workflow.md", "utf8");
+assert.match(folderWorkflow, /npm run content:from-folder/);
+assert.match(folderWorkflow, /课程归档/);
+assert.match(folderWorkflow, /yourskenny\.top/);
+
+const agentInstructions = readFileSync("AGENTS.md", "utf8");
+assert.match(agentInstructions, /folder-to-article workflow/);
+assert.match(agentInstructions, /npm run deploy/);

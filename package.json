@@ -7,7 +7,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "test": "node tests/check-site.mjs",
+    "content:from-folder": "node scripts/content-from-folder.mjs",
+    "test:site": "node tests/check-site.mjs",
+    "test:content": "node tests/content-from-folder.test.mjs",
+    "test": "npm run test:site && npm run test:content",
     "deploy": "npm run build && node scripts/deploy-pages.mjs"
   },
   "dependencies": {

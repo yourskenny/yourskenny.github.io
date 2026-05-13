@@ -33,6 +33,7 @@ npm run deploy
 - `src/pages/research`：研究方向
 - `src/pages/about.astro`：个人介绍
 - `docs/usage-manual.md`：博客使用手册
+- `docs/folder-to-article-workflow.md`：本地文件夹生成文章并发布的固定工作流
 
 把页面里的“你的名字”、学校、邮箱、GitHub 和简历文件替换成你的真实信息即可。
 
