@@ -1,0 +1,248 @@
+# Computer Vision Course Update Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Publish the computer vision course work as one updated course archive entry and one synthesis blog post.
+
+**Architecture:** Keep the existing Astro content model unchanged. The course archive remains a `projects` collection item with `category: "课程归档"`, while the synthesis article is a new `blog` collection item with `category: "项目复盘"`.
+
+**Tech Stack:** Astro content collections, Markdown frontmatter, existing `ProjectCard` and `PostRow` rendering, `npm test`, `npm run build`.
+
+---
+
+### Task 1: Update Course Archive Entry
+
+**Files:**
+- Modify: `src/content/projects/course-archive-computer-vision.md`
+
+- [x] **Step 1: Replace the course archive frontmatter and body**
+
+Use the existing file and replace its content with a compact archive that covers five course units:
+
+```markdown
+---
+title: "计算机视觉课程实验归档"
+summary: "覆盖 ResNet 图像分类、U-Net 医学图像分割、DeepPose/HRNet 姿态估计、C3D 动作识别，以及 YOLO26n 轻量目标检测结课实验。"
+date: 2026-05-13
+tags: ["Computer Vision", "ResNet", "UNet", "HRNet", "C3D", "YOLO"]
+role: "课程实验与结课报告归档"
+category: "课程归档"
+sourcePath: "C:/coding/计算机视觉"
+highlight: false
+links: []
+---
+
+## 归档范围
+
+这份课程归档覆盖 `C:/coding/计算机视觉` 下的四个实验和一个结课报告实验。内容没有作为独立项目新增到作品集，而是作为计算机视觉课程训练链路记录在课程板块中。
+
+## 实验主线
+
+### 实验 1：CIFAR-10 图像分类
+
+基于 PyTorch 训练 ResNet18，完成 CIFAR-10 数据读取、随机裁剪、水平翻转、归一化、GPU 训练、checkpoint 保存和预测可视化。最终测试集准确率为 89.590%，训练过程验证了图像分类任务中数据增强、残差网络和模型评估的基础流程。
+
+### 实验 2：医学图像分割
+
+围绕 ISBI 2012 风格的 TIFF 医学图像数据，先用 Otsu 阈值法建立传统分割对照，再实现 U-Net、Dice loss、训练与预测可视化。该实验重点展示像素级预测、skip connection 和前景重叠度评估在分割任务中的作用。
+
+### 实验 3：人体姿态估计
+
+实验分为 DeepPose 坐标回归、HRNet heatmap 前向传播、关键点解码与骨架可视化三层。DeepPose 用 ResNet50 backbone 直接回归 17 个关键点坐标，HRNet 输出关键点热力图，再通过 `get_max_preds` 和 `get_avg_preds` 解码为空间坐标。
+
+### 实验 4：UCF101 动作识别
+
+复现 C3D 的三维卷积结构，验证视频张量 `[batch, channel, frame, height, width]` 的前向传播，并在 UCF101 上完成 GPU 冒烟训练、128 样本小规模训练闭环、checkpoint 保存、验证集评估和 loss 曲线绘制。该实验把单帧视觉扩展到视频时空特征建模。
+
+### 结课报告实验：轻量目标检测
+
+结课报告选择 YOLO26n 作为小于 10 MB 约束下的目标检测模型，围绕模型大小、参数量、mAP50、训练分辨率、小目标漏检和 class 2 crop 增强进行多轮实验。最终形成了从模型选择、约束解释、训练诊断到失败样本分析的完整检测实验记录。
+
+## 展示价值
+
+这组材料展示的是计算机视觉基础能力的横向覆盖：分类、分割、关键点、视频理解和目标检测。更重要的是，它把课程实验从“跑通代码”推进到“能解释模型选择、数据瓶颈和评估限制”的工程复盘层次。
+```
+
+- [x] **Step 2: Check course archive frontmatter against schema**
+
+Verify the frontmatter uses only existing project schema values:
+
+```text
+category: "课程归档"
+tags: array of strings
+links: []
+highlight: false
+```
+
+Run: `npm test`
+Expected: the content collection validation does not report a schema error for `course-archive-computer-vision.md`.
+
+### Task 2: Add Synthesis Blog Post
+
+**Files:**
+- Create: `src/content/blog/computer-vision-course-lab-retrospective.md`
+
+- [x] **Step 1: Create the blog post**
+
+Create one synthesis article that abstracts the five experiments instead of copying their reports:
+
+```markdown
+---
+title: "计算机视觉课程总复盘：从分类、分割到检测与视频理解"
+description: "把四个计算机视觉实验和一个 YOLO 结课报告实验抽象成一条能力路径：数据处理、模型结构、评估指标、GPU 训练、失败样本诊断和作品集叙事。"
+date: 2026-05-13
+category: "项目复盘"
+---
+
+## 背景
+
+这次更新的原始材料来自 `C:/coding/计算机视觉`：四个课程实验和一个结课报告实验。它们原本是按课程提交组织的材料，包括分类、分割、姿态估计、动作识别和目标检测。
+
+如果直接把每份实验报告搬到网站上，信息会很完整，但作品集价值不高。课程报告回答的是“这次实验做了什么”，作品集更需要回答“这些实验共同证明了什么能力”。因此这篇复盘把五个实验压成一条计算机视觉训练路径。
+
+## 第一层：从数据读取到可训练分类器
+
+实验 1 的核心是 CIFAR-10 分类。它看起来是最基础的任务，但它实际上打通了后面所有深度视觉实验都会重复出现的工程骨架：
+
+- 自定义数据集读取本地图像；
+- 使用随机裁剪、水平翻转和归一化做预处理；
+- 调整 ResNet18 适配 32 x 32 输入和 10 分类输出；
+- 用 SGD、CrossEntropyLoss 和 CUDA 完成训练；
+- 保存 checkpoint，并在测试阶段加载模型做预测可视化。
+
+这一层的价值不是“训练了一个 ResNet”，而是建立了一个可复用的 PyTorch 训练闭环：数据、模型、优化器、损失函数、日志、权重和推理结果都能对应起来。
+
+## 第二层：从图像级分类到像素级分割
+
+实验 2 把任务从“整张图属于哪一类”推进到“每个像素属于哪一类”。医学图像分割比分类更强调边界、噪声和局部细节，所以实验先用 Otsu 阈值法做传统基线，再实现 U-Net。
+
+Otsu 的结果说明了一个很现实的问题：当医学图像前景和背景没有清晰双峰分布时，纯统计阈值很难稳定剥离目标区域。U-Net 的 skip connection 则提供了另一条路径：编码器提取语义，解码器恢复分辨率，同尺度特征拼接保留边界细节。
+
+这部分让我把“模型结构”与“评估指标”连起来理解。Dice loss 不是一个孤立公式，它直接服务于分割任务中预测区域与真实区域的重叠质量。
+
+## 第三层：从区域预测到关键点结构
+
+实验 3 的人体姿态估计展示了两类思路：DeepPose 的坐标回归和 HRNet 的 heatmap 估计。
+
+DeepPose 把姿态估计看成关键点坐标回归，输入图像后直接输出 `[batch, keypoints, 2]`。这种方式结构直观，但会把空间定位压力集中到最后的回归层。HRNet 则保留高分辨率分支，为每个关键点预测 heatmap，再从 heatmap 中解码坐标。它更符合关键点任务对空间细节的要求。
+
+后处理也很关键。实验里通过 `get_max_preds` 和 `get_avg_preds` 把 heatmap 转成坐标，再把关键点绘制成骨架。到这一步，模型输出不再只是一个分数或 mask，而是能被人直接检查的结构化视觉结果。
+
+## 第四层：从单帧图像到视频时空特征
+
+实验 4 把输入从图像扩展到视频。C3D 的输入张量是 `[batch, channel, frame, height, width]`，三维卷积同时在空间和时间维度提取特征。
+
+这次没有把重点放在完整 UCF101 长训练上，而是更务实地完成了三步验证：
+
+- 随机视频张量前向传播，确认 C3D 输出 101 类 logits；
+- 在 UCF101 上做 3 step GPU 冒烟训练，确认数据读取、视频解码、CUDA 前向和反向传播可用；
+- 用 128 个样本跑完小规模训练闭环，保存 checkpoint、评估结果和 loss 曲线。
+
+这个实验的价值在于确认“视频任务的工程链路能跑通”。对于课程归档来说，这比给出一个未经充分训练的高分结果更可靠。
+
+## 第五层：在约束下做轻量目标检测
+
+结课报告实验是这组材料里最接近项目复盘的一部分。它不是单纯训练一个检测器，而是在“模型大小小于 10 MB”的约束下选择模型、解释口径、训练、测试、分析瓶颈并继续改进。
+
+模型选择阶段对比了 YOLO26n、YOLO12n、YOLO11n 和 YOLOv10n。YOLO26n 的权重约 5.29 MB，参数量约 2.57M，在文件大小和参数量两个口径下都比较稳，因此成为主模型。
+
+第一轮训练已经让验证集 mAP50 达到很高水平，但测试集 mAP50 只有 0.968。进一步分析后，问题集中在 class 2 的长条小目标：测试集中该类实例很少，漏掉一个目标就会显著拉低 AP。第二轮提高分辨率和合并训练集没有根本解决问题，第三轮做 class 2 crop 增强后，验证集 class 2 recall 提升到 1.0，但测试集仍被一个极端样本限制。
+
+这部分最有价值的不是最后有没有冲过 0.98，而是形成了清楚的失败样本诊断：小测试集、长条小目标、整图缩放、置信度排序和数据分布都会影响最终指标。它让结课报告不只是“训练结果展示”，而是一次受约束目标检测实验的工程分析。
+
+## 抽象后的能力路径
+
+把五个实验合在一起看，计算机视觉课程训练覆盖了五种任务形态：
+
+```text
+图像分类 -> 像素分割 -> 人体关键点 -> 视频动作识别 -> 目标检测
+```
+
+对应的能力也从单点实现逐步扩展：
+
+- 能搭建 PyTorch 数据、训练、测试和可视化闭环；
+- 能解释 CNN、ResNet、U-Net、HRNet、C3D 和 YOLO 的任务适配方式；
+- 能根据任务选择 CrossEntropy、Dice、mAP、accuracy、loss curve 等评估口径；
+- 能在 CUDA 环境、数据规模和模型大小限制下做现实取舍；
+- 能对失败样本和指标瓶颈做归因，而不是只报告最终数字。
+
+## 为什么放在课程和博客，而不是项目
+
+这次没有把五个实验拆成新项目。原因是它们的主要价值是课程训练覆盖面，而不是独立产品、研究原型或完整应用系统。
+
+放在课程归档里，可以清楚说明“做过哪些实验、覆盖哪些主题、源材料在哪里”。放在博客里，则可以把原始实验报告抽象成一条学习路径和工程复盘。这样既保留课程材料的完整性，又不会让项目板块被课程作业稀释。
+
+后续如果要继续扩展，最适合单独项目化的是 YOLO 小目标检测或 HRNet 姿态估计。前者已经有模型选择、训练诊断和失败样本分析；后者可以继续接入真实数据和预训练权重，形成更完整的推理展示。
+
+## 复盘
+
+这次更新让我更明确地区分了三种材料形态：
+
+```text
+实验报告：证明课程任务完成。
+课程归档：证明训练覆盖完整。
+博客复盘：证明能把任务抽象成能力路径。
+```
+
+作品集不需要把所有过程细节都摊开，但需要让读者看出这些过程背后的能力结构。计算机视觉这组实验的价值正在于此：它横跨了分类、分割、关键点、视频和检测，也展示了从跑通模型到分析瓶颈的进阶过程。
+
+课程归档见：[计算机视觉课程实验归档](/projects/course-archive-computer-vision/)。
+```
+
+- [x] **Step 2: Check blog frontmatter against schema**
+
+Verify the frontmatter uses only existing blog schema values:
+
+```text
+category: "项目复盘"
+date: 2026-05-13
+```
+
+Run: `npm test`
+Expected: the content collection validation does not report a schema error for `computer-vision-course-lab-retrospective.md`.
+
+### Task 3: Validate And Review
+
+**Files:**
+- Read: `src/content/projects/course-archive-computer-vision.md`
+- Read: `src/content/blog/computer-vision-course-lab-retrospective.md`
+
+- [x] **Step 1: Run repository tests**
+
+Run:
+
+```powershell
+npm test
+```
+
+Expected: command exits with code 0.
+
+- [x] **Step 2: Run production build**
+
+Run:
+
+```powershell
+npm run build
+```
+
+Expected: command exits with code 0 and Astro builds the site.
+
+- [x] **Step 3: Review git diff**
+
+Run:
+
+```powershell
+git diff -- src/content/projects/course-archive-computer-vision.md src/content/blog/computer-vision-course-lab-retrospective.md
+```
+
+Expected: diff only contains the course archive update and the new synthesis blog post.
+
+- [x] **Step 4: Report results**
+
+Summarize:
+
+```text
+Updated course archive entry.
+Added one synthesis blog post.
+Verification: npm test, npm run build.
+```
