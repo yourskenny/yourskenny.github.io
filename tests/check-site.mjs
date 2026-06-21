@@ -30,8 +30,8 @@ const requiredPaths = [
   "src/content/projects/lumina-visual-assistant.md",
   "src/content/projects/course-archive-digital-logic.md",
   "src/content/blog/junior-spring-exam-review-workflow.md",
-  "src/content/blog/yolo-fish-detection-failure-retrospective.md",
-  "src/content/blog/kaiwu-sweeper-service-outsourcing-retrospective.md",
+  "src/content/blog/yolo-fd-local-reproduction-research.md",
+  "src/content/blog/kaiwu-sweeper-ppo-agent-retrospective.md",
   "src/content/blog/project-retrospective-template.md",
   "src/content/blog/codex-autoresearch-windows-skill.md",
   "docs/usage-manual.md",
@@ -148,13 +148,17 @@ const ccfProject = readFileSync("src/content/projects/ccf-origin-uni-2026.md", "
 assert.match(ccfProject, /三等奖/);
 assert.match(ccfProject, /非主导/);
 
-const yoloPost = readFileSync("src/content/blog/yolo-fish-detection-failure-retrospective.md", "utf8");
-assert.match(yoloPost, /失败复盘/);
-assert.match(yoloPost, /不把它包装成高性能检测成果/);
+const yoloPost = readFileSync("src/content/blog/yolo-fd-local-reproduction-research.md", "utf8");
+assert.match(yoloPost, /本地复现和实验链路完整/);
+assert.match(yoloPost, /mAP50-95/);
+assert.match(yoloPost, /ONNX Runtime/);
+assert.match(yoloPost, /论文材料完整/);
 
-const kaiwuPost = readFileSync("src/content/blog/kaiwu-sweeper-service-outsourcing-retrospective.md", "utf8");
-assert.match(kaiwuPost, /非主导/);
-assert.match(kaiwuPost, /不是获奖经历/);
+const kaiwuPost = readFileSync("src/content/blog/kaiwu-sweeper-ppo-agent-retrospective.md", "utf8");
+assert.match(kaiwuPost, /完整跑通/);
+assert.match(kaiwuPost, /GRUSentry/);
+assert.match(kaiwuPost, /verify_guardrails/);
+assert.match(kaiwuPost, /920 分/);
 
 const robots = readFileSync("public/robots.txt", "utf8");
 assert.match(robots, /Sitemap:/);

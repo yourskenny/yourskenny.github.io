@@ -42,8 +42,8 @@ Use `resume-records/records/competitions/2026-05-ccf-origin-uni.md`. Mark the pr
 ### Task 2: Add Lower-Priority Retrospectives
 
 **Files:**
-- Create: `src/content/blog/yolo-fish-detection-failure-retrospective.md`
-- Create: `src/content/blog/kaiwu-sweeper-service-outsourcing-retrospective.md`
+- Create: `src/content/blog/yolo-fd-local-reproduction-research.md`
+- Create: `src/content/blog/kaiwu-sweeper-ppo-agent-retrospective.md`
 
 - [ ] **Step 1: Add YOLO-FD retrospective**
 
@@ -93,4 +93,3 @@ Check homepage, project index, and at least LCFC / AI PR Review / Marketing page
 - [ ] **Step 4: Commit, push, deploy, and verify public URLs**
 
 Push `source`, run `npm run deploy`, and verify `yourskenny.github.io` plus `yourskenny.top` routes contain the new titles.
-
