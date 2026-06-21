@@ -5,6 +5,18 @@
         <description>AI 项目复盘、论文笔记和工程实践</description>
         <link>https://yourskenny.top/</link>
         <item>
+        <title><![CDATA[开物扫雷参赛经历的边界]]></title>
+        <description><![CDATA[一次非主导、未获奖的竞赛协作经历：保留项目参与事实，但不把它包装成核心项目或奖项。]]></description>
+        <link>https://yourskenny.top/blog/kaiwu-sweeper-service-outsourcing-retrospective/</link>
+        <guid>https://yourskenny.top/blog/kaiwu-sweeper-service-outsourcing-retrospective/</guid>
+        <pubDate>Mon, 22 Jun 2026 00:00:00 GMT</pubDate>
+      </item><item>
+        <title><![CDATA[MY-YOLO-FD 病鱼检测项目为什么没有继续做]]></title>
+        <description><![CDATA[把一次跑分不佳的 YOLO 检测与分割项目写成失败复盘：记录训练、调参、结构尝试、投入产出判断和停止继续投入的边界。]]></description>
+        <link>https://yourskenny.top/blog/yolo-fish-detection-failure-retrospective/</link>
+        <guid>https://yourskenny.top/blog/yolo-fish-detection-failure-retrospective/</guid>
+        <pubDate>Mon, 22 Jun 2026 00:00:00 GMT</pubDate>
+      </item><item>
         <title><![CDATA[从聊天式复习到可追踪复习工作流]]></title>
         <description><![CDATA[把临时聊天式复习整理成课程目录、模块优先级、进度 tracker、错题台账、方法卡和交接记录的一套可复用学习工作流。]]></description>
         <link>https://yourskenny.top/blog/junior-spring-exam-review-workflow/</link>

@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>LCFC NL2SQL 智能问数系统 | 项目</title><link rel="canonical" href="https://yourskenny.top/projects/lcfc-nl2sql-intelligent-query/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta name="description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:type" content="website"><meta property="og:title" content="LCFC NL2SQL 智能问数系统 | 项目"><meta property="og:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:url" content="https://yourskenny.top/projects/lcfc-nl2sql-intelligent-query/"><meta property="og:image" content="https://yourskenny.top/og-image.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="LCFC NL2SQL 智能问数系统 | 项目"><meta name="twitter:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta name="twitter:image" content="https://yourskenny.top/og-image.svg"><link rel="stylesheet" href="/_astro/BaseLayout.3F819qcq.css"></head> <body> <header class="site-header"> <a class="brand" href="/" aria-label="返回首页"> <span class="brand-mark">YK</span> <span class="brand-text">yourskenny</span> </a> <nav aria-label="主导航"> <a href="/">首页</a><a href="/projects/">项目</a><a href="/interview/">面试项目</a><a href="/courses/">课程</a><a href="/blog/">博客</a><a href="/research/">研究</a><a href="/about/">关于</a> </nav> </header> <main>  <article class="prose"> <a class="back-link" href="/projects/">返回项目列表</a> <p class="eyebrow">独立开发，受控 NL2SQL 架构、benchmark 与提交包校验</p> <h1>LCFC NL2SQL 智能问数系统</h1> <p class="lead">面向制造业数据问答的受控 NL2SQL 竞赛项目：自然语言先转结构化 IR，再由 schema linker、SQL guardrails、compiler、结果契约和 benchmark 闭环校验。</p> <div class="detail-meta"> <span>竞赛项目</span> <span>resume-records + LCFC workspace</span> </div> <div class="tags"> <span>NL2SQL</span><span>Agent</span><span>SQLite</span><span>IR</span><span>SQL Compiler</span><span>Benchmark</span><span>Truthfulness</span> </div> <div class="detail-links" aria-label="相关链接"> <a class="button ghost" href="https://github.com/yourskenny/lcfc-nl2sql"> GitHub </a> </div> <h2 id="项目背景">项目背景</h2>
+<p>这是一个面向制造业场景的 NL2SQL 智能问数竞赛项目。目标不是把公开题写成固定模板，而是把自然语言问题转成可执行 SQL，并输出可信结果、解释和洞察。</p>
+<p>我把它作为受控 AI 工程项目来做：模型可以参与候选生成，但不能直接绕过 schema 检索、结构化 IR、SQL guardrails、执行校验和结果契约。</p>
+<h2 id="我的工作">我的工作</h2>
+<ul>
+<li>独立搭建受控 NL2SQL 工程框架，避免直接依赖裸 LLM 生成 SQL。</li>
+<li>设计自然语言解析、schema 检索、join path、结构化 IR、SQL compiler、语义检查和结果检查链路。</li>
+<li>建立公开题、近邻扰动和 hidden-like benchmark，用于判断系统是否具备泛化能力。</li>
+<li>维护能力地图、实验报告、提交包构建脚本和本地验证命令。</li>
+</ul>
+<h2 id="方法与实现">方法与实现</h2>
+<p>项目的核心链路是：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>自然语言问题</span></span>
+<span class="line"><span>  -> deterministic / LLM-assisted IR candidate</span></span>
+<span class="line"><span>  -> schema linker + SQL guardrails</span></span>
+<span class="line"><span>  -> controlled SQL compiler</span></span>
+<span class="line"><span>  -> SQLite execution + result contract</span></span>
+<span class="line"><span>  -> truthfulness gate + benchmark feedback</span></span></code></pre>
+<p>这个设计把不可控的“模型一次性写 SQL”拆成多个可验证环节。每一步都要留下失败原因：是 schema miss、catalog miss、join path 不支持、compiler 不能表达，还是结果契约不匹配。</p>
+<h2 id="公开边界">公开边界</h2>
+<p>比赛结果尚未公布，所以这里只写“独立开发/参赛项目/结果待公布”。不公开未发布分数、隐藏数据、提交包、平台账号、key 文件或原始题面细节。</p>
+<h2 id="复盘">复盘</h2>
+<p>这个项目最适合展示我对 AI Agent 工程的判断：真正可靠的系统不是让模型自由发挥，而是给模型一个受控的结构化出口，再用执行结果、语义契约和 benchmark 把输出收回来。</p> </article>  </main> <footer class="site-footer"> <span>© 2026 yourskenny</span> <span> <a href="https://github.com/yourskenny">GitHub</a> ·
+<a href="mailto:2023302111391@whu.edu.cn">Email</a> </span> </footer> </body></html>

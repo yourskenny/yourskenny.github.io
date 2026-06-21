@@ -1,0 +1,19 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AI PR Review Assistant | 项目</title><link rel="canonical" href="https://yourskenny.top/projects/ai-pr-review-assistant/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta name="description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:type" content="website"><meta property="og:title" content="AI PR Review Assistant | 项目"><meta property="og:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:url" content="https://yourskenny.top/projects/ai-pr-review-assistant/"><meta property="og:image" content="https://yourskenny.top/og-image.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="AI PR Review Assistant | 项目"><meta name="twitter:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta name="twitter:image" content="https://yourskenny.top/og-image.svg"><link rel="stylesheet" href="/_astro/BaseLayout.3F819qcq.css"></head> <body> <header class="site-header"> <a class="brand" href="/" aria-label="返回首页"> <span class="brand-mark">YK</span> <span class="brand-text">yourskenny</span> </a> <nav aria-label="主导航"> <a href="/">首页</a><a href="/projects/">项目</a><a href="/interview/">面试项目</a><a href="/courses/">课程</a><a href="/blog/">博客</a><a href="/research/">研究</a><a href="/about/">关于</a> </nav> </header> <main>  <article class="prose"> <a class="back-link" href="/projects/">返回项目列表</a> <p class="eyebrow">独立开发，产品定位、核心实现、Dashboard、报告与演示材料</p> <h1>AI PR Review Assistant</h1> <p class="lead">面向 GitHub Pull Request 的 AI 代码评审工具，先解析 PR metadata 和 diff，再绑定新增行证据、运行低噪声规则、控制上下文预算并输出 Markdown / JSON / SARIF 报告。</p> <div class="detail-meta"> <span>竞赛项目</span> <span>resume-records + AI PR Review workspace</span> </div> <div class="tags"> <span>AI Engineering</span><span>GitHub API</span><span>PR Review</span><span>Diff Parsing</span><span>SARIF</span><span>FastAPI</span><span>Typer</span> </div> <div class="detail-links" aria-label="相关链接"> <a class="button ghost" href="https://github.com/yourskenny/AI-PR-Review-Assistant"> GitHub </a> </div> <h2 id="项目背景">项目背景</h2>
+<p>这是一个面向比赛作品开发的 GitHub Pull Request 代码评审工具。用户输入 PR URL 后，系统获取 PR 元数据和 diff，生成变更总结、风险识别和 Review 建议。</p>
+<p>我没有把它做成“把 diff 直接丢给模型”的自由文本工具，而是先结构化解析 PR，再让规则和 AI 分别承担适合的职责。</p>
+<h2 id="我的工作">我的工作</h2>
+<ul>
+<li>独立完成项目设计、核心实现、README、评测材料和 demo 准备。</li>
+<li>实现 GitHub PR metadata / patch 获取、diff 解析、新增行号绑定、上下文预算控制和报告生成。</li>
+<li>设计规则优先的低噪声 finding 结构，保留 severity、confidence、source、evidence 和 recommendation。</li>
+<li>提供 AI JSON fallback、Markdown / JSON / SARIF 输出、Dashboard 和可选 GitHub comment 能力。</li>
+<li>保留无模型 key 时的本地启发式降级路径，确保 demo 和基础评审流程可运行。</li>
+</ul>
+<h2 id="方法与实现">方法与实现</h2>
+<p>系统先从 GitHub REST API 获取 PR 文件级 diff，再按预算保留必要上下文。高置信风险优先由本地规则识别，AI 负责总结、解释和生成更自然的 Review brief。模型返回非法 JSON 或 API 失败时，系统会降级到本地报告，不让 CLI 中断。</p>
+<p>输出侧保留多种格式：Markdown 方便人读，JSON 方便自动化，SARIF 方便未来接入代码扫描生态，Dashboard 方便评委或 reviewer 快速浏览。</p>
+<h2 id="公开边界">公开边界</h2>
+<p>七牛云暑期训练营比赛结果尚未公布，所以这里只写“独立开发/参赛项目/结果待公布”。不写获奖、不写排名。</p>
+<h2 id="复盘">复盘</h2>
+<p>这个项目的核心价值是证据链：AI 可以帮 reviewer 总结和表达，但一条可执行的评审建议仍然要能追溯到 PR、文件、hunk 和新增行。</p> </article>  </main> <footer class="site-footer"> <span>© 2026 yourskenny</span> <span> <a href="https://github.com/yourskenny">GitHub</a> ·
+<a href="mailto:2023302111391@whu.edu.cn">Email</a> </span> </footer> </body></html>
