@@ -16,22 +16,22 @@ const posts = (await getCollection("blog")).sort(
 
 const representativeProjectConfigs = [
   {
-    id: "local-gsd-three-agent-orchestration",
-    label: "代表项目 01 · Agent 方向",
-    signal: "本地多 Agent 编排、MCP 桥接、可观测性与运行手册",
-    tools: ["Codex", "Claude Code", "LiteLLM", "MCP", "AstrBot", "Phoenix"]
+    id: "lcfc-nl2sql-intelligent-query",
+    label: "代表项目 01 · Agent / NL2SQL",
+    signal: "受控 IR、SQL compiler、结果契约、benchmark 与提交校验",
+    tools: ["Python", "SQLite", "IR", "SQL Guardrails", "Benchmark", "Truthfulness Gate"]
   },
   {
-    id: "industrial-feo-prediction",
-    label: "代表项目 02 · 成熟落地",
-    signal: "工业多模态预测、模型封装、Web 演示与质量评估",
-    tools: ["PyTorch", "YOLO", "Swin Transformer", "TIMM", "Flask", "Chart.js"]
+    id: "ai-pr-review-assistant",
+    label: "代表项目 02 · 开发者工具",
+    signal: "GitHub PR diff 解析、低噪声 finding、SARIF 与 Dashboard",
+    tools: ["GitHub API", "Typer", "FastAPI", "SARIF", "Dashboard", "pytest"]
   },
   {
-    id: "yahaha-agent-arcade",
-    label: "代表项目 03 · 面试交付",
-    signal: "三天 MVP、Agent 生成闭环、对象存储与质量门禁",
-    tools: ["React", "Vite", "Node.js", "SQLite", "Object Storage", "Agent Harness"]
+    id: "marketing-agent-workbench",
+    label: "代表项目 03 · 业务 Agent",
+    signal: "商贸营销智能体、工作流编排、上下文管理与 API 接入边界",
+    tools: ["LLM Agent", "Workflow", "REST API", "Context", "LangGraph", "RAG"]
   }
 ];
 
@@ -54,7 +54,7 @@ const representativeProjects = representativeProjectConfigs.flatMap((config) => 
   ];
 });
 
-const commonAiTools = ["Codex", "Claude Code", "LiteLLM", "MCP", "Phoenix", "Dify", "Qwen-VL", "LangChain4j"];
+const commonAiTools = ["Codex", "Claude Code", "LiteLLM", "MCP", "NL2SQL", "PR Review", "Phoenix", "Qwen-VL"];
 ---
 
 <BaseLayout
@@ -67,8 +67,8 @@ const commonAiTools = ["Codex", "Claude Code", "LiteLLM", "MCP", "Phoenix", "Dif
       <h1>Hay, hermanos, muchísimo que hacer.</h1>
       <p class="poem-credit">César Vallejo · Los nueve monstruos</p>
       <p class="hero-copy">
-        我是 yourskenny，武汉大学 2023 级人工智能专业学生。这里整理我在 AI Agent、开发者工具、
-        工业视觉、多模态交互、课程复习工作流和短周期面试交付中的项目、课程归档与技术笔记。
+        我是 yourskenny，武汉大学 2023 级人工智能专业学生。这里整理我在 AI Agent、受控 NL2SQL、
+        AI PR Review、商贸智能体、工业视觉、游戏开发、课程复习工作流和短周期面试交付中的项目、课程归档与技术笔记。
       </p>
       <div class="hero-actions">
         <a class="button primary" href="/projects/">查看项目</a>
@@ -108,9 +108,10 @@ const commonAiTools = ["Codex", "Claude Code", "LiteLLM", "MCP", "Phoenix", "Dif
         <span>RAG</span>
         <span>MCP</span>
         <span>Agent</span>
+        <span>NL2SQL</span>
+        <span>PR Review</span>
         <span>YOLO</span>
-        <span>DQN</span>
-        <span>Robotics</span>
+        <span>VQNet</span>
       </div>
     </aside>
   </section>
@@ -178,7 +179,7 @@ const commonAiTools = ["Codex", "Claude Code", "LiteLLM", "MCP", "Phoenix", "Dif
     <a class="bento-card large" href="/projects/">
       <span class="section-label">Projects</span>
       <h2>从真实项目中抽象研究问题和工程闭环。</h2>
-      <p>作品集覆盖 Agent 编排、工业预测、视障辅助、SCP Agent、开发者工具、复习工作流和安全代码修复等方向。</p>
+      <p>作品集覆盖 LCFC 受控 NL2SQL、AI PR Review、商贸营销智能体、工业预测、游戏开发、CCF 本源杯和面试交付等方向。</p>
     </a>
     <a class="bento-card" href="/interview/">
       <span class="section-label">Interview</span>
@@ -218,7 +219,7 @@ const commonAiTools = ["Codex", "Claude Code", "LiteLLM", "MCP", "Phoenix", "Dif
     <div class="evidence-list">
       <article>
         <span>独立抽象</span>
-        <p>能体现完整系统、真实场景或明确技术闭环的项目，单独进入作品集，例如 GSD、FeO、Lumina、YAHAHA。</p>
+        <p>能体现完整系统、真实场景或明确技术闭环的项目，单独进入作品集，例如 LCFC、AI PR Review、商贸智能体、FeO、Lumina。</p>
       </article>
       <article>
         <span>课程归档</span>
@@ -227,6 +228,10 @@ const commonAiTools = ["Codex", "Claude Code", "LiteLLM", "MCP", "Phoenix", "Dif
       <article>
         <span>面试项目</span>
         <p>面试或试标交付单独归档，保留方法、边界和验证链路，不公开对方原始材料。</p>
+      </article>
+      <article>
+        <span>弱经历复盘</span>
+        <p>非主导、未获奖或失败实验不包装成核心项目，改写成边界清楚的复盘，例如 YOLO-FD 和开物扫雷。</p>
       </article>
     </div>
   </section>

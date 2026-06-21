@@ -20,11 +20,18 @@ const requiredPaths = [
   "src/pages/research/index.astro",
   "src/pages/about.astro",
   "src/content/projects/industrial-feo-prediction.md",
+  "src/content/projects/lcfc-nl2sql-intelligent-query.md",
+  "src/content/projects/ai-pr-review-assistant.md",
+  "src/content/projects/echogrid-minigame.md",
+  "src/content/projects/marketing-agent-workbench.md",
+  "src/content/projects/ccf-origin-uni-2026.md",
   "src/content/projects/yahaha-agent-arcade.md",
   "src/content/projects/t3-agent-rubric-delivery.md",
   "src/content/projects/lumina-visual-assistant.md",
   "src/content/projects/course-archive-digital-logic.md",
   "src/content/blog/junior-spring-exam-review-workflow.md",
+  "src/content/blog/yolo-fish-detection-failure-retrospective.md",
+  "src/content/blog/kaiwu-sweeper-service-outsourcing-retrospective.md",
   "src/content/blog/project-retrospective-template.md",
   "src/content/blog/codex-autoresearch-windows-skill.md",
   "docs/usage-manual.md",
@@ -69,9 +76,11 @@ assert.match(home, /课程归档/);
 assert.match(home, /面试项目/);
 assert.match(home, /代表项目与工具链/);
 assert.match(home, /representativeProjects/);
-assert.match(home, /local-gsd-three-agent-orchestration/);
-assert.match(home, /industrial-feo-prediction/);
-assert.match(home, /yahaha-agent-arcade/);
+assert.match(home, /lcfc-nl2sql-intelligent-query/);
+assert.match(home, /ai-pr-review-assistant/);
+assert.match(home, /marketing-agent-workbench/);
+assert.match(home, /受控 NL2SQL/);
+assert.match(home, /AI PR Review/);
 assert.match(home, /常用 AI 工具/);
 assert.match(home, /Codex/);
 assert.match(home, /Claude Code/);
@@ -116,6 +125,36 @@ const reviewWorkflowPost = readFileSync("src/content/blog/junior-spring-exam-rev
 assert.match(reviewWorkflowPost, /从聊天式复习到可追踪复习工作流/);
 assert.match(reviewWorkflowPost, /category: "项目复盘"/);
 assert.match(reviewWorkflowPost, /junior-spring-exam-review/);
+
+const lcfcProject = readFileSync("src/content/projects/lcfc-nl2sql-intelligent-query.md", "utf8");
+assert.match(lcfcProject, /LCFC NL2SQL/);
+assert.match(lcfcProject, /结果待公布/);
+assert.match(lcfcProject, /不公开未发布分数/);
+
+const aiPrProject = readFileSync("src/content/projects/ai-pr-review-assistant.md", "utf8");
+assert.match(aiPrProject, /AI PR Review Assistant/);
+assert.match(aiPrProject, /SARIF/);
+assert.match(aiPrProject, /结果尚未公布/);
+
+const echoGridProject = readFileSync("src/content/projects/echogrid-minigame.md", "utf8");
+assert.match(echoGridProject, /EchoGrid/);
+assert.match(echoGridProject, /结果待公布/);
+
+const marketingProject = readFileSync("src/content/projects/marketing-agent-workbench.md", "utf8");
+assert.match(marketingProject, /商贸大模型营销智能体/);
+assert.match(marketingProject, /不公开原始需求文档/);
+
+const ccfProject = readFileSync("src/content/projects/ccf-origin-uni-2026.md", "utf8");
+assert.match(ccfProject, /三等奖/);
+assert.match(ccfProject, /非主导/);
+
+const yoloPost = readFileSync("src/content/blog/yolo-fish-detection-failure-retrospective.md", "utf8");
+assert.match(yoloPost, /失败复盘/);
+assert.match(yoloPost, /不把它包装成高性能检测成果/);
+
+const kaiwuPost = readFileSync("src/content/blog/kaiwu-sweeper-service-outsourcing-retrospective.md", "utf8");
+assert.match(kaiwuPost, /非主导/);
+assert.match(kaiwuPost, /不是获奖经历/);
 
 const robots = readFileSync("public/robots.txt", "utf8");
 assert.match(robots, /Sitemap:/);
