@@ -81,12 +81,23 @@ function parseArgs(argv) {
   return { folder, options };
 }
 
+export function commandInvocationFor(command, args, options = {}) {
+  const needsShell =
+    process.platform === "win32" && /\.(cmd|bat)$/i.test(command);
+
+  return needsShell
+    ? { command: "cmd.exe", args: ["/d", "/s", "/c", command, ...args], options }
+    : { command, args, options };
+}
+
 function run(command, args, options = {}) {
-  execFileSync(command, args, { stdio: "inherit", ...options });
+  const invocation = commandInvocationFor(command, args, { stdio: "inherit", ...options });
+  execFileSync(invocation.command, invocation.args, invocation.options);
 }
 
 function read(command, args) {
-  return execFileSync(command, args, { encoding: "utf8" }).trim();
+  const invocation = commandInvocationFor(command, args, { encoding: "utf8" });
+  return execFileSync(invocation.command, invocation.args, invocation.options).trim();
 }
 
 function verifySourceBranch() {

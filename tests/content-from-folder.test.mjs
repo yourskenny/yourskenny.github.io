@@ -10,6 +10,7 @@ import {
   slugify,
   writeGeneratedContent
 } from "../scripts/content-from-folder-core.mjs";
+import { commandInvocationFor } from "../scripts/content-from-folder.mjs";
 
 function makeTempFolder(name) {
   return mkdtempSync(join(tmpdir(), `ai-portfolio-${name}-`));
@@ -103,6 +104,18 @@ function cleanup(...paths) {
 {
   assert.equal(slugify("Computer Vision 课程 Labs"), "computer-vision-ke-cheng-labs");
   assert.equal(slugify("  Agent_Workflow Toolkit!  "), "agent-workflow-toolkit");
+}
+
+{
+  const invocation = commandInvocationFor("npm.cmd", ["--version"], { stdio: "inherit" });
+  if (process.platform === "win32") {
+    assert.equal(invocation.command, "cmd.exe");
+    assert.deepEqual(invocation.args, ["/d", "/s", "/c", "npm.cmd", "--version"]);
+  } else {
+    assert.equal(invocation.command, "npm.cmd");
+    assert.deepEqual(invocation.args, ["--version"]);
+  }
+  assert.equal(invocation.options.stdio, "inherit");
 }
 
 {

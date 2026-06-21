@@ -26,6 +26,12 @@ const representativeProjectConfigs = [
     label: "代表项目 02 · 成熟落地",
     signal: "工业多模态预测、模型封装、Web 演示与质量评估",
     tools: ["PyTorch", "YOLO", "Swin Transformer", "TIMM", "Flask", "Chart.js"]
+  },
+  {
+    id: "yahaha-agent-arcade",
+    label: "代表项目 03 · 面试交付",
+    signal: "三天 MVP、Agent 生成闭环、对象存储与质量门禁",
+    tools: ["React", "Vite", "Node.js", "SQLite", "Object Storage", "Agent Harness"]
   }
 ];
 
@@ -61,11 +67,12 @@ const commonAiTools = ["Codex", "Claude Code", "LiteLLM", "MCP", "Phoenix", "Dif
       <h1>Hay, hermanos, muchísimo que hacer.</h1>
       <p class="poem-credit">César Vallejo · Los nueve monstruos</p>
       <p class="hero-copy">
-        我是 yourskenny，武汉大学 2023 级人工智能专业学生。这里整理我在 Agent、计算机视觉、
-        深度学习、强化学习、具身智能和自然语言处理方向的项目、课程归档与技术笔记。
+        我是 yourskenny，武汉大学 2023 级人工智能专业学生。这里整理我在 AI Agent、开发者工具、
+        工业视觉、多模态交互、课程复习工作流和短周期面试交付中的项目、课程归档与技术笔记。
       </p>
       <div class="hero-actions">
         <a class="button primary" href="/projects/">查看项目</a>
+        <a class="button" href="/interview/">面试项目</a>
         <a class="button" href="/courses/">课程归档</a>
         <a class="button ghost" href="mailto:2023302111391@whu.edu.cn">联系我</a>
       </div>
@@ -79,7 +86,7 @@ const commonAiTools = ["Codex", "Claude Code", "LiteLLM", "MCP", "Phoenix", "Dif
       <div class="proof-grid">
         <div>
           <strong>{portfolioProjects.length}</strong>
-          <span>独立项目</span>
+          <span>作品项目</span>
         </div>
         <div>
           <strong>{courseProjects.length}</strong>
@@ -171,7 +178,12 @@ const commonAiTools = ["Codex", "Claude Code", "LiteLLM", "MCP", "Phoenix", "Dif
     <a class="bento-card large" href="/projects/">
       <span class="section-label">Projects</span>
       <h2>从真实项目中抽象研究问题和工程闭环。</h2>
-      <p>作品集覆盖多 Agent 编排、工业预测、视障辅助、SCP Agent、GTD、机器人控制和安全代码修复等方向。</p>
+      <p>作品集覆盖 Agent 编排、工业预测、视障辅助、SCP Agent、开发者工具、复习工作流和安全代码修复等方向。</p>
+    </a>
+    <a class="bento-card" href="/interview/">
+      <span class="section-label">Interview</span>
+      <h2>面试项目</h2>
+      <p>Rubric 试标和 YAHAHA 三天 MVP 单独归档，展示短周期交付、验证命令和公开边界。</p>
     </a>
     <a class="bento-card" href="/courses/">
       <span class="section-label">Courses</span>
@@ -206,11 +218,15 @@ const commonAiTools = ["Codex", "Claude Code", "LiteLLM", "MCP", "Phoenix", "Dif
     <div class="evidence-list">
       <article>
         <span>独立抽象</span>
-        <p>能体现完整系统、真实场景或明确技术闭环的项目，单独进入作品集，例如 FeO、Lumina、SCP Agent。</p>
+        <p>能体现完整系统、真实场景或明确技术闭环的项目，单独进入作品集，例如 GSD、FeO、Lumina、YAHAHA。</p>
       </article>
       <article>
         <span>课程归档</span>
         <p>以课堂训练、作业集合、基础实验为主的内容，统一放入课程大类，证明基础但不稀释代表项目。</p>
+      </article>
+      <article>
+        <span>面试项目</span>
+        <p>面试或试标交付单独归档，保留方法、边界和验证链路，不公开对方原始材料。</p>
       </article>
     </div>
   </section>
