@@ -5,6 +5,12 @@
         <description>AI 项目复盘、论文笔记和工程实践</description>
         <link>https://yourskenny.top/</link>
         <item>
+        <title><![CDATA[从聊天式复习到可追踪复习工作流]]></title>
+        <description><![CDATA[把临时聊天式复习整理成课程目录、模块优先级、进度 tracker、错题台账、方法卡和交接记录的一套可复用学习工作流。]]></description>
+        <link>https://yourskenny.top/blog/junior-spring-exam-review-workflow/</link>
+        <guid>https://yourskenny.top/blog/junior-spring-exam-review-workflow/</guid>
+        <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+      </item><item>
         <title><![CDATA[计算机视觉课程总复盘：从分类、分割到检测与视频理解]]></title>
         <description><![CDATA[把四个计算机视觉实验和一个 YOLO 结课报告实验抽象成一条能力路径：数据处理、模型结构、评估指标、GPU 训练、失败样本诊断和作品集叙事。]]></description>
         <link>https://yourskenny.top/blog/computer-vision-course-lab-retrospective/</link>

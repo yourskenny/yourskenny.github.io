@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>从聊天式复习到可追踪复习工作流 | 博客</title><link rel="canonical" href="https://yourskenny.top/blog/junior-spring-exam-review-workflow/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta name="description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:type" content="website"><meta property="og:title" content="从聊天式复习到可追踪复习工作流 | 博客"><meta property="og:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:url" content="https://yourskenny.top/blog/junior-spring-exam-review-workflow/"><meta property="og:image" content="https://yourskenny.top/og-image.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="从聊天式复习到可追踪复习工作流 | 博客"><meta name="twitter:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta name="twitter:image" content="https://yourskenny.top/og-image.svg"><link rel="stylesheet" href="/_astro/BaseLayout.3F819qcq.css"></head> <body> <header class="site-header"> <a class="brand" href="/" aria-label="返回首页"> <span class="brand-mark">YK</span> <span class="brand-text">yourskenny</span> </a> <nav aria-label="主导航"> <a href="/">首页</a><a href="/projects/">项目</a><a href="/interview/">面试项目</a><a href="/courses/">课程</a><a href="/blog/">博客</a><a href="/research/">研究</a><a href="/about/">关于</a> </nav> </header> <main>  <article class="prose"> <a class="back-link" href="/blog/">返回博客列表</a> <p class="eyebrow">项目复盘</p> <h1>从聊天式复习到可追踪复习工作流</h1> <p class="lead">把临时聊天式复习整理成课程目录、模块优先级、进度 tracker、错题台账、方法卡和交接记录的一套可复用学习工作流。</p> <h2 id="背景">背景</h2>
+<p><code>junior-spring-exam-review</code> 是我为了大三下考试课建立的复习资料与进程仓库。最初需求很朴素：资料散在课件、往年题、聊天记录和临时笔记里，复习时很容易从“问一个知识点”变成“下一步不知道该看什么”。</p>
+<p>后来我把它整理成一套更像工程项目的复习工作流：每门课有目录、模块拆分、资料索引、进度记录、错题台账、方法卡和每日复盘。这样做不是为了把学习复杂化，而是为了让复习状态可以被追踪、被交接、被压缩。</p>
+<h2 id="为什么不能只靠聊天">为什么不能只靠聊天</h2>
+<p>聊天式复习的优点是快，缺点是状态容易丢：</p>
+<ul>
+<li>今天讲懂的题型，明天不一定知道是否已经掌握。</li>
+<li>资料来源很多，但临考前需要的是高权重材料，不是所有材料。</li>
+<li>错题如果只留在聊天里，很难二刷。</li>
+<li>复习节奏一旦中断，下一次恢复时需要重新判断优先级。</li>
+<li>让 AI 帮忙讲题时，如果没有 live tracker，很容易重复讲低优先级内容。</li>
+</ul>
+<p>所以我把复习对象拆成了“资料、模块、题型、状态、错题、方法卡”几层，让每次对话都能落回仓库里的稳定文件。</p>
+<h2 id="仓库结构">仓库结构</h2>
+<p>这个仓库的核心结构是：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>courses/           按课程存放资料、重点清单和复习记录</span></span>
+<span class="line"><span>exam-info/         考试时间、地点、范围、形式和注意事项</span></span>
+<span class="line"><span>review-progress/   总体计划、每日进度和周复盘</span></span>
+<span class="line"><span>notes/             跨课程总结、公式、概念表和背诵材料</span></span>
+<span class="line"><span>past-papers/       往年题、样卷、模拟题和答案</span></span>
+<span class="line"><span>mistakes/          错题、易混点和复盘记录</span></span>
+<span class="line"><span>assets/            截图、扫描件和辅助材料</span></span></code></pre>
+<p>每门课使用同一套方法：先把课程拆成 P0/P1/P2 模块，再记录每个模块的资料来源、典型题型、掌握状态和下一步动作。这样临近考试时可以压缩低收益内容，优先处理高频、易错、能提分快的题型。</p>
+<h2 id="工作流">工作流</h2>
+<p>我后来固定了一套复习循环：</p>
+<ol>
+<li>先看 live progress tracker，确认当前模块、掌握状态和考试时间。</li>
+<li>选一个代表题型，不一次性铺开整章。</li>
+<li>用一句规则和一个极小例子讲清模式。</li>
+<li>立刻做短 drill，错了就回到同一题型纠正。</li>
+<li>把错误写入 mistake log，把稳定解法写入方法卡。</li>
+<li>每次会话结束时更新 tracker，留下下一次恢复入口。</li>
+</ol>
+<p>这个循环的重点是“短反馈”和“状态落盘”。AI 可以负责讲解和纠错，但复习系统必须保存进度，否则下一次仍然会从模糊状态开始。</p>
+<h2 id="可迁移经验">可迁移经验</h2>
+<p>这套方法最有价值的部分不是某一门课的资料，而是几个可迁移原则：</p>
+<ul>
+<li>资料权重先行：临考前不是资料越多越好，而是要知道哪些资料最该看。</li>
+<li>模块优先级明确：P0 是必须拿下，P1 是提分重点，P2 是有余力再看。</li>
+<li>题型比章节更适合复习：考试通常考的是可识别题型，而不是目录标题。</li>
+<li>错题必须结构化：记录错因、正确方法、二刷时间和是否复发。</li>
+<li>讲解要能回写：一次对话的结论必须进入 tracker、方法卡或错题表。</li>
+<li>交接要冷启动友好：下一次打开仓库，应能知道从哪里继续。</li>
+</ul>
+<h2 id="复盘">复盘</h2>
+<p>这个复习仓库让我意识到，学习工作流和 Agent 工程有相似的问题：模型或老师能不能讲明白只是一部分，更关键的是状态、边界、证据和反馈循环。</p>
+<p>如果没有 tracker，AI 辅导会变成一次次孤立对话；有了 tracker、错题表和方法卡，复习才会从“临时问答”变成“可追踪系统”。这也是我后来做知识库型 Agent、课程智能体和标准化工作流时一直保留的思路：先让材料结构化，再让对话服务于状态更新。</p>
+<h2 id="相关仓库">相关仓库</h2>
+<ul>
+<li><a href="https://github.com/yourskenny/junior-spring-exam-review">junior-spring-exam-review</a></li>
+</ul> </article>  </main> <footer class="site-footer"> <span>© 2026 yourskenny</span> <span> <a href="https://github.com/yourskenny">GitHub</a> ·
+<a href="mailto:2023302111391@whu.edu.cn">Email</a> </span> </footer> </body></html>

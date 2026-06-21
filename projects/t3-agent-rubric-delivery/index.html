@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>T3-Agent Rubric 试标交付包 | 项目</title><link rel="canonical" href="https://yourskenny.top/projects/t3-agent-rubric-delivery/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta name="description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:type" content="website"><meta property="og:title" content="T3-Agent Rubric 试标交付包 | 项目"><meta property="og:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:url" content="https://yourskenny.top/projects/t3-agent-rubric-delivery/"><meta property="og:image" content="https://yourskenny.top/og-image.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="T3-Agent Rubric 试标交付包 | 项目"><meta name="twitter:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta name="twitter:image" content="https://yourskenny.top/og-image.svg"><link rel="stylesheet" href="/_astro/BaseLayout.3F819qcq.css"></head> <body> <header class="site-header"> <a class="brand" href="/" aria-label="返回首页"> <span class="brand-mark">YK</span> <span class="brand-text">yourskenny</span> </a> <nav aria-label="主导航"> <a href="/">首页</a><a href="/projects/">项目</a><a href="/interview/">面试项目</a><a href="/courses/">课程</a><a href="/blog/">博客</a><a href="/research/">研究</a><a href="/about/">关于</a> </nav> </header> <main>  <article class="prose"> <a class="back-link" href="/projects/">返回项目列表</a> <p class="eyebrow">规则理解、评测设计、交付包组织与自检体系</p> <h1>T3-Agent Rubric 试标交付包</h1> <p class="lead">面试试标项目：把代码类 Agent 任务拆成规则理解、先做题、答案台账、rubric 原子化、自检清单和提交包装的一套可复核交付流程。</p> <div class="detail-meta"> <span>面试项目</span> <span>C:/coding/rubric</span> </div> <div class="tags"> <span>Agent Evaluation</span><span>Rubric</span><span>QA</span><span>Documentation</span><span>Workflow</span><span>Excel</span> </div>  <h2 id="项目背景">项目背景</h2>
+<p>这是一次代码类 Agent rubric 试标面试项目。表面任务是“写 rubric”，实际考察的是能否把复杂、模糊、材料不完整的任务转成可自动评测、可复查、可质检的判断标准。</p>
+<p>我没有把它当成一次临时填表，而是整理成一套可执行交付包：先理解规则和题目约束，实际完成任务得到标准答案，再从答案反推 rubric，并用自检清单消除泛化、不原子、重复和标签错误。</p>
+<h2 id="交付内容">交付内容</h2>
+<p>公开可描述的交付结构包括：</p>
+<ul>
+<li>任务拆解与执行方案：解释对方真正想考察的能力、交付优先级和执行阶段。</li>
+<li>项目交付说明：面向 HR/业务方说明方法、当前边界和材料缺口。</li>
+<li>任务理解与约束清单模板：逐题记录输出文件、显式约束、隐式约束和风险点。</li>
+<li>最终答案与证据台账模板：先得到可复核答案，再写评分点。</li>
+<li>rubric 自检清单：检查完整性、精确性、原子化、可判断性、标签和表达。</li>
+<li>规则口径与示例 rubric：统一 <code>Must/Nice</code>、<code>Objective/Subjective</code>、<code>Explicit/Implicit</code> 判断。</li>
+<li>Excel 作业模板：把约束台账、答案证据台账、Rubric 表和自检清单放到可筛选表格中。</li>
+</ul>
+<h2 id="方法设计">方法设计</h2>
+<p>我采用“答案合同化”的方法写 rubric。每道题先确认：</p>
+<ul>
+<li>最终检查哪个文件或产物。</li>
+<li>哪些字段、路径、数值、枚举、ID 或条件句会影响答案。</li>
+<li>哪些约束来自题面或文件，哪些来自实际计算或推理。</li>
+<li>最终答案是否唯一、是否可客观判断、是否能穷尽。</li>
+</ul>
+<p>然后再把答案拆成 judge 模型可以直接执行的检查条款。每条 rubric 只检查一个点，并尽量写出明确路径、字段和值，避免“正确、完整、合理、符合源数据”等无法直接判断的泛话。</p>
+<h2 id="质量控制">质量控制</h2>
+<p>这个交付包的核心价值不在于把规则材料复述一遍，而在于让提交前的质量控制可执行：</p>
+<ul>
+<li>用约束台账防止漏掉题面、文件和模板要求。</li>
+<li>用答案台账保证 rubric 从真实答案反推，而不是凭感觉写。</li>
+<li>用 bad case 清单检查一条 rubric 是否混合多个判断点。</li>
+<li>用标签口径统一 <code>Objective/Subjective</code>、<code>Explicit/Implicit</code> 和 <code>Must/Nice</code>。</li>
+<li>用自检清单检查路径、字段名、大小写、数值精度、枚举和条件句。</li>
+</ul>
+<h2 id="公开边界">公开边界</h2>
+<p>这个页面只公开方法、交付结构和可迁移经验，不公开对方面试平台地址、原始规则材料、视频摘要原文、正式题包、答案细节或提交文件内容。</p>
+<p>Rubric 类项目的敏感点很高：真正有展示价值的是“如何把评测任务工程化”，而不是把题目材料搬到公开网站。</p>
+<h2 id="展示重点">展示重点</h2>
+<p>这个项目适合放在“面试项目”板块，因为它能体现短周期交付里的几个关键能力：读规则、拆任务、做事实验证、设计可执行评测标准、留证据链、写清楚边界，并把一次试标整理成可复用模板。</p>
+<h2 id="复盘">复盘</h2>
+<p>这次项目让我更明确地看到，很多 Agent 评测任务不是“主观判断模型好不好”，而是要把答案、证据和评分口径绑定起来。好的 rubric 应该像一个小型测试合同：检查对象明确、期望结果明确、判断方式明确，并且能被另一个人或 judge 模型复核。</p> </article>  </main> <footer class="site-footer"> <span>© 2026 yourskenny</span> <span> <a href="https://github.com/yourskenny">GitHub</a> ·
+<a href="mailto:2023302111391@whu.edu.cn">Email</a> </span> </footer> </body></html>

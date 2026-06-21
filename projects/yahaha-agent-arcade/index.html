@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>YAHAHA Agent Arcade | 项目</title><link rel="canonical" href="https://yourskenny.top/projects/yahaha-agent-arcade/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta name="description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:type" content="website"><meta property="og:title" content="YAHAHA Agent Arcade | 项目"><meta property="og:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:url" content="https://yourskenny.top/projects/yahaha-agent-arcade/"><meta property="og:image" content="https://yourskenny.top/og-image.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="YAHAHA Agent Arcade | 项目"><meta name="twitter:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta name="twitter:image" content="https://yourskenny.top/og-image.svg"><link rel="stylesheet" href="/_astro/BaseLayout.3F819qcq.css"></head> <body> <header class="site-header"> <a class="brand" href="/" aria-label="返回首页"> <span class="brand-mark">YK</span> <span class="brand-text">yourskenny</span> </a> <nav aria-label="主导航"> <a href="/">首页</a><a href="/projects/">项目</a><a href="/interview/">面试项目</a><a href="/courses/">课程</a><a href="/blog/">博客</a><a href="/research/">研究</a><a href="/about/">关于</a> </nav> </header> <main>  <article class="prose"> <a class="back-link" href="/projects/">返回项目列表</a> <p class="eyebrow">全栈 MVP 设计、Agent Harness、对象存储与交付文档</p> <h1>YAHAHA Agent Arcade</h1> <p class="lead">三天面试 MVP：从 creator prompt 到 Agent 生成 playable bundle，再到对象存储、预览、发布、公开游玩、remix 和 creator dashboard 的完整闭环。</p> <div class="detail-meta"> <span>面试项目</span> <span>C:/coding/YAHAHA</span> </div> <div class="tags"> <span>Agent</span><span>React</span><span>Vite</span><span>Node.js</span><span>SQLite</span><span>Object Storage</span><span>Testing</span> </div>  <h2 id="项目背景">项目背景</h2>
+<p>这是一个面向全栈系统设计面试的三天 MVP。题目重点不是做一个静态游戏列表，而是证明一条高风险链路可以端到端跑通：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>creator prompt -> Agent task -> generated playable bundle -> object storage</span></span>
+<span class="line"><span>  -> preview -> publish -> public play -> remix -> creator dashboard</span></span></code></pre>
+<p>因此我把项目定位为“AI Native interactive game platform MVP”，围绕生成、存储、发布、游玩和创作者后台做最小但完整的产品闭环。</p>
+<h2 id="交付范围">交付范围</h2>
+<p>项目包含 React/Vite 前端、Node HTTP API、SQLite 元数据、对象存储抽象和本地 deterministic Agent Harness。主要页面包括 Home、Create、Play、Dashboard 和 Delivery。</p>
+<p>已经实现的核心能力：</p>
+<ul>
+<li>浏览、搜索、标签筛选和排序公开游戏。</li>
+<li>Demo login 后进入 creator 工作台。</li>
+<li>从 prompt 创建游戏生成任务，并轮询 <code>pending -> running -> succeeded</code> 状态。</li>
+<li>上传参考资产，并把资产作为生成上下文写入 manifest。</li>
+<li>生成可玩的 HTML bundle 和 manifest，而不是在前端硬编码游戏组件。</li>
+<li>将 bundle 存入本地对象存储，并用与 S3/MinIO 相同的 object-key contract 读取。</li>
+<li>Play 页面通过 sandboxed iframe 加载 <code>/storage/&#x3C;bundle_key></code>。</li>
+<li>支持 publish、play tracking、remix lineage 和 creator dashboard 统计。</li>
+<li>提供 API 文档、OpenAPI、系统设计、部署说明、demo script 和 closeout plan。</li>
+</ul>
+<h2 id="agent-harness">Agent Harness</h2>
+<p>为了让面试评审可以稳定复现，当前 Agent Harness 默认使用 deterministic local provider，而不是依赖不可控模型输出。它把一次生成拆成以下步骤：</p>
+<ul>
+<li><code>plan</code>：从 prompt 提取主题、玩法和约束。</li>
+<li><code>asset_review</code>：整理上传资产对生成的影响。</li>
+<li><code>generate</code>：选择 rhythm lane、orbital drift、defense grid、maze runner、collector dash 等可玩 archetype。</li>
+<li><code>validate</code>：检查 object key、bundle hash、manifest 和 sandbox readiness。</li>
+<li><code>quality_scorecard</code>：给 playable runtime、sandbox safety、prompt fit 和 asset use 打分。</li>
+<li><code>publish_gate</code>：判断生成结果是否允许 preview 和 publish。</li>
+</ul>
+<p>这让生成结果不是一个黑盒字符串，而是带有日志、manifest、hash 和质量门禁的可检查产物。</p>
+<h2 id="工程边界">工程边界</h2>
+<p>项目刻意把 MVP 边界写清楚，避免把面试项目包装成生产 SaaS：</p>
+<ul>
+<li>Demo authentication 代替 OAuth/JWT/cookie session。</li>
+<li>In-process generation task 代替 durable queue 和 worker。</li>
+<li>Local deterministic generation 代替生产级模型调优。</li>
+<li>Local object storage 代替同一 object-key contract 下的 S3/MinIO。</li>
+<li>iframe sandbox、path validation 和 hardening checklist 代表当前安全边界，生产还需要内容扫描、签名 URL、队列隔离和更细的授权。</li>
+</ul>
+<h2 id="验证方式">验证方式</h2>
+<p>交付文档中保留了完整质量门禁：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> lint</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> test</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> test:prod</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> build</span></span></code></pre>
+<p>CI 使用 <code>.github/workflows/ci.yml</code> 跑同样的验证链路。生产 smoke test 会构建 <code>dist/</code>、启动 Node server、检查首页静态资源缓存和 <code>/api/health</code>。</p>
+<h2 id="展示重点">展示重点</h2>
+<p>这个项目适合展示短周期面试交付能力：不是只把页面搭出来，而是把高风险链路、数据模型、API 合约、生成日志、质量门禁、部署路径和已知 tradeoff 一起交付。</p>
+<p>面试中我会重点讲三点：</p>
+<ol>
+<li>生成结果作为远程 bundle 存储和加载，证明产品链路不是静态假数据。</li>
+<li>Agent Harness 有日志、manifest、hash 和 quality scorecard，评审可以检查生成过程。</li>
+<li>MVP 明确承认 demo auth、in-process task 和 local provider 的边界，并给出生产替换路径。</li>
+</ol> </article>  </main> <footer class="site-footer"> <span>© 2026 yourskenny</span> <span> <a href="https://github.com/yourskenny">GitHub</a> ·
+<a href="mailto:2023302111391@whu.edu.cn">Email</a> </span> </footer> </body></html>
