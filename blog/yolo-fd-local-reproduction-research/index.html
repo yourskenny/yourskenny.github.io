@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>YOLO-FD 病鱼检测与分割的本地复现、实验和论文整理 | 博客</title><link rel="canonical" href="https://yourskenny.top/blog/yolo-fd-local-reproduction-research/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta name="description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:type" content="website"><meta property="og:title" content="YOLO-FD 病鱼检测与分割的本地复现、实验和论文整理 | 博客"><meta property="og:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:url" content="https://yourskenny.top/blog/yolo-fd-local-reproduction-research/"><meta property="og:image" content="https://yourskenny.top/og-image.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="YOLO-FD 病鱼检测与分割的本地复现、实验和论文整理 | 博客"><meta name="twitter:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta name="twitter:image" content="https://yourskenny.top/og-image.svg"><link rel="stylesheet" href="/_astro/BaseLayout.3F819qcq.css"></head> <body> <header class="site-header"> <a class="brand" href="/" aria-label="返回首页"> <span class="brand-mark">YK</span> <span class="brand-text">yourskenny</span> </a> <nav aria-label="主导航"> <a href="/">首页</a><a href="/projects/">项目</a><a href="/interview/">面试项目</a><a href="/courses/">课程</a><a href="/blog/">博客</a><a href="/research/">研究</a><a href="/about/">关于</a> </nav> </header> <main>  <article class="prose"> <a class="back-link" href="/blog/">返回博客列表</a> <p class="eyebrow">项目复盘</p> <h1>YOLO-FD 病鱼检测与分割的本地复现、实验和论文整理</h1> <p class="lead">一次完整的病鱼检测与分割复现实验：环境适配、推理验证、阈值扫描、消融、ONNX 部署、论文材料和停止规则都留下了证据。</p> <h2 id="先补充完整背景">先补充完整背景</h2>
+<p>YOLO-FD 的重点不是结果包装，而是本地项目已经完成了从环境配置、预训练权重推理、验证集评估、阈值扫描、分割基线、ONNX 导出、离线告警链路到论文材料整理的一整套流程。</p>
+<p>真正需要诚实表达的是另一件事：我们把链路跑通了，也做了很多严谨实验，但后续架构改动和调参没有稳定证明自己能超过接手时的强基准。因此它不适合包装成“模型效果大幅提升”的成果，更适合写成一次有数据、有排查、有停止规则的计算机视觉实验复盘。</p>
+<h2 id="跑通的工程链路">跑通的工程链路</h2>
+<p>项目最先卡在工程环境，而不是模型想法。为了在本地 Windows 和新显卡环境下跑通 YOLO-FD，我处理了多类兼容问题：</p>
+<ul>
+<li>梳理 <code>requirements.txt</code>，移除过旧的 <code>torchvision</code>、<code>protobuf</code> 强约束。</li>
+<li>用轻量 <code>ConvModule</code> 替代项目里对 <code>mmcv</code> 的强依赖，避开 Windows 编译问题。</li>
+<li>适配 PyTorch 2.6 之后 <code>torch.load(weights_only=True)</code> 的安全加载变化。</li>
+<li>修掉源码里硬编码 <code>.to("cuda")</code>、<code>device="cuda"</code> 的位置，让推理可以跟随实际设备运行。</li>
+<li>成功加载 <code>yolo-fd.pt</code>，对 <code>demo/v1.mp4</code> 完整推理并生成结果。</li>
+</ul>
+<p>这部分的价值不是“跑了一次命令”，而是把一个论文开源项目从依赖冲突、设备假设和版本变化里救出来，形成可复现实验环境。</p>
+<h2 id="实验和数据">实验和数据</h2>
+<p>后续实验不是盲目调参，而是围绕验证集、阈值、基线、部署形态和错误样本做了一组可追踪检查。</p>
+<p>关键结果包括：</p>
+<ul>
+<li>原始 <code>yolo-fd.pt</code> 验证基线约为 <code>mAP50=0.9327</code>、<code>mAP50-95=0.7602</code>、<code>mIoU=0.4996</code>。</li>
+<li>阈值扫描中，<code>conf=0.05 / iou=0.50</code> 一组达到约 <code>mAP50=0.9359</code>、<code>mAP50-95=0.7799</code>。</li>
+<li>固定置信度验证中记录到约 <code>mAP50-95=0.7823</code> 的结果。</li>
+<li>YOLOv8n-seg 与 YOLO11n-seg 分割基线在同类设置下明显低于 YOLO-FD 验证基线。</li>
+<li>ONNX 导出成功，产物约 46 MB，ONNX checker 与 ONNX Runtime CPU 推理均通过。</li>
+<li>端到端离线部署基准覆盖 letterbox 预处理、ONNX Runtime 原始推理、NMS 和语义 mask 后处理，平均约 191 ms/frame，约 5.2 FPS。</li>
+<li>离线告警 smoke test 在 145 张验证帧上记录到 <code>precision=1.0000</code>、<code>recall=0.9929</code>，但这只代表验证帧离线链路，不等于生产系统。</li>
+</ul>
+<p>这些数据说明：项目链路是完整的，实验也是有记录的；同时也说明我们没有把验证帧 smoke test 扩大解释成真实生产部署。</p>
+<h2 id="架构尝试">架构尝试</h2>
+<p>为了改善小病灶检测，我尝试过几类结构和训练策略：</p>
+<ul>
+<li>引入 P2 小目标检测头，希望保留更高分辨率特征。</li>
+<li>加入 CBAM、ContextAggregation 等注意力和上下文模块，试图抑制水下背景噪声。</li>
+<li>尝试 NWD Loss，降低小目标 IoU 对像素偏差的敏感度。</li>
+<li>记录 PCGrad、不确定性权重、多任务训练、冻结/解冻策略、数据增强强度等变量。</li>
+<li>使用 LLM 辅助做多轮超参数尝试，再用人工复盘纠正“冻结导致知识真空”等问题。</li>
+</ul>
+<p>这里最大的教训是：复杂结构不一定带来稳定提升。加入太多模块后，预训练权重只能部分加载，新层需要从头学习；在数据规模有限、病灶很小、背景复杂的情况下，模型容量和训练难度很容易反过来吞掉收益。</p>
+<h2 id="论文和材料">论文和材料</h2>
+<p>这个项目还沉淀了论文相关材料，不只是代码实验：</p>
+<ul>
+<li>多版论文 DOCX/PDF，包括普通论文版、全面修订版、文本格式审校版和结构语言优化版。</li>
+<li>数据集统计、尺度统计、错误样本、边界 mask 错误、hard case 子集等 CSV 材料。</li>
+<li>论文图表、部署告警示例、推理基准、分割质量评估和实验总结。</li>
+<li>答辩材料计划和论文内容扩充任务手册。</li>
+</ul>
+<p>这些材料让 YOLO-FD 更像一次完整的科研/工程训练，而不是一次随手失败的模型尝试。</p>
+<h2 id="复盘结论">复盘结论</h2>
+<p>YOLO-FD 的公开表达应该是：本地复现和实验链路完整、数据记录充分、论文材料完整；但在“是否显著超过原始强基准”这件事上要克制。</p>
+<p>我从这个项目里真正拿到的能力，是把开源论文代码落到本机、修通环境、建立评估、做阈值和基线对照、验证部署形态、整理论文材料，并在证据不足时停止把它包装成效果突破。</p> </article>  </main> <footer class="site-footer"> <span>© 2026 yourskenny</span> <span> <a href="https://github.com/yourskenny">GitHub</a> ·
+<a href="mailto:2023302111391@whu.edu.cn">Email</a> </span> </footer> </body></html>

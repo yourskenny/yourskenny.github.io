@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>开物扫雷 PPO 智能体项目复盘 | 博客</title><link rel="canonical" href="https://yourskenny.top/blog/kaiwu-sweeper-ppo-agent-retrospective/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta name="description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:type" content="website"><meta property="og:title" content="开物扫雷 PPO 智能体项目复盘 | 博客"><meta property="og:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:url" content="https://yourskenny.top/blog/kaiwu-sweeper-ppo-agent-retrospective/"><meta property="og:image" content="https://yourskenny.top/og-image.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="开物扫雷 PPO 智能体项目复盘 | 博客"><meta name="twitter:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta name="twitter:image" content="https://yourskenny.top/og-image.svg"><link rel="stylesheet" href="/_astro/BaseLayout.3F819qcq.css"></head> <body> <header class="site-header"> <a class="brand" href="/" aria-label="返回首页"> <span class="brand-mark">YK</span> <span class="brand-text">yourskenny</span> </a> <nav aria-label="主导航"> <a href="/">首页</a><a href="/projects/">项目</a><a href="/interview/">面试项目</a><a href="/courses/">课程</a><a href="/blog/">博客</a><a href="/research/">研究</a><a href="/about/">关于</a> </nav> </header> <main>  <article class="prose"> <a class="back-link" href="/blog/">返回博客列表</a> <p class="eyebrow">项目复盘</p> <h1>开物扫雷 PPO 智能体项目复盘</h1> <p class="lead">腾讯开悟清扫大作战项目已经完成并跑通全流程：PPO 智能体、GRUSentry、BFS 路径规划、guardrail、A/B 双线、地图恢复和隐藏图评估都留下了工程证据。</p> <h2 id="先补充完整背景">先补充完整背景</h2>
+<p>开物扫雷需要按一个完整跑通的强化学习竞赛项目记录。这个项目已经把主要流程做完并跑通：从官方 PPO 基线出发，完成特征工程、模型结构迭代、规则防护、地图恢复、训练分支、checkpoint、验证脚本和评估记录。</p>
+<p>它仍然不是我个人主导或获奖经历，所以不适合放到首页核心代表项目里；但作为一个完整跑通的强化学习竞赛项目，它值得比上一版博客更认真地记录。</p>
+<h2 id="项目目标">项目目标</h2>
+<p>赛题是腾讯开悟 2026 的清扫大作战：控制扫地机器人在 <code>128 x 128</code> 网格地图里尽可能多地清扫污渍，同时管理电量、利用充电桩、躲避官方机器人。</p>
+<p>难点不只是“往污渍多的地方走”。智能体需要同时处理：</p>
+<ul>
+<li>8 个离散移动方向。</li>
+<li>电量耗尽风险和自动充电机制。</li>
+<li>官方机器人活动区域和碰撞终止条件。</li>
+<li>公开地图与隐藏地图之间的泛化。</li>
+<li>训练吞吐、推理开销和策略稳定性的平衡。</li>
+</ul>
+<h2 id="架构演进">架构演进</h2>
+<p>项目经历了几次明确的技术转向。</p>
+<p>第一版是轻量 MLP 基线：<code>91D flat -> 128 -> 64 -> actor/critic</code>。它吞吐很高，但回充和躲 NPC 都偏反应式，缺少路径规划和时序记忆。</p>
+<p>第二版尝试重型空间架构：<code>21x21 CNN + 16x16x3 Memory CNN + Scalar MLP -> FiLM -> Gated Fusion</code>。这条路保留了完整空间编码和全局记忆，但计算量和 CPU 前向开销太高，在竞赛训练约束下不可行，因此被明确放弃。</p>
+<p>最终主线是 GRUSentry：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>Flat 181D obs</span></span>
+<span class="line"><span>  -> state_encoder(101D -> 96D, SiLU)</span></span>
+<span class="line"><span>  -> GRUCell(96 -> 32)</span></span>
+<span class="line"><span>  -> Action-Conditioned Head -> 8 logits</span></span>
+<span class="line"><span>  -> Critic Head -> value</span></span></code></pre>
+<p>这个版本的判断是：模型保留轻量时序记忆，局部动作交给 GRU policy；全局路径、回充、安全约束交给规则层。这个分工比单纯堆大模型更适合竞赛环境。</p>
+<h2 id="guardrail-和路径规划">Guardrail 和路径规划</h2>
+<p>项目的关键不是只训练 PPO，而是给 PPO 加了一套确定性防护层：</p>
+<ul>
+<li>Public-map BFS planner：利用恢复出的公开地图做精确路径规划。</li>
+<li>Charger safe dominance：低电量时优先选择安全充电桩，避免进入 NPC 危险区域。</li>
+<li>First-charge hard route：首次回充时用硬路径保护，避免关键早期崩局。</li>
+<li>Charger-room loop breaker：处理充电桩附近反复进出、清扫停滞的问题。</li>
+<li>Initial NPC escape：开局主动远离官方机器人活动范围。</li>
+<li>Action shield：动作级别屏蔽高风险移动。</li>
+<li>Map-aware sampler：训练阶段按地图难度和阶段调度样本。</li>
+</ul>
+<p>这些 guardrail 不是“作弊替代模型”，而是把环境中确定性的安全约束先处理掉，让 PPO 专注在局部清扫和策略选择上。</p>
+<h2 id="ab-双线和验证">A/B 双线和验证</h2>
+<p>项目保留了 <code>code_A</code> 和 <code>code_B</code> 两条训练线：</p>
+<ul>
+<li><code>code_A</code> 偏稳定继续训练，loop breaker 开启，使用 map sampler。</li>
+<li><code>code_B</code> 让模型更多自主学习回充时机，loop breaker 关闭。</li>
+<li>两边都保留 PPO、DIY 模板、配置、checkpoint 和训练入口。</li>
+</ul>
+<p>仓库中还有面向 guardrail 的单元式检查脚本：</p>
+<ul>
+<li><code>verify_guardrails.py</code> 检查充电桩选择、视野归一化、直达停靠、开局 NPC escape、blocked edge TTL、首次回充路径、卡住切换和充电桩循环打断。</li>
+<li><code>verify_public_map_planner.py</code> 对公开地图采样检查 BFS 路由、充电桩候选和几何最近点不一致情况。</li>
+<li><code>map_recovery/recover_maps.py</code> 用于从回放页解析公开地图数据，支撑 public-map planner。</li>
+</ul>
+<p>README 记录的结果是：GRUSentry A 系列在 48 小时训练后隐藏图评估达到 920 分，后续在 830-870 区间波动。这个结果说明项目不是停在想法或半成品，而是完整跑过训练、评估和策略迭代。</p>
+<h2 id="复盘结论">复盘结论</h2>
+<p>开物扫雷最值得记录的是“轻模型 + 规则层 + 工程验证”的路线。它不是靠把网络堆大解决问题，而是把路径规划、回充、安全和隐藏图泛化拆成可检查的工程问题。</p>
+<p>公开表达时我仍然会保留边界：这是团队竞赛项目、不是我的个人主导获奖经历。但“非主导”和“未获奖”不等于“没做完”。更准确的表述是：项目完整跑通，策略、训练、checkpoint、验证脚本和复盘材料齐全；它适合作为强化学习竞赛工程经验和 Agent guardrail 设计经验来记录。</p> </article>  </main> <footer class="site-footer"> <span>© 2026 yourskenny</span> <span> <a href="https://github.com/yourskenny">GitHub</a> ·
+<a href="mailto:2023302111391@whu.edu.cn">Email</a> </span> </footer> </body></html>

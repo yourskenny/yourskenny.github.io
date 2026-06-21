@@ -5,16 +5,16 @@
         <description>AI 项目复盘、论文笔记和工程实践</description>
         <link>https://yourskenny.top/</link>
         <item>
-        <title><![CDATA[开物扫雷参赛经历的边界]]></title>
-        <description><![CDATA[一次非主导、未获奖的竞赛协作经历：保留项目参与事实，但不把它包装成核心项目或奖项。]]></description>
-        <link>https://yourskenny.top/blog/kaiwu-sweeper-service-outsourcing-retrospective/</link>
-        <guid>https://yourskenny.top/blog/kaiwu-sweeper-service-outsourcing-retrospective/</guid>
+        <title><![CDATA[开物扫雷 PPO 智能体项目复盘]]></title>
+        <description><![CDATA[腾讯开悟清扫大作战项目已经完成并跑通全流程：PPO 智能体、GRUSentry、BFS 路径规划、guardrail、A/B 双线、地图恢复和隐藏图评估都留下了工程证据。]]></description>
+        <link>https://yourskenny.top/blog/kaiwu-sweeper-ppo-agent-retrospective/</link>
+        <guid>https://yourskenny.top/blog/kaiwu-sweeper-ppo-agent-retrospective/</guid>
         <pubDate>Mon, 22 Jun 2026 00:00:00 GMT</pubDate>
       </item><item>
-        <title><![CDATA[MY-YOLO-FD 病鱼检测项目为什么没有继续做]]></title>
-        <description><![CDATA[把一次跑分不佳的 YOLO 检测与分割项目写成失败复盘：记录训练、调参、结构尝试、投入产出判断和停止继续投入的边界。]]></description>
-        <link>https://yourskenny.top/blog/yolo-fish-detection-failure-retrospective/</link>
-        <guid>https://yourskenny.top/blog/yolo-fish-detection-failure-retrospective/</guid>
+        <title><![CDATA[YOLO-FD 病鱼检测与分割的本地复现、实验和论文整理]]></title>
+        <description><![CDATA[一次完整的病鱼检测与分割复现实验：环境适配、推理验证、阈值扫描、消融、ONNX 部署、论文材料和停止规则都留下了证据。]]></description>
+        <link>https://yourskenny.top/blog/yolo-fd-local-reproduction-research/</link>
+        <guid>https://yourskenny.top/blog/yolo-fd-local-reproduction-research/</guid>
         <pubDate>Mon, 22 Jun 2026 00:00:00 GMT</pubDate>
       </item><item>
         <title><![CDATA[从聊天式复习到可追踪复习工作流]]></title>
