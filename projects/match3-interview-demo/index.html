@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>重庆益之趣三消关卡 Demo | 项目</title><link rel="canonical" href="https://yourskenny.top/projects/match3-interview-demo/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta name="description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:type" content="website"><meta property="og:title" content="重庆益之趣三消关卡 Demo | 项目"><meta property="og:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta property="og:url" content="https://yourskenny.top/projects/match3-interview-demo/"><meta property="og:image" content="https://yourskenny.top/og-image.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="重庆益之趣三消关卡 Demo | 项目"><meta name="twitter:description" content="武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集"><meta name="twitter:image" content="https://yourskenny.top/og-image.svg"><link rel="stylesheet" href="/_astro/BaseLayout.3F819qcq.css"></head> <body> <header class="site-header"> <a class="brand" href="/" aria-label="返回首页"> <span class="brand-mark">YK</span> <span class="brand-text">yourskenny</span> </a> <nav aria-label="主导航"> <a href="/">首页</a><a href="/projects/">项目</a><a href="/interview/">面试项目</a><a href="/courses/">课程</a><a href="/blog/">博客</a><a href="/research/">研究</a><a href="/about/">关于</a><a href="/resume.pdf">简历</a> </nav> </header> <main>  <article class="prose"> <a class="back-link" href="/projects/">返回项目列表</a> <p class="eyebrow">玩法拆解、规则引擎、PixiJS 表现层、验收文档与演示闭环</p> <h1>重庆益之趣三消关卡 Demo</h1> <p class="lead">短周期面试交付：把目标收集型三消参考素材拆成可运行单关卡 Demo，覆盖 9 x 9 棋盘、行李箱目标、交换回退、匹配结算、掉落补位、特殊棋子、胜利锁定、调试面板和验收文档。</p> <div class="detail-meta"> <span>面试项目</span> <span>C:/coding/面试项目/重庆益之趣</span> </div> <div class="tags"> <span>Game Demo</span><span>TypeScript</span><span>PixiJS</span><span>Vite</span><span>Vitest</span><span>Match-3</span> </div>  <h2 id="项目背景">项目背景</h2>
+<p>这是一个面向游戏岗位/互动 Demo 的短周期面试项目。任务核心不是做一张静态三消棋盘，而是把目标收集型三消玩法拆成可运行、可验收、可扩展的单关卡闭环。</p>
+<p>我把项目分成两层交付：</p>
+<ul>
+<li>先写开发设计书，明确玩法假设、模块边界、验收标准和演示路线。</li>
+<li>再实现可运行 Demo，用固定关卡和调试控件保证评审时能稳定看到关键机制。</li>
+</ul>
+<h2 id="交付范围">交付范围</h2>
+<p>当前 Demo 使用 <code>Vite + TypeScript + PixiJS + Vitest</code> 实现。第一版范围控制在单关卡，但保留了从 Demo 扩展到关卡系统的基础结构。</p>
+<p>已经实现的能力包括：</p>
+<ul>
+<li><code>9 x 9</code> 棋盘和四类普通棋子。</li>
+<li>行李箱目标物，顶部显示剩余 <code>Suitcases</code> 数量，初始目标数为 <code>33</code>。</li>
+<li>点击相邻棋子交换，非相邻选择切换，非法交换短暂停留后回退。</li>
+<li>横向/纵向匹配清除，结算后掉落、补位并继续检查连锁。</li>
+<li>行李箱被相邻普通消除或特殊效果命中后收集，目标数量随之减少。</li>
+<li>横向火箭、纵向火箭、炸弹、飞机四类特殊棋子。</li>
+<li>目标清零后显示 <code>Great</code> 并锁定输入。</li>
+<li>调试控件支持重开、查看事件日志、指定特殊棋子类型和强制放置特殊棋子。</li>
+</ul>
+<h2 id="架构拆分">架构拆分</h2>
+<p>项目刻意把“规则真值”和“表现反馈”分开。规则层负责棋盘状态、交换合法性、匹配检测、目标收集、掉落补位和事件输出；表现层只消费这些事件并更新 PixiJS 棋盘。</p>
+<p>核心设计取舍：</p>
+<ul>
+<li>关卡数据用配置描述，而不是把棋盘写死在渲染逻辑里。</li>
+<li>棋盘格和棋盘实体分离，便于后续支持不可落子格、多层障碍和特殊重力。</li>
+<li>结算流程输出结构化事件，事件日志既服务调试，也能说明后续如何做难度和节奏分析。</li>
+<li>固定随机种子保证每次重开进入稳定演示状态。</li>
+</ul>
+<h2 id="工程实现">工程实现</h2>
+<p>实现上优先保证三件事：</p>
+<ol>
+<li>玩法闭环完整：交换、匹配、收集、掉落、补位、连锁和胜利可以串起来跑。</li>
+<li>状态边界清楚：输入锁定、非法交换回退、目标清零后的胜利锁定都由状态控制。</li>
+<li>演示路径稳定：debug 面板能快速触发特殊棋子，避免评审现场只靠随机局面等待。</li>
+</ol>
+<p>这让 Demo 更像一个可继续迭代的游戏核心，而不是一次性动画页面。</p>
+<h2 id="验证方式">验证方式</h2>
+<p>项目保留了两类验证：</p>
+<ul>
+<li>单元测试覆盖棋盘生成、交换判断、匹配检测、目标收集、特殊效果、掉落补位、事件日志和渲染辅助逻辑。</li>
+<li>构建验证通过 TypeScript 编译和 Vite 打包，确认 Demo 可以作为静态前端产物交付。</li>
+</ul>
+<p>常用验收命令：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="powershell"><code><span class="line"><span style="color:#E1E4E8">npm test</span></span>
+<span class="line"><span style="color:#E1E4E8">npm run build</span></span></code></pre>
+<p>同时保留了运行手册和桌面/移动端浏览器截图，用于回看最终 UI 是否成功渲染、棋盘是否非空、调试控件是否可见。</p>
+<h2 id="演示重点">演示重点</h2>
+<p>面试展示时我会按以下顺序讲：</p>
+<ol>
+<li>先展示棋盘、目标栏和行李箱目标，说明这是目标收集型三消关卡。</li>
+<li>演示有效交换、普通三消和目标数量减少。</li>
+<li>演示无效交换回退，说明规则边界和反馈。</li>
+<li>用 debug 控件触发火箭、炸弹或飞机，展示特殊效果和目标收集。</li>
+<li>展示事件日志，说明如何把 demo 扩展成可调参、可验证的三消核心系统。</li>
+<li>最后说明当前边界：这是单关卡面试 Demo，不包含账号、关卡选择、经济系统、联网服务或商业级美术音效。</li>
+</ol>
+<h2 id="公开边界">公开边界</h2>
+<p>这个页面只公开我完成的工程方法、功能范围和可复用经验，不公开面试方原始题面、参考视频、内部链接或任何未授权材料。</p>
+<h2 id="复盘">复盘</h2>
+<p>这个项目的价值不在于三消规则本身复杂，而在于短时间内把一个开放素材转成可验收交付：先定义范围和假设，再拆规则层与表现层，最后用测试、构建、运行手册和演示辅助控件把结果固定下来。</p> </article>  </main> <footer class="site-footer"> <span>© 2026 yourskenny</span> <span> <a href="https://github.com/yourskenny">GitHub</a> ·
+<a href="mailto:2023302111391@whu.edu.cn">Email</a> </span> </footer> </body></html>
