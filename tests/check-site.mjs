@@ -26,6 +26,7 @@ const requiredPaths = [
   "src/content/projects/marketing-agent-workbench.md",
   "src/content/projects/ccf-origin-uni-2026.md",
   "src/content/projects/yahaha-agent-arcade.md",
+  "src/content/projects/match3-interview-demo.md",
   "src/content/projects/t3-agent-rubric-delivery.md",
   "src/content/projects/lumina-visual-assistant.md",
   "src/content/projects/course-archive-digital-logic.md",
@@ -115,6 +116,13 @@ const yahahaProject = readFileSync("src/content/projects/yahaha-agent-arcade.md"
 assert.match(yahahaProject, /YAHAHA Agent Arcade/);
 assert.match(yahahaProject, /creator prompt -> Agent task/);
 assert.match(yahahaProject, /category: "面试项目"/);
+
+const match3Project = readFileSync("src/content/projects/match3-interview-demo.md", "utf8");
+assert.match(match3Project, /\u91cd\u5e86\u76ca\u4e4b\u8da3\u4e09\u6d88\u5173\u5361 Demo/);
+assert.match(match3Project, /category: "\u9762\u8bd5\u9879\u76ee"/);
+assert.match(match3Project, /PixiJS/);
+assert.match(match3Project, /Suitcases/);
+assert.match(match3Project, /\u4e0d\u516c\u5f00\u9762\u8bd5\u65b9\u539f\u59cb\u9898\u9762/);
 
 const rubricProject = readFileSync("src/content/projects/t3-agent-rubric-delivery.md", "utf8");
 assert.match(rubricProject, /T3-Agent Rubric/);
