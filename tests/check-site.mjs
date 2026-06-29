@@ -47,6 +47,7 @@ const requiredPaths = [
   "public/og-image.svg",
   "public/robots.txt",
   "public/resume-placeholder.pdf",
+  "public/resume.pdf",
   "public/demos/marketing-agent-architecture/index.html",
   "public/demos/marketing-agent-architecture/architecture.css",
   "public/demos/marketing-agent-architecture/architecture.js"
@@ -62,6 +63,8 @@ assert.match(layout, /import Seo from "\.\.\/components\/Seo\.astro";/);
 assert.match(layout, /<Seo/);
 assert.match(layout, /\/interview\//);
 assert.doesNotMatch(layout, /href="\/styles\/global\.css"/);
+assert.match(layout, /\/resume\.pdf/);
+assert.match(layout, /简历/);
 
 const seo = readFileSync("src/components/Seo.astro", "utf8");
 assert.match(seo, /og:title/);
@@ -69,6 +72,7 @@ assert.match(seo, /twitter:card/);
 assert.match(seo, /canonical/);
 
 const home = readFileSync("src/pages/index.astro", "utf8");
+const about = readFileSync("src/pages/about.astro", "utf8");
 assert.match(home, /class="hero-shell"/);
 assert.match(home, /class="proof-grid"/);
 assert.match(home, /Hay, hermanos, muchísimo que hacer\./);
@@ -78,6 +82,14 @@ assert.match(home, /ProjectCard/);
 assert.match(home, /PostRow/);
 assert.match(home, /课程归档/);
 assert.match(home, /面试项目/);
+assert.match(home, /下载简历/);
+assert.match(home, /\/resume\.pdf/);
+assert.match(home, /苗嘉木-15527787296-AI开发-武汉大学\.pdf/);
+assert.match(about, /下载简历/);
+assert.match(about, /\/resume\.pdf/);
+assert.match(about, /苗嘉木-15527787296-AI开发-武汉大学\.pdf/);
+assert.doesNotMatch(home, /AI Agent开发实习生/);
+assert.doesNotMatch(about, /AI Agent开发实习生/);
 assert.match(home, /代表项目与工具链/);
 assert.match(home, /representativeProjects/);
 assert.match(home, /lcfc-nl2sql-intelligent-query/);

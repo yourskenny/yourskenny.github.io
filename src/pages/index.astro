@@ -55,6 +55,8 @@ const representativeProjects = representativeProjectConfigs.flatMap((config) => 
 });
 
 const commonAiTools = ["Codex", "Claude Code", "LiteLLM", "MCP", "NL2SQL", "PR Review", "Phoenix", "Qwen-VL"];
+const resumeHref = "/resume.pdf";
+const resumeDownloadName = "苗嘉木-15527787296-AI开发-武汉大学.pdf";
 ---
 
 <BaseLayout
@@ -71,7 +73,8 @@ const commonAiTools = ["Codex", "Claude Code", "LiteLLM", "MCP", "NL2SQL", "PR R
         AI PR Review、商贸智能体、工业视觉、游戏开发、课程复习工作流和短周期面试交付中的项目、课程归档与技术笔记。
       </p>
       <div class="hero-actions">
-        <a class="button primary" href="/projects/">查看项目</a>
+        <a class="button primary" href={resumeHref} download={resumeDownloadName}>下载简历</a>
+        <a class="button" href="/projects/">查看项目</a>
         <a class="button" href="/interview/">面试项目</a>
         <a class="button" href="/courses/">课程归档</a>
         <a class="button ghost" href="mailto:2023302111391@whu.edu.cn">联系我</a>

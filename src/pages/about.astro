@@ -31,6 +31,8 @@ const techStacks = [
     items: ["Astro", "Node.js", "Docker", "FastAPI", "SQLite", "Observability", "GitHub Pages", "CI"]
   }
 ];
+const resumeHref = "/resume.pdf";
+const resumeDownloadName = "苗嘉木-15527787296-AI开发-武汉大学.pdf";
 ---
 
 <BaseLayout
@@ -50,7 +52,8 @@ const techStacks = [
         另一方面沉淀课程实验、研究原型、面试交付和技术文章，方便后续科研训练、导师沟通与实习求职。
       </p>
       <div class="link-row">
-        <a class="button primary" href="mailto:2023302111391@whu.edu.cn">邮件联系</a>
+        <a class="button primary" href={resumeHref} download={resumeDownloadName}>下载简历</a>
+        <a class="button" href="mailto:2023302111391@whu.edu.cn">邮件联系</a>
         <a class="button" href="/projects/">查看项目</a>
         <a class="button" href="/interview/">查看面试项目</a>
       </div>
