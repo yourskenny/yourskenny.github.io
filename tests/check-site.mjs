@@ -46,7 +46,10 @@ const requiredPaths = [
   "public/.nojekyll",
   "public/og-image.svg",
   "public/robots.txt",
-  "public/resume-placeholder.pdf"
+  "public/resume-placeholder.pdf",
+  "public/demos/marketing-agent-architecture/index.html",
+  "public/demos/marketing-agent-architecture/architecture.css",
+  "public/demos/marketing-agent-architecture/architecture.js"
 ];
 
 for (const path of requiredPaths) {
@@ -151,6 +154,19 @@ assert.match(echoGridProject, /结果待公布/);
 const marketingProject = readFileSync("src/content/projects/marketing-agent-workbench.md", "utf8");
 assert.match(marketingProject, /商贸大模型营销智能体/);
 assert.match(marketingProject, /不公开原始需求文档/);
+assert.match(marketingProject, /\/demos\/marketing-agent-architecture\//);
+assert.match(marketingProject, /不接入本地 `127\.0\.0\.1:8765` 后端服务/);
+
+const marketingArchitectureDemo = readFileSync(
+  "public/demos/marketing-agent-architecture/index.html",
+  "utf8"
+);
+assert.match(marketingArchitectureDemo, /营销智能体架构演示/);
+assert.match(marketingArchitectureDemo, /href="\.\/architecture\.css"/);
+assert.match(marketingArchitectureDemo, /src="\.\/architecture\.js"/);
+assert.match(marketingArchitectureDemo, /\/projects\/marketing-agent-workbench\//);
+assert.doesNotMatch(marketingArchitectureDemo, /href="\/architecture\.css"/);
+assert.doesNotMatch(marketingArchitectureDemo, /src="\/architecture\.js"/);
 
 const ccfProject = readFileSync("src/content/projects/ccf-origin-uni-2026.md", "utf8");
 assert.match(ccfProject, /三等奖/);
