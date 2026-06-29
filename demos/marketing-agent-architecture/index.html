@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>营销智能体架构演示 | YoursKenny</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./architecture.css" />
+  </head>
+  <body>
+    <main class="arch-shell">
+      <header class="hero">
+        <div>
+          <a href="/projects/marketing-agent-workbench/" class="back-link">返回项目页</a>
+          <h1>营销智能体架构演示</h1>
+          <p>把“数据、记忆、可信、接口、能力、流程、输入输出”拆成能讲清楚的模块。</p>
+        </div>
+        <div class="runtime-card">
+          <span>运行时</span>
+          <strong>Independent Python Backend + DeepSeek</strong>
+          <p>deepseek-v4-flash；不依赖 LangChain / Dify / Coze / LangGraph</p>
+        </div>
+      </header>
+
+      <section class="map-section">
+        <div class="map-heading">
+          <h2>一张图看完整体</h2>
+          <p>点击图里的节点或左侧模块，右侧会切换成对应讲解。</p>
+        </div>
+        <div class="architecture-map" aria-label="系统架构图">
+          <button class="map-node node-data" data-module="data">原始数据<br /><span>Excel 四表</span></button>
+          <button class="map-node node-builder" data-module="builder">数据构建<br /><span>清洗/聚合/隐私过滤</span></button>
+          <button class="map-node node-memory" data-module="memory">项目记忆<br /><span>manifest / chunks</span></button>
+          <button class="map-node node-api" data-module="api">独立后端<br /><span>HTTP API</span></button>
+          <button class="map-node node-agent" data-module="agent">Agent Pipeline<br /><span>检索/策略/LLM生成</span></button>
+          <button class="map-node node-trust" data-module="trust">可信输出<br /><span>sources + trace</span></button>
+          <button class="map-node node-ui" data-module="ui">演示前端<br /><span>回答/来源/轨迹</span></button>
+          <div class="edge edge-data-builder"></div>
+          <div class="edge edge-builder-memory"></div>
+          <div class="edge edge-memory-agent"></div>
+          <div class="edge edge-ui-api"></div>
+          <div class="edge edge-api-agent"></div>
+          <div class="edge edge-agent-trust"></div>
+          <div class="edge edge-trust-ui"></div>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <aside class="module-nav">
+          <h2>模块</h2>
+          <button class="module-button active" data-module="data">1. 数据层</button>
+          <button class="module-button" data-module="builder">2. 构建层</button>
+          <button class="module-button" data-module="memory">3. 记忆层</button>
+          <button class="module-button" data-module="api">4. 接口层</button>
+          <button class="module-button" data-module="agent">5. 智能体流程</button>
+          <button class="module-button" data-module="trust">6. 可信机制</button>
+          <button class="module-button" data-module="ui">7. 前端演示</button>
+        </aside>
+
+        <article class="module-panel">
+          <div class="module-label" id="moduleLabel">模块讲解</div>
+          <h2 id="moduleTitle">数据层</h2>
+          <p id="modulePlain"></p>
+          <div class="module-facts" id="moduleFacts"></div>
+          <div class="detail-grid" id="moduleDetails"></div>
+          <div class="example-box">
+            <h3>真实样例</h3>
+            <pre id="moduleExample"></pre>
+          </div>
+          <div class="deep-box">
+            <h3>深入理解</h3>
+            <p id="moduleDeep"></p>
+          </div>
+          <div class="talk-box">
+            <h3>答辩时可以这样讲</h3>
+            <p id="moduleTalk"></p>
+          </div>
+        </article>
+      </section>
+
+      <section class="lineage-section">
+        <div class="lineage-heading">
+          <h2>数据到知识：逐步拆解</h2>
+          <p>这部分专门回答“哪些数据经过处理、怎么处理、处理后是什么、构建层怎么存”。</p>
+        </div>
+        <div class="lineage-grid">
+          <article class="lineage-card">
+            <span>01 Raw</span>
+            <h3>解压后的四张 Excel</h3>
+            <p>SKU 500 行、分类 358 行、订单明细 200 行、订单 200 行，放在 data/raw/wechat-data-2026-06/数据。</p>
+          </article>
+          <article class="lineage-card">
+            <span>02 Transform</span>
+            <h3>字段清洗和业务聚合</h3>
+            <p>金额转数值，分类 id 映射分类名，区县从地址路径提取，计算 GMV、实付、券抵扣、品类/商品排行、库存和毛利。</p>
+          </article>
+          <article class="lineage-card">
+            <span>03 Store</span>
+            <h3>生成三个核心资产</h3>
+            <p>demo_metrics.json 存指标，demo_chunks.json 存可检索知识块，manifest.json 存源文件、行数、版本和隐私规则。</p>
+          </article>
+          <article class="lineage-card">
+            <span>04 Serve</span>
+            <h3>后端运行时加载 JSON</h3>
+            <p>server.py 和 agent.py 只加载处理后的 JSON，不依赖 Excel 解析和外部 Agent 框架，回答必须返回 sources 和 trace。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="pipeline-section">
+        <div>
+          <h2>一次请求的处理流程</h2>
+          <p>这是后端真正执行的顺序。它是 pipeline，不是多个 Agent 互相聊天；生成环节优先调用 DeepSeek。</p>
+        </div>
+        <div class="pipeline">
+          <div class="step">1<br /><span>Request</span></div>
+          <div class="step">2<br /><span>准备检索查询</span></div>
+          <div class="step">3<br /><span>意图识别</span></div>
+          <div class="step">4<br /><span>检索知识块</span></div>
+          <div class="step guard">5<br /><span>策略守卫</span></div>
+          <div class="step">6<br /><span>DeepSeek 生成回答</span></div>
+          <div class="step">7<br /><span>组装响应</span></div>
+          <div class="step">8<br /><span>展示 sources/trace</span></div>
+        </div>
+      </section>
+
+      <section class="io-section">
+        <div class="io-card">
+          <h2>输入 AgentRequest</h2>
+          <pre>{
+  "message": "基于当前订单和商品数据，设计社群促销活动",
+  "history": [
+    {"role": "user", "content": "我想围绕优惠券做活动"}
+  ],
+  "metadata": {
+    "request_id": "optional",
+    "run_id": "optional"
+  }
+}</pre>
+        </div>
+        <div class="io-card">
+          <h2>输出 AgentResponse</h2>
+          <pre>{
+  "answer": "营销建议或拒答说明",
+  "mode": "answer | refusal",
+  "intent": "campaign_plan",
+  "workflow": "rag_qa",
+  "sources": ["可追溯证据块"],
+  "trace": ["每一步执行记录"]
+}</pre>
+        </div>
+      </section>
+    </main>
+    <script src="./architecture.js"></script>
+  </body>
+</html>
