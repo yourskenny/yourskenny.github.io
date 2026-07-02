@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import assert from "node:assert/strict";
 
 const requiredPaths = [
@@ -191,6 +191,17 @@ assert.match(match3Demo, /src="\.\/assets\//);
 assert.match(match3Demo, /href="\.\/assets\//);
 assert.doesNotMatch(match3Demo, /src="\/assets\//);
 assert.doesNotMatch(match3Demo, /href="\/assets\//);
+
+const match3DemoBundleName = readdirSync("public/demos/match3-interview-demo/assets").find(
+  (entry) => entry.startsWith("index-") && entry.endsWith(".js")
+);
+assert.ok(match3DemoBundleName, "match3 demo JS bundle should exist");
+const match3DemoBundle = readFileSync(
+  `public/demos/match3-interview-demo/assets/${match3DemoBundleName}`,
+  "utf8"
+);
+assert.match(match3DemoBundle, /assets\/img_game_common\/goal_suitcase\.png/);
+assert.doesNotMatch(match3DemoBundle, /"\/assets\/img_game_common/);
 
 const ccfProject = readFileSync("src/content/projects/ccf-origin-uni-2026.md", "utf8");
 assert.match(ccfProject, /三等奖/);
