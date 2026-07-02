@@ -48,6 +48,8 @@ const requiredPaths = [
   "public/robots.txt",
   "public/resume-placeholder.pdf",
   "public/resume.pdf",
+  "public/assets/img_game_common/goal_suitcase.png",
+  "public/assets/img_game_common/goal_nor_red.png",
   "public/demos/match3-interview-demo/index.html",
   "public/demos/match3-interview-demo/match3-demo.mp4",
   "public/demos/marketing-agent-architecture/index.html",
