@@ -48,6 +48,8 @@ const requiredPaths = [
   "public/robots.txt",
   "public/resume-placeholder.pdf",
   "public/resume.pdf",
+  "public/demos/match3-interview-demo/index.html",
+  "public/demos/match3-interview-demo/match3-demo.mp4",
   "public/demos/marketing-agent-architecture/index.html",
   "public/demos/marketing-agent-architecture/architecture.css",
   "public/demos/marketing-agent-architecture/architecture.js"
@@ -137,6 +139,9 @@ assert.match(match3Project, /\u91cd\u5e86\u76ca\u4e4b\u8da3\u4e09\u6d88\u5173\u5
 assert.match(match3Project, /category: "\u9762\u8bd5\u9879\u76ee"/);
 assert.match(match3Project, /PixiJS/);
 assert.match(match3Project, /Suitcases/);
+assert.match(match3Project, /\/demos\/match3-interview-demo\//);
+assert.match(match3Project, /match3-demo\.mp4/);
+assert.match(match3Project, /Level 3 \u00b7 Hard Cases/);
 assert.match(match3Project, /\u4e0d\u516c\u5f00\u9762\u8bd5\u65b9\u539f\u59cb\u9898\u9762/);
 
 const rubricProject = readFileSync("src/content/projects/t3-agent-rubric-delivery.md", "utf8");
@@ -179,6 +184,13 @@ assert.match(marketingArchitectureDemo, /src="\.\/architecture\.js"/);
 assert.match(marketingArchitectureDemo, /\/projects\/marketing-agent-workbench\//);
 assert.doesNotMatch(marketingArchitectureDemo, /href="\/architecture\.css"/);
 assert.doesNotMatch(marketingArchitectureDemo, /src="\/architecture\.js"/);
+
+const match3Demo = readFileSync("public/demos/match3-interview-demo/index.html", "utf8");
+assert.match(match3Demo, /Match-3 Demo/);
+assert.match(match3Demo, /src="\.\/assets\//);
+assert.match(match3Demo, /href="\.\/assets\//);
+assert.doesNotMatch(match3Demo, /src="\/assets\//);
+assert.doesNotMatch(match3Demo, /href="\/assets\//);
 
 const ccfProject = readFileSync("src/content/projects/ccf-origin-uni-2026.md", "utf8");
 assert.match(ccfProject, /三等奖/);
