@@ -37,7 +37,7 @@ export function parseCommand(text) {
   return { name: name.toLowerCase(), args: args.join(" ") };
 }
 
-export function createFeatures({ api, context, feedback, changed, refresh }) {
+export function createFeatures({ api, context, feedback, changed, refresh, taskCommand, newConversation, selectConversation, capabilitiesChanged }) {
   const el = id => document.getElementById(id);
   let capabilities = webCapabilities(null), models = [], selected = "", latestModel = "", checking = false;
   let files = [], revision = 0, pendingResources = new Set();
@@ -45,21 +45,30 @@ export function createFeatures({ api, context, feedback, changed, refresh }) {
   const controller = () => context().authenticated;
   function modelLabel() {
     const chosen = models.find(m => m.id === selected);
-    return chosen?.label || chosen?.id || (latestModel ? latestModel.split("/").at(-1) : "服务默认模型");
+    const serviceDefault = models.find(m => m.default === true);
+    return chosen?.label || chosen?.id || serviceDefault?.label || "服务默认模型";
   }
   function render() {
     const select = el("model-select");
     select.replaceChildren(new Option("服务默认模型", ""));
-    for (const model of models) select.append(new Option(model.label || model.id, model.id));
+    for (const model of models) select.append(new Option((model.label || model.id) + (model.input_modalities?.includes("image") ? " · 可看图" : ""), model.id));
     select.value = selected; select.disabled = !capabilities.models || !controller() || context().sending || Boolean(context().pending);
     el("composer-model").textContent = modelLabel();
-    el("composer-model").title = selected || latestModel || "服务端默认模型";
+    el("composer-model").title = selected || models.find(m => m.default === true)?.id || "服务端默认模型";
     el("model-note").textContent = !controller() ? "连接服务后，可以检查当前模型和切换能力。" : checking ? "正在检查模型列表……" :
       capabilities.models ? "仅影响下一条消息；历史与角色保持不变。上一次实际模型：" + (latestModel || "暂无记录") :
       "最近一次回复模型：" + (latestModel || "暂无记录") + "。服务尚未提供模型切换接口。";
     el("files-feature-status").textContent = capabilities.attachments && controller() ? "已接入上传与消息附件" : "可本地预览，上传接口尚未接入";
     el("attach-button").disabled = context().sending || Boolean(context().pending);
     el("attachment-input").disabled = context().sending || Boolean(context().pending);
+    const conversations = el("conversation-select");
+    conversations.replaceChildren();
+    for (const conversation of context().conversations || []) conversations.append(new Option(conversation.title || "对话", conversation.conversation_id));
+    if (!conversations.options.length) conversations.append(new Option("连接后载入", ""));
+    conversations.value = context().conversationId || "";
+    conversations.disabled = !controller() || context().sending || Boolean(context().pending) || !context().canManageConversations;
+    el("new-conversation-button").disabled = conversations.disabled;
+    el("commands-feature-status").textContent = context().canControlTasks ? "支持暂停、继续与取消" : "等待服务支持";
     const tray = el("attachment-tray"); tray.replaceChildren(); tray.hidden = !files.length;
     for (const entry of files) {
       const card = document.createElement("div"); card.className = "faust-pending-file";
@@ -93,6 +102,7 @@ export function createFeatures({ api, context, feedback, changed, refresh }) {
       const data = await api("/v1/capabilities");
       if (generation !== context().epoch) return;
       capabilities = webCapabilities(data);
+      capabilitiesChanged(data);
       if (capabilities.models) {
         const response = await api("/v1/models");
         if (generation !== context().epoch) return;
@@ -102,6 +112,7 @@ export function createFeatures({ api, context, feedback, changed, refresh }) {
     } catch (error) {
       if (generation !== context().epoch) return;
       capabilities = webCapabilities(null); models = []; selected = "";
+      capabilitiesChanged(null);
       if (![404, 405, 501].includes(error.status)) feedback("暂时无法确认扩展能力；可继续文字对话。");
     } finally { if (generation === context().epoch) { checking = false; render(); changed(); } }
   }
@@ -126,7 +137,7 @@ export function createFeatures({ api, context, feedback, changed, refresh }) {
     for (const c of pendingResources) c.abort(); pendingResources.clear();
     capabilities = webCapabilities(null); models = []; selected = ""; latestModel = ""; checking = false; render();
   }
-  function consume() { releaseFiles(); render(); }
+  function consume() { releaseFiles(); selected = ""; render(); }
   function observe(raw) {
     let meta = raw.meta;
     if (!meta && raw.meta_json) { try { meta = JSON.parse(raw.meta_json); } catch {} }
@@ -140,7 +151,7 @@ export function createFeatures({ api, context, feedback, changed, refresh }) {
     for (const item of attachments.slice(0, 10)) {
       const path = attachmentPath(item); if (!path) continue;
       const card = document.createElement("div"); card.className = "faust-received-file";
-      const name = document.createElement("span"); name.textContent = typeof item.name === "string" ? item.name : "附件";
+      const name = document.createElement("span"); name.textContent = typeof item.name === "string" ? item.name : typeof item.filename === "string" ? item.filename : "附件";
       const button = document.createElement("button"); button.type = "button"; button.className = "faust-text-button";
       button.textContent = IMAGE_TYPES.has(item.media_type) ? "查看图片" : "下载文件";
       button.addEventListener("click", async () => {
@@ -148,7 +159,7 @@ export function createFeatures({ api, context, feedback, changed, refresh }) {
         button.disabled = true;
         const generation = context().epoch; const abort = new AbortController(); pendingResources.add(abort);
         try {
-          const response = await fetch(context().apiBase + path, { credentials: "include", cache: "no-store",
+          const response = await fetch(context().apiBase + path, { ...context().transport(), cache: "no-store",
             redirect: "error", signal: AbortSignal.any([abort.signal, AbortSignal.timeout(30_000)]) });
           if (!response.ok || !response.body) throw new Error("附件读取失败，请重新连接后重试。");
           const chunks = []; let bytes = 0; const reader = response.body.getReader();
@@ -181,7 +192,8 @@ export function createFeatures({ api, context, feedback, changed, refresh }) {
         else { selected = cmd.args; render(); feedback("下一条消息已选择模型：" + selected, "command"); }
       } else { el("settings-dialog").showModal(); }
     } else if (cmd.name === "/files") el("attachment-input").click();
-    else if (["/stop", "/cancel", "/pause", "/resume", "/new"].includes(cmd.name)) feedback("此服务的任务控制或新会话能力尚未完成接入。命令没有发给角色。");
+    else if (cmd.name === "/new") await newConversation(cmd.args);
+    else if (["/stop", "/cancel", "/pause", "/resume"].includes(cmd.name)) await taskCommand(cmd.name === "/stop" ? "cancel" : cmd.name.slice(1), cmd.args);
     else feedback("未知命令。输入 /help 查看支持的命令；斜杠命令不会发给角色。");
     return true;
   }
@@ -190,9 +202,11 @@ export function createFeatures({ api, context, feedback, changed, refresh }) {
   el("commands-button").addEventListener("click", () => el("commands-dialog").showModal());
   el("commands-close").addEventListener("click", () => el("commands-dialog").close());
   el("commands-dialog").querySelectorAll("[data-command]").forEach(button => button.addEventListener("click", () => {
-    el("commands-dialog").close(); void command(button.dataset.command);
+    el("commands-dialog").close(); void command(button.dataset.command).catch(error => feedback(error.message));
   }));
   el("model-select").addEventListener("change", event => { selected = event.target.value; changed(); render(); });
+  el("conversation-select").addEventListener("change", event => { void selectConversation(event.target.value).catch(error => feedback(error.message)); });
+  el("new-conversation-button").addEventListener("click", () => { void newConversation("").catch(error => feedback(error.message)); });
   el("attach-button").addEventListener("click", () => el("attachment-input").click());
   el("attachment-input").addEventListener("change", event => { stage([...event.target.files]); event.target.value = ""; });
   el("message-input").addEventListener("paste", event => {

@@ -73,14 +73,14 @@ import "../../styles/faust.css";
           <ol id="action-list" class="faust-action-list"><li class="faust-empty">还没有动作记录。</li></ol>
         </section>
         <section class="faust-side-section faust-capabilities">
-          <div class="faust-section-heading"><h2>连接范围</h2><span class="faust-small-label">PREVIEW</span></div>
+          <div class="faust-section-heading"><h2>连接范围</h2><span class="faust-small-label">SERVICE</span></div>
           <dl>
             <div><dt>角色对话</dt><dd id="persona-status">待连接</dd></div>
             <div><dt>QQ 通道</dt><dd id="channel-status">待确认</dd></div>
             <div><dt>B 站工具</dt><dd>尚未接入</dd></div>
             <div><dt>长期记忆召回</dt><dd>尚未接入</dd></div>
           </dl>
-          <details class="faust-details"><summary>关于这个预览</summary><p>网页连接 DSH 的同一个 Agent，不另建角色。当前先验证聊天、历史记录和过程展示；远程登录与更多工具后续接入。</p><p id="connection-detail">远程服务尚未配置。</p></details>
+          <details class="faust-details"><summary>关于这个连接</summary><p>网页连接本机运行的同一个浮士德。登录后可继续对话、选择模型、发送附件和管理任务；可用能力以服务实际配置为准。</p><p id="connection-detail">正在读取连接配置。</p></details>
         </section>
       </aside>
     </div>
@@ -90,6 +90,10 @@ import "../../styles/faust.css";
       <label for="model-select" class="faust-field-label">下一条消息使用的模型</label>
       <select id="model-select" class="faust-select" disabled><option value="">服务默认模型</option></select>
       <p id="model-note" class="faust-setting-note">连接后检查可切换的模型。</p>
+      <label for="conversation-select" class="faust-field-label">对话记录</label>
+      <select id="conversation-select" class="faust-select" disabled><option value="">连接后载入</option></select>
+      <button type="button" id="new-conversation-button" class="faust-text-button">新建对话</button>
+      <p class="faust-setting-note">新建对话保留旧记录；角色与模型设置仍由同一个服务提供。</p>
       <dl class="faust-feature-list">
         <div><dt>图片与文件</dt><dd id="files-feature-status">可选择并本地预览，发送待接入</dd></div>
         <div><dt>任务控制</dt><dd id="commands-feature-status">暂停／继续／停止待验证</dd></div>
@@ -105,9 +109,25 @@ import "../../styles/faust.css";
         <button type="button" data-command="/refresh"><code>/refresh</code><span>重新同步对话与过程记录</span></button>
         <button type="button" data-command="/model"><code>/model</code><span>查看或选择模型</span></button>
         <button type="button" data-command="/files"><code>/files</code><span>选择图片或文件</span></button>
+        <button type="button" data-command="/new"><code>/new</code><span>新建对话，保留已有记录</span></button>
+        <button type="button" data-command="/pause"><code>/pause</code><span>暂停当前任务</span></button>
+        <button type="button" data-command="/resume"><code>/resume</code><span>继续已暂停的任务</span></button>
+        <button type="button" data-command="/stop"><code>/stop</code><span>取消当前任务，停止接收其回复</span></button>
         <button type="button" data-command="/help"><code>/help</code><span>查看命令说明</span></button>
       </div>
-      <p class="faust-setting-note">任务的暂停、继续和停止需服务端完成验证；目前不把这些命令当普通聊天发送。</p>
+      <p class="faust-setting-note">任务命令作用于当前对话。多个任务同时进行时，可在命令后加任务 ID。暂停与取消不能撤回模型供应商已接收的计算。</p>
+    </dialog>
+    <dialog id="login-dialog" class="faust-dialog" aria-labelledby="login-title">
+      <div class="faust-dialog-heading"><h2 id="login-title">连接浮士德</h2><button type="button" class="faust-text-button" id="login-close">关闭</button></div>
+      <p class="faust-dialog-caption">输入所有者口令，继续你的私人对话。</p>
+      <form id="login-form">
+        <input type="text" value="owner" name="username" autocomplete="username" hidden />
+        <label for="owner-password" class="faust-field-label">所有者口令</label>
+        <input id="owner-password" class="faust-select" type="password" autocomplete="current-password" required maxlength="512" />
+        <p id="login-error" class="faust-setting-note" role="status" hidden></p>
+        <button id="login-submit" class="faust-button primary" type="submit">连接</button>
+      </form>
+      <p class="faust-setting-note">登录状态只在此页面内存中保留，刷新后需重新登录。</p>
     </dialog>
     <noscript><p class="faust-noscript">此对话页面需要启用 JavaScript。个人网站的其他页面仍可正常浏览。</p></noscript>
   </section>

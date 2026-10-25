@@ -1,6 +1,7 @@
 {
-  "enabled": false,
-  "apiBase": "",
+  "enabled": true,
+  "apiBase": "https://desktop-9v90afb.tail40a158.ts.net",
   "devLogin": false,
-  "label": "远程入口准备中"
+  "authMode": "owner_password",
+  "label": "远程连接"
 }

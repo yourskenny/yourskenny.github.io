@@ -13,6 +13,10 @@ const ROUTES = [
   ["GET", /^\/v1\/conversations\/[a-zA-Z0-9_-]+\/messages$/],
   ["POST", /^\/v1\/(dev\/session|messages|logout|presence)$/],
   ["POST", /^\/v1\/attachments$/],
+  ["POST", /^\/v1\/conversations$/],
+  ["POST", /^\/v1\/conversations\/[a-zA-Z0-9_-]+\/select$/],
+  ["POST", /^\/v1\/tasks\/[a-zA-Z0-9_-]+\/commands$/],
+  ["GET", /^\/v1\/conversations$/],
 ];
 
 export function previewAllowed({ address, host, origin, site, method }) {

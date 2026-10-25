@@ -13,6 +13,7 @@ export function validateConfig(value, origin, development = false) {
     && target.origin === origin && target.pathname === "/__faust";
   if (!local && target.protocol !== "https:") throw new Error("远程服务需要 HTTPS");
   return { enabled: true, apiBase: target.href.replace(/\/$/, ""), devLogin: local && value.devLogin === true,
+    authMode: !local && value.authMode === "owner_password" ? "owner_password" : "cookie",
     label: local ? "本机预览" : "远程连接" };
 }
 
@@ -60,7 +61,8 @@ export function readableError(error) {
   if (error.status === 403) return "服务拒绝了本次请求，请刷新连接后再试。";
   if (error.status === 501) return "远程登录尚未配置，请先使用本机预览。";
   if (error.status === 409) return "服务状态已变化，请刷新后重试。";
-  if (error.status === 422) return "这条消息未被服务接受，请检查输入内容。";
+  if (error.status === 429) return "请求过于频繁，请稍后重试。";
+  if ([400, 413, 415, 422].includes(error.status)) return error.message && error.message !== "服务请求失败" ? error.message.slice(0, 240) : "这条消息或附件未被服务接受，请检查输入内容与所选模型。";
   if (error.status >= 500 || !error.status) return "暂时连不上浮士德。请确认本机服务仍在运行。";
   return "请求未完成，请刷新连接后再试。";
 }

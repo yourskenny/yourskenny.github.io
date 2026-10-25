@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "dev:faust": "astro dev --host 127.0.0.1 --port 4321",
+    "serve:faust": "node scripts/faust-gateway.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "content:from-folder": "node scripts/content-from-folder.mjs",
