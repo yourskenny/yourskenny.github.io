@@ -3,6 +3,7 @@ import { createReadStream, existsSync, statSync } from "node:fs";
 import { resolve, sep, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Transform } from "node:stream";
+import { createNativeAccess } from "./faust-native.mjs";
 
 export const PUBLIC_HOST = "desktop-9v90afb.tail40a158.ts.net";
 const MAX_BODY = 21 * 1024 * 1024;
@@ -42,8 +43,9 @@ function json(res, code, data) {
   res.end(JSON.stringify(data));
 }
 
-export function createGateway({ root = resolve("dist"), host = PUBLIC_HOST, target = "http://127.0.0.1:4320" } = {}) {
-  return http.createServer((req, res) => {
+export function createGateway({ root = resolve("dist"), host = PUBLIC_HOST, target = "http://127.0.0.1:4320", nativeOptions = {} } = {}) {
+  const native = createNativeAccess({ host, authTarget: target, ...nativeOptions });
+  const server = http.createServer(async (req, res) => {
     const address = req.socket.remoteAddress;
     if (!["127.0.0.1", "::1", "::ffff:127.0.0.1"].includes(address)) return json(res, 403, { error: { code: "loopback_required" } });
     const authority = req.headers.host || "";
@@ -51,6 +53,8 @@ export function createGateway({ root = resolve("dist"), host = PUBLIC_HOST, targ
     let url;
     try { url = new URL(req.url || "/", "https://" + host); } catch { return json(res, 400, { error: { code: "invalid_url" } }); }
     if (url.origin !== "https://" + host || /%2f|%5c|%00/i.test(url.pathname)) return json(res, 400, { error: { code: "invalid_path" } });
+    try { if (await native.handle(req, res, url)) return; }
+    catch { if (!res.headersSent) json(res, 503, { error: { code: "native_unavailable" } }); else res.destroy(); return; }
     if (req.method === "GET" && url.pathname === "/health/live") return json(res, 200, { status: "ok", service: "faust-web-gateway" });
     if (req.method === "GET" && url.pathname === "/faust/config.json") {
       return json(res, 200, { enabled: true, apiBase: "https://" + host, devLogin: false, authMode: "owner_password", label: "远程连接" });
@@ -97,6 +101,9 @@ export function createGateway({ root = resolve("dist"), host = PUBLIC_HOST, targ
     res.writeHead(200, { "content-type": types[extname(file)] || "application/octet-stream", "cache-control": "no-cache", "x-content-type-options": "nosniff", "referrer-policy": "no-referrer" });
     if (req.method === "HEAD") res.end(); else createReadStream(file).on("error", () => res.destroy()).pipe(res);
   });
+  server.on("upgrade", (req, socket, head) => { void native.upgrade(req, socket, head).catch(() => socket.destroy()); });
+  server.on("close", native.close);
+  return server;
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

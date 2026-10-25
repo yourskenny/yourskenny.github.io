@@ -12,7 +12,7 @@
     "content:from-folder": "node scripts/content-from-folder.mjs",
     "test:site": "node tests/check-site.mjs",
     "test:content": "node tests/content-from-folder.test.mjs",
-    "test:faust": "node --test tests/faust-protocol.test.mjs",
+    "test:faust": "node --test tests/faust-protocol.test.mjs tests/faust-native.test.mjs",
     "test": "npm run test:site && npm run test:content && npm run test:faust",
     "deploy": "npm run build && node scripts/deploy-pages.mjs"
   },

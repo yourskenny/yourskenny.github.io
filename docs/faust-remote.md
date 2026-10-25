@@ -1,5 +1,7 @@
 # 浮士德网页远程接入与运行
 
+> 历史阶段记录：当前网站入口已切换为[原生 DSH Web](./faust-native.md)。下文自制聊天页、4320消息API和刷新需重登的行为描述属于前一版本；数据库及源码保留。
+
 网页： https://yourskenny.top/faust/ 。网站仍由 GitHub Pages 发布，根域及现有 DNS 保持原用途。
 
 源站在这台 Windows 电脑运行。网站方的 Node 网关仅监听 `127.0.0.1:4322`，Tailscale Funnel 提供 `https://desktop-9v90afb.tail40a158.ts.net` 的有效 HTTPS，再将允许的网页 API 代理至 DSH `127.0.0.1:4320`。这条源站地址独立于个人域名，不代表已配置 `faust-api.yourskenny.top`。
