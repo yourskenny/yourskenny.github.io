@@ -30,6 +30,12 @@ DSH实施记录：`D:\DSH\faust\docs\NATIVE-WEB-RETURN.md`、`native-web-status.
 
 ## 验证
 
+### 网关可用性修复（2026-10-25）
+
+公网502时Funnel、54002及4320仍运行，但4322网关进程已退出；日志不足以确定退出原因。已注册当前用户的Windows任务 Faust Web Gateway，独立于交互式终端守护，并在该用户登录时启动。安装脚本为 scripts/install-faust-gateway-task.ps1，每15秒检查4322，仅在网关缺失时恢复。占用者身份不符或健康异常只记录，不结束进程。任务自身异常退出由任务计划程序重试，日志位于 .tmp-dev-server/faust-gateway-watch.log。已实测结束经过身份核验的网关进程，守护自动启动新进程并恢复健康响应。
+
+守护仅负责网关，不启动54002或4320；电脑关闭、睡眠或用户未登录时不保证可用。需要有意停止网关时，先执行 Stop-ScheduledTask -TaskName 'Faust Web Gateway'，避免被再次启动。
+
 网站网关测试覆盖所有者登录、跨站写请求拒绝、原生凭据不返回浏览器、前缀转换、请求体转发、HTTP/WS代理与退出撤销。完整测试12项通过，网站构建44页成功。
 
 真实HTTPS浏览器已加载原生静态资源、SSE `plugins/events` 与 WebSocket `api/remote.mux`，选择faust工作区及浮士德预设，调用原生记忆状态工具并由真实模型返回 `NATIVE-DSH-8241`，轨迹内可见实际工具调用与结果。通过原生附件控件上传TXT，模型成功读取并返回文件内的校验词；390px手机视口已检查。没有向B站或QQ执行写操作。
