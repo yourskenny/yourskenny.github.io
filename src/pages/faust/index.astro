@@ -1,0 +1,117 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/faust.css";
+---
+
+<BaseLayout title="浮士德 · yourskenny" description="浮士德的独立对话空间。" noindex={true}>
+  <section class="faust-page" id="faust-app">
+    <header class="faust-heading">
+      <div>
+        <p class="faust-eyebrow">PERSONAL AGENT <span>/ 01</span></p>
+        <h1>浮士德<span class="faust-english">Faust</span></h1>
+        <p class="faust-intro">一处安静的对话空间。</p>
+      </div>
+      <div class="faust-connection">
+        <span class="faust-status" id="connection-status" role="status" data-state="idle">检查连接中</span>
+        <span id="environment-label">正在读取服务配置</span>
+      </div>
+    </header>
+
+    <div class="faust-workspace">
+      <section class="faust-chat" aria-label="与浮士德对话">
+        <header class="faust-chat-header">
+          <div class="faust-identity"><span class="faust-monogram" aria-hidden="true">F.</span><div><strong>对话</strong><span id="conversation-hint">连接后载入已有记录</span></div></div>
+          <div class="faust-toolbar">
+            <button type="button" id="settings-button" class="faust-text-button" aria-haspopup="dialog">模型与设置</button>
+            <button type="button" id="refresh-button" class="faust-text-button">刷新</button>
+            <button type="button" id="logout-button" class="faust-text-button" hidden>退出</button>
+          </div>
+        </header>
+
+        <div class="faust-chat-scroll" id="chat-scroll">
+          <div class="faust-welcome" id="welcome-panel">
+            <span class="faust-welcome-mark" aria-hidden="true">F.</span>
+            <p class="faust-eyebrow">A CONVERSATION, AT YOUR PACE</p>
+            <h2>从一句话开始。</h2>
+            <p id="welcome-description">正在确认服务是否可用。连接后，可以在这里继续与浮士德的对话。</p>
+            <button type="button" class="faust-button primary" id="connect-button" hidden>连接本机浮士德 <span aria-hidden="true">↗</span></button>
+          </div>
+          <div id="messages" class="faust-messages" role="log" aria-label="对话记录" aria-live="polite" aria-relevant="additions text"></div>
+          <p id="thinking-label" class="faust-thinking" role="status" hidden><span aria-hidden="true">···</span> 浮士德正在回应</p>
+        </div>
+
+        <div class="faust-composer-wrap">
+          <p class="faust-feedback" id="feedback" role="status" hidden></p>
+          <form id="message-form" class="faust-composer">
+            <div id="attachment-tray" class="faust-attachment-tray" aria-label="待发送附件" hidden></div>
+            <p id="attachment-notice" class="faust-attachment-notice" role="status" hidden></p>
+            <label class="faust-sr-only" for="message-input">发给浮士德的消息</label>
+            <textarea id="message-input" rows="2" maxlength="4000" placeholder="写点什么……" disabled></textarea>
+            <div class="faust-composer-bottom">
+              <div class="faust-composer-tools">
+                <button type="button" id="attach-button" class="faust-tool-button" title="选择图片或文件" aria-label="添加图片或文件">＋</button>
+                <button type="button" id="commands-button" class="faust-tool-button" aria-haspopup="dialog">/ 命令</button>
+                <span id="composer-model" class="faust-composer-model" title="由服务端决定实际使用的模型">服务默认模型</span>
+              </div>
+              <button class="faust-button primary" id="send-button" type="submit" disabled>发送 <span aria-hidden="true">↑</span></button>
+            </div>
+            <input type="file" id="attachment-input" accept=".png,.jpg,.jpeg,.webp,.gif,.pdf,.txt,.md,.csv,.json,.docx" multiple hidden />
+          </form>
+          <p class="faust-composer-note">Enter 发送 · Shift + Enter 换行 · AI 角色对话</p>
+        </div>
+      </section>
+
+      <aside class="faust-sidebar" aria-label="任务与服务信息">
+        <section class="faust-side-section">
+          <div class="faust-section-heading"><h2>此刻</h2><span class="faust-small-label">CURRENT</span></div>
+          <p id="task-summary" class="faust-task-summary">等待连接</p>
+          <div id="task-list" class="faust-task-list"><p class="faust-empty">任务开始后，进展会显示在这里。</p></div>
+        </section>
+        <section class="faust-side-section faust-progress-section">
+          <div class="faust-section-heading"><h2>过程记录</h2><button class="faust-text-button" id="actions-button" type="button" disabled>刷新记录</button></div>
+          <p class="faust-side-caption">查看服务实际执行的步骤。</p>
+          <ol id="action-list" class="faust-action-list"><li class="faust-empty">还没有动作记录。</li></ol>
+        </section>
+        <section class="faust-side-section faust-capabilities">
+          <div class="faust-section-heading"><h2>连接范围</h2><span class="faust-small-label">PREVIEW</span></div>
+          <dl>
+            <div><dt>角色对话</dt><dd id="persona-status">待连接</dd></div>
+            <div><dt>QQ 通道</dt><dd id="channel-status">待确认</dd></div>
+            <div><dt>B 站工具</dt><dd>尚未接入</dd></div>
+            <div><dt>长期记忆召回</dt><dd>尚未接入</dd></div>
+          </dl>
+          <details class="faust-details"><summary>关于这个预览</summary><p>网页连接 DSH 的同一个 Agent，不另建角色。当前先验证聊天、历史记录和过程展示；远程登录与更多工具后续接入。</p><p id="connection-detail">远程服务尚未配置。</p></details>
+        </section>
+      </aside>
+    </div>
+    <dialog id="settings-dialog" class="faust-dialog" aria-labelledby="settings-title">
+      <div class="faust-dialog-heading"><h2 id="settings-title">模型与设置</h2><button type="button" class="faust-text-button" id="settings-close">关闭</button></div>
+      <p class="faust-dialog-caption">查看当前模型和服务支持的交互能力。</p>
+      <label for="model-select" class="faust-field-label">下一条消息使用的模型</label>
+      <select id="model-select" class="faust-select" disabled><option value="">服务默认模型</option></select>
+      <p id="model-note" class="faust-setting-note">连接后检查可切换的模型。</p>
+      <dl class="faust-feature-list">
+        <div><dt>图片与文件</dt><dd id="files-feature-status">可选择并本地预览，发送待接入</dd></div>
+        <div><dt>任务控制</dt><dd id="commands-feature-status">暂停／继续／停止待验证</dd></div>
+        <div><dt>语音</dt><dd>尚未接入</dd></div>
+      </dl>
+      <p class="faust-setting-note">模型凭据由服务端保管；网页不保存 API 密钥。</p>
+    </dialog>
+    <dialog id="commands-dialog" class="faust-dialog" aria-labelledby="commands-title">
+      <div class="faust-dialog-heading"><h2 id="commands-title">命令</h2><button type="button" class="faust-text-button" id="commands-close">关闭</button></div>
+      <p class="faust-dialog-caption">这些命令在网页本地执行，不作为台词发给角色。</p>
+      <div class="faust-command-list">
+        <button type="button" data-command="/status"><code>/status</code><span>查看连接与任务状态</span></button>
+        <button type="button" data-command="/refresh"><code>/refresh</code><span>重新同步对话与过程记录</span></button>
+        <button type="button" data-command="/model"><code>/model</code><span>查看或选择模型</span></button>
+        <button type="button" data-command="/files"><code>/files</code><span>选择图片或文件</span></button>
+        <button type="button" data-command="/help"><code>/help</code><span>查看命令说明</span></button>
+      </div>
+      <p class="faust-setting-note">任务的暂停、继续和停止需服务端完成验证；目前不把这些命令当普通聊天发送。</p>
+    </dialog>
+    <noscript><p class="faust-noscript">此对话页面需要启用 JavaScript。个人网站的其他页面仍可正常浏览。</p></noscript>
+  </section>
+  <script>
+    import "../../scripts/faust/app.js";
+  </script>
+</BaseLayout>

@@ -6,7 +6,8 @@ const {
   title = "yourskenny | AI Portfolio",
   description = "武汉大学人工智能专业学生的 Agent、CV、DL、RL、EAI 与 NLP 项目作品集",
   image = "/og-image.svg",
-  type = "website"
+  type = "website",
+  noindex = false
 } = Astro.props;
 
 const navItems = [
@@ -17,7 +18,8 @@ const navItems = [
   { href: "/blog/", label: "博客" },
   { href: "/research/", label: "研究" },
   { href: "/about/", label: "关于" },
-  { href: "/resume.pdf", label: "简历" }
+  { href: "/resume.pdf", label: "简历" },
+  { href: "/faust/", label: "浮士德" }
 ];
 ---
 
@@ -27,6 +29,7 @@ const navItems = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <Seo title={title} description={description} image={image} type={type} />
   </head>
   <body>

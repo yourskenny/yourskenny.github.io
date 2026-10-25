@@ -7,3 +7,5 @@ dist
 .tmp-course-labs
 .tmp-dev-server/
 .superpowers/
+output/playwright/
+.playwright-cli/

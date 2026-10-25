@@ -5,12 +5,14 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
+    "dev:faust": "astro dev --host 127.0.0.1 --port 4321",
     "build": "astro build",
     "preview": "astro preview",
     "content:from-folder": "node scripts/content-from-folder.mjs",
     "test:site": "node tests/check-site.mjs",
     "test:content": "node tests/content-from-folder.test.mjs",
-    "test": "npm run test:site && npm run test:content",
+    "test:faust": "node --test tests/faust-protocol.test.mjs",
+    "test": "npm run test:site && npm run test:content && npm run test:faust",
     "deploy": "npm run build && node scripts/deploy-pages.mjs"
   },
   "dependencies": {
